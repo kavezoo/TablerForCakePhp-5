@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\View\Helper;
+namespace KvAdmin\View\Helper; // <-- NEM App\View\Helper!
 
 use Cake\View\Helper;
 use Cake\View\StringTemplateTrait;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Model\Behavior;
+namespace KvAdmin\Model\Behavior;
 
 use ArrayObject;
 use Cake\Event\EventInterface;
@@ -62,7 +62,6 @@ class LocalizedDataBehavior extends Behavior
         if (preg_match('/^\d{4}-\d{2}-\d{2}( \d{2}:\d{2}(:\d{2})?)?$/', $value)) {
             return $value;
         }
-
         // 1. Próbálkozás a PHP IntlDateFormatter-rel az adott locale szerint
         $formatters = [
             new IntlDateFormatter($locale, IntlDateFormatter::SHORT, IntlDateFormatter::SHORT),
@@ -85,7 +84,7 @@ class LocalizedDataBehavior extends Behavior
         // 2. Fallback: gyakori magyar és európai pontozott/perjeles formátumok
         $customFormats = [
             'Y.m.d. H:i:s' => 'Y-m-d H:i:s',
-            'Y.m.d H:i:s'   => 'Y-m-d H:i:s',
+            'Y.m.d H:i:s'  => 'Y-m-d H:i:s',
             'Y.m.d.'       => 'Y-m-d',
             'Y. m. d.'     => 'Y-m-d',
             'Y.m.d'        => 'Y-m-d',
@@ -102,7 +101,7 @@ class LocalizedDataBehavior extends Behavior
                 return $type === 'date' ? $d->format('Y-m-d') : $d->format($targetFormat);
             }
         }
-
+dd($value);
         return $value;
     }
 

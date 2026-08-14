@@ -9,4 +9,6 @@
     RewriteRule    ^(\.well-known/.*)$ $1 [L]
     RewriteRule    ^$    webroot/    [L]
     RewriteRule    (.*) webroot/$1    [L]
+#	RewriteCond %{REQUEST_FILENAME} !-f
+#    RewriteRule ^ index.php [L]
 </IfModule>

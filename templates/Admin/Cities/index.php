@@ -145,6 +145,9 @@ $highlight = function (?string $text) use ($search): string {
                     <th class="integer count"><?= $this->Paginator->sort('club_count', __('Clubs')) ?></th>
                     <th class="boolean"><?= $this->Paginator->sort('is_active', __('Aktív')) ?></th>
                     <th class="datetime">
+                        <?= $this->Paginator->sort('datumido', __('Dátum idő')) ?>
+                    </th>
+                    <th class="datetime">
                         <?= $this->Paginator->sort('created', __('Létrehozva')) ?><br>
                         <?= $this->Paginator->sort('modified', __('Módosítva')) ?>
                     </th>
@@ -213,6 +216,10 @@ $highlight = function (?string $text) use ($search): string {
                                 <?= $this->SystemIcon->boolean($city->is_active ?? true) ?>
                             </td>
                             
+                            <td class="datetime datmido">
+                                <?= $city->datumido ? $city->datumido->format('Y.m.d. H:i') : '-' ?>
+                            </td>
+                            
                             <td class="datetime created modified">
                                 <?= $city->created ? $city->created->format('Y.m.d. H:i') : '-' ?><br>
                                 <?= $city->modified ? $city->modified->format('Y.m.d. H:i') : '-' ?>
@@ -272,11 +279,11 @@ $highlight = function (?string $text) use ($search): string {
         </table>
     </div>
 
-    <?= $this->element('admin/pagination') ?>
+    <?= $this->element('KvAdmin.pagination') ?>
 
 </div>
 
-<?= $this->element('admin/modal-delete') ?>
+<?= $this->element('KvAdmin.modal-delete') ?>
 
 <?php
 $this->Html->scriptBlock(

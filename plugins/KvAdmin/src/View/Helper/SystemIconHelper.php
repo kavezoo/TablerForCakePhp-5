@@ -1,5 +1,5 @@
 <?php
-namespace App\View\Helper;
+namespace KvAdmin\View\Helper; // <-- NEM App\View\Helper!
 
 use Cake\Routing\Router;
 use Cake\View\Helper;

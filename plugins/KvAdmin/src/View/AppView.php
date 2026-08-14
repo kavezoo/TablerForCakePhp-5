@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @since     3.0.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
-namespace App\View;
+namespace KvAdmin\View; // <-- Fontos: a plugin névtere!
 
 use Cake\View\View;
 
@@ -39,5 +39,7 @@ class AppView extends View
     {
 		parent::initialize();
 		
+		$this->loadHelper('SystemIcon');
+		$this->loadHelper('Icon');
     }
 }

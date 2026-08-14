@@ -5,6 +5,8 @@
  * @var \Cake\Collection\CollectionInterface|string[] $countries
  * @var \Cake\Collection\CollectionInterface|string[] $counties
  */
+use Cake\I18n\I18n;
+
 $this->assign('title', __('Város hozzáadása'));
 ?>
 
@@ -90,11 +92,13 @@ $this->assign('title', __('Város hozzáadása'));
                 <div class="row g-3 mb-3">
                     <!-- Dátum és Idő beviteli mező -->
                     <div class="col-md-4">
-                        <?= $this->Form->control('published_at', [
+						<?php //= $city->datumido ?>
+						<?php //dd((string) $this->Form->getSourceValue('datumido')); ?>
+                        <?= $this->Form->control('datumido', [
                             'type' => 'text',
                             'label' => ['text' => __('Dátum és időpont'), 'class' => 'form-label'],
                             'class' => 'form-control flatpickr-datetime',
-                            'value' => $this->Form->getSourceValue('published_at') ?? '2025-12-25 14:00',
+                            'value' => "'" . $city->datumido->i18nFormat('yyyy-MM-dd HH:mm:ss')  ?? '1900-01-01 0:00:00' . "'",
                             'placeholder' => 'ÉÉÉÉ.HH.NN ÓÓ:PP',
                             'autocomplete' => 'off',
                             'templates' => [
@@ -106,10 +110,11 @@ $this->assign('title', __('Város hozzáadása'));
 
                     <!-- Csak Dátum beviteli mező -->
                     <div class="col-md-4">
-                        <?= $this->Form->control('event_date', [
+                        <?= $this->Form->control('datum', [
                             'type' => 'text',
                             'label' => ['text' => __('Dátum'), 'class' => 'form-label'],
                             'class' => 'form-control flatpickr-date',
+							'value' => "'" . $city->datum->i18nFormat('yyyy-MM-dd')  ?? '1900-01-01' . "'",
                             'placeholder' => 'ÉÉÉÉ.HH.NN',
                             'autocomplete' => 'off',
                             'templates' => [
@@ -121,10 +126,11 @@ $this->assign('title', __('Város hozzáadása'));
 
                     <!-- Csak Idő beviteli mező -->
                     <div class="col-md-4">
-                        <?= $this->Form->control('event_time', [
+                        <?= $this->Form->control('ido', [
                             'type' => 'text',
                             'label' => ['text' => __('Időpont'), 'class' => 'form-label'],
                             'class' => 'form-control flatpickr-time',
+							'value' => "'" . $city->ido->i18nFormat('HH:mm:ss')  ?? '0:00:00' . "'",
                             'placeholder' => 'ÓÓ:PP',
                             'autocomplete' => 'off',
                             'templates' => [
@@ -359,16 +365,16 @@ $this->assign('title', __('Város hozzáadása'));
 
 <?php
     $this->Html->css([
-        '/vendor/tom-select/tom-select.default.min',
-        '/vendor/flatpickr/dist/flatpickr.min',
+        'KvAdmin./vendor/tom-select/tom-select.default.min',	// Select
+        'KvAdmin./vendor/flatpickr/dist/flatpickr.min',			// Dátum & Idő picker
     ], ['block' => 'css']);
     
     $this->Html->script([
-        '/vendor/tom-select/tom-select.complete',
-        '/vendor/imask/dist/imask.min',
-        '/vendor/hugerte/hugerte.min',
-        '/vendor/flatpickr/dist/flatpickr.min',
-        '/vendor/flatpickr/dist/l10n/hu',
+        'KvAdmin./vendor/tom-select/tom-select.complete',		// Select
+        'KvAdmin./vendor/imask/dist/imask.min',					// Input mask
+        'KvAdmin./vendor/hugerte/hugerte.min',
+        'KvAdmin./vendor/flatpickr/dist/flatpickr.min',			// Dátum & Idő picker
+        'KvAdmin./vendor/flatpickr/dist/l10n/' . strtolower(substr(I18n::getLocale(), 0, 2)),	// Dátum & Idő pickerlokalizáció
     ], ['block' => 'script']);
 ?>
 
@@ -386,7 +392,18 @@ $this->Html->scriptBlock(
         // 2. TomSelect Tag-ek
         const tagsElem = document.getElementById('select-tags');
         if (tagsElem && typeof TomSelect !== 'undefined') {
-            new TomSelect(tagsElem, { maxItems: 3 });
+            new TomSelect(tagsElem, {
+				create: false,         						// Új elemek létrehozásának tiltása
+				sortField: {
+					field: 'text',
+					direction: 'asc'   						// Ábécé sorrend
+				},
+				plugins: ['remove_button', 'clear_button'], // Törlés 'x' gombbal és teljes ürítés
+				maxItems: 3,                                // Maximum kiválasztható elemek száma
+				persist: false,                             // Eltávolított elemek ne jelenjenek meg újra
+				placeholder: 'Válassz címkéket...',
+				hideSelected: true                          // A már kiválasztott elemek eltűnnek a listából
+			});
         }
 
         // 3. HugeRTE szerkesztő
@@ -406,35 +423,42 @@ $this->Html->scriptBlock(
         // 4. Flatpickr Dátum & Idő
         if (typeof flatpickr !== 'undefined') {
             flatpickr('.flatpickr-datetime', {
-                locale: 'hu',
-                enableTime: true,
-                time_24hr: true,
-                dateFormat: 'Y-m-d H:i:m',
-                altInput: true,
-                altFormat: 'Y.m.d. H:i',
-                allowInput: true,
-                disableMobile: true
+                locale: '" . strtolower(substr(I18n::getLocale(), 0, 2)) . "',					// Lokalizáció
+                enableTime: true,							// Időválasztó bekapcsolása
+                altInput: true,								// Létrehoz egy felhasználóbarát látható mezőt
+                altFormat: 'Y. m. d. H:i',					// Megjelenítés: 2026. 08. 14. 19:10
+															// Ha CakePHP vagy adatbázis felé más formátumban küldenéd (pl. másodpercekkel):
+                dateFormat: 'Y-m-d H:i:m',					// Az adatbázisba / POST kérésbe kerül: 2026-08-14 19:10:00
+				time_24hr: true,         					// 24 órás formátum (AM/PM kikapcsolása)
+				defaultHour: 12          					// Alapértelmezett óra megnyitáskor				
+				minuteIncrement: 5,      					// Perc léptetés (opcionális, pl. 5 percenként)
+                allowInput: true,							// Input engedélyezése
+                disableMobile: true							// Mobilon nem jeleik mg (elvileg)
             });
 
             flatpickr('.flatpickr-date', {
-                locale: 'hu',
-                dateFormat: 'Y-m-d',
-                altInput: true,
-                altFormat: 'Y.m.d.',
-                allowInput: true,
-                disableMobile: true
+                locale: '" . strtolower(substr(I18n::getLocale(), 0, 2)) . "',					// Lokalizáció
+				enableTime: false,							// Időválasztó kikapcsolása
+                altInput: true,								// Létrehoz egy felhasználóbarát látható mezőt
+                altFormat: 'Y. m. d.',						// Megjelenítés: 2026. 08. 14.
+															// Ha CakePHP vagy adatbázis felé más formátumban küldenéd (pl. másodpercekkel):
+                dateFormat: 'Y-m-d',						// Az adatbázisba / POST kérésbe kerül: 2026-08-14 19:10:00
+				minuteIncrement: 10,						// Perc inkrementálás léptéke
+                allowInput: true,							// Input engedélyezése
+                disableMobile: true							// Mobilon nem jeleik mg (elvileg)
             });
 
             flatpickr('.flatpickr-time', {
-                locale: 'hu',
-                enableTime: true,
-                noCalendar: true,
-                time_24hr: true,
-                dateFormat: 'H:i:m',
-                altInput: true,
-                altFormat: 'H:i',
-                allowInput: true,
-                disableMobile: true
+                locale: '" . strtolower(substr(I18n::getLocale(), 0, 2)) . "',					// Lokalizáció
+                altInput: true,								// Létrehoz egy felhasználóbarát látható mezőt
+                enableTime: true,							// Időválasztó bekapcsolása
+                noCalendar: true,							// Dátumválasztó kikapcsolása
+                time_24hr: true,         					// 24 órás formátum (AM/PM kikapcsolása)
+                altFormat: 'H:i',							// Megjelenítet időformátum
+															// Ha CakePHP vagy adatbázis felé más formátumban küldenéd (pl. másodpercekkel):
+                dateFormat: 'H:i:m',						// Az adatbázisba / POST kérésbe kerül: 2026-08-14 19:10:00
+                allowInput: true,							// Input engedélyezése
+                disableMobile: true							// Mobilon nem jeleik mg (elvileg)
             });
         }
 
