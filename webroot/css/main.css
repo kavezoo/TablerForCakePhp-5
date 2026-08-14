@@ -46,6 +46,15 @@ th {
     border-left: 3px solid #206bc4 !important;
 }
 
+/* Idegen kulcsok és cella linkek: ikon és szöveg egy sorban tartása */
+a.foreign-key-link,
+td a {
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
 /* --- Oszloptípusok formázása --- */
 
 /* Közös oszlop-tulajdonságok a fix szélességű mezőkhöz */
@@ -411,6 +420,63 @@ th.desc .sort-arrows .icon {
     border-color: #90b5e2 !important;
 }
 
+.search-input-group .input-group-text {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.btn-search-clear,
+a#btn-clear-search {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 20 !important;
+    transform: translate(8px, 0px) !important;
+    border-radius: 4px;
+}
+
+.btn-search-clear svg,
+.btn-search-clear .icon,
+a#btn-clear-search svg {
+    width: 22px !important;
+    height: 22px !important;
+    stroke-width: 2.2 !important;
+    stroke: currentColor !important;
+    pointer-events: none !important;
+}
+
+.btn-search-clear:hover,
+a#btn-clear-search:hover {
+    color: #d63939 !important;
+    background-color: rgba(214, 57, 57, 0.12) !important;
+}
+
+.search-box-left-side {
+    border-right: 0;
+    padding-left: 12px;
+    padding-right: 0;
+}
+
+.search-clear-icon {
+    position: relative;
+    z-index: 10;
+    border-left: 0;
+}
+
+.search-box-right-side {
+    border-left: 0 !important;
+}
+
 
 /* ==========================================================================
    7. FLATPICKR DÁTUM- ÉS IDŐVÁLASZTÓ + MUTATÓ HÁROMSZÖG (ARROW)
@@ -418,12 +484,12 @@ th.desc .sort-arrows .icon {
 
 /* Popup naptár konténer távolságának és árnyékának beállítása */
 .flatpickr-calendar {
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
-                0 8px 10px -6px rgba(0, 0, 0, 0.1), 
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+                0 8px 10px -6px rgba(0, 0, 0, 0.1),
                 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
     border: 1px solid rgba(0, 0, 0, 0.1) !important;
     border-radius: 8px !important;
-    overflow: visible !important; /* Engedélyezi a kis háromszög kilógását */
+    overflow: visible !important;
 }
 
 /* Távolságtartás a beviteli mezőtől */
@@ -437,7 +503,6 @@ th.desc .sort-arrows .icon {
 
 /* --- KIS MUTATÓ HÁROMSZÖG (ARROW) VILÁGOS MÓDBAN --- */
 
-/* Felfelé mutató háromszög (amikor a naptár a mező ALATT nyílik meg) */
 .flatpickr-calendar.arrowTop:before {
     border-bottom-color: rgba(0, 0, 0, 0.12) !important;
     border-width: 7px !important;
@@ -447,7 +512,6 @@ th.desc .sort-arrows .icon {
     border-width: 6px !important;
 }
 
-/* Lefelé mutató háromszög (amikor a naptár a mező FELETT nyílik meg) */
 .flatpickr-calendar.arrowBottom:before {
     border-top-color: rgba(0, 0, 0, 0.12) !important;
     border-width: 7px !important;
@@ -749,7 +813,7 @@ input.form-control[readonly].flatpickr-input {
 /* Flatpickr Sötét Módban */
 [data-bs-theme="dark"] .flatpickr-calendar {
     background: var(--tblr-bg-surface);
-    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5),
                 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     color: var(--tblr-body-color);
@@ -947,7 +1011,7 @@ input.form-control[readonly].flatpickr-input {
 
 
 /* ==========================================================================
-   ALERT BEZÁRÁS (BTN-CLOSE): HALVÁNYSZÜRKE HÁTTÉR + SZEGÉLY, TÉMÁHOZ IGAZODÓ HOVER
+   14. ALERT BEZÁRÁS (BTN-CLOSE)
    ========================================================================== */
 
 /* 1. Alapállapot: Jól látható doboz halványszürke háttérrel és szegéllyel */
@@ -957,20 +1021,13 @@ input.form-control[readonly].flatpickr-input {
     min-width: 28px !important;
     min-height: 28px !important;
     padding: 0 !important;
-    
-    /* Vékony szürke szegély és finom lekerekítés */
     border: 1px solid rgba(0, 0, 0, 0.16) !important;
     border-radius: var(--tblr-border-radius, 4px) !important;
-    
-    /* Halvány szürke háttér alapból */
     background-color: rgba(0, 0, 0, 0.05) !important;
-    
-    /* Éles, beágyazott X ikon */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231e293b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E") !important;
     background-repeat: no-repeat !important;
     background-position: center !important;
     background-size: 14px 14px !important;
-    
     opacity: 0.8 !important;
     transition: all 0.15s ease-in-out !important;
     box-sizing: border-box !important;
@@ -983,31 +1040,25 @@ input.form-control[readonly].flatpickr-input {
 
 /* --- 3. Témánkénti hover hatások (Világos mód) --- */
 
-/* Success (Zöld alert) */
 .alert-success .btn-close:hover {
     border-color: #2fb344 !important;
     background-color: rgba(47, 179, 68, 0.2) !important;
 }
 
-/* Danger / Error (Piros alert) */
 .alert-danger .btn-close:hover {
     border-color: #d63939 !important;
     background-color: rgba(214, 57, 57, 0.2) !important;
 }
 
-/* Warning (Sárgás / Narancs alert) */
 .alert-warning .btn-close:hover {
     border-color: #f76707 !important;
     background-color: rgba(247, 103, 7, 0.2) !important;
-	
 }
 
-/* Info (Kék alert) */
 .alert-info .btn-close:hover {
     border-color: #4299e1 !important;
     background-color: rgba(66, 153, 225, 0.2) !important;
 }
-
 
 /* --- 4. Sötét mód (Dark Mode) --- */
 
@@ -1035,66 +1086,4 @@ input.form-control[readonly].flatpickr-input {
 [data-bs-theme="dark"] .alert-info .btn-close:hover {
     border-color: #4299e1 !important;
     background-color: rgba(66, 153, 225, 0.3) !important;
-}
-
-
-
-/* ==========================================================================
-   KERESŐ TÖRLÉS (X) GOMB KATTINTHATÓSÁG ÉS MÉRET
-   ========================================================================== */
-.search-input-group .input-group-text {
-    pointer-events: auto !important;
-    position: relative !important;
-    z-index: 10 !important;
-}
-
-.btn-search-clear,
-a#btn-clear-search {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
-    min-height: 38px !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    cursor: pointer !important;
-    pointer-events: auto !important;
-    position: relative !important;
-    z-index: 20 !important;
-    transform: translateY(0px) !important;
-    transform: translateX(8px) !important;
-    border-radius: 4px;
-}
-
-.btn-search-clear svg,
-.btn-search-clear .icon,
-a#btn-clear-search svg {
-    width: 22px !important;
-    height: 22px !important;
-    stroke-width: 2.2 !important;
-    stroke: currentColor !important;
-    pointer-events: none !important; /* Fontos: a kattintás magát az <a> taget érje */
-}
-
-.btn-search-clear:hover,
-a#btn-clear-search:hover {
-    color: #d63939 !important;
-    background-color: rgba(214, 57, 57, 0.12) !important;
-}
-
-.search-box-left-side{
-	border-right: 0px; 
-	padding-left: 12px; 
-	padding-right: 0px;
-}
-.search-clear-icon{
-	position: relative; 
-	z-index: 10; 
-	border-left: 0;	
-}
-
-.search-box-right-side {
-	border-left: 0px !important;
 }
