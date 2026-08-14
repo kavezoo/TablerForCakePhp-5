@@ -80,7 +80,7 @@ $highlight = function (?string $text) use ($search): string {
 					<?php endif; ?>
 
 					<div class="input-group input-group-flat search-input-group w-100 position-relative">
-						<span class="input-group-text">
+						<span class="input-group-text" style="border-right: 0px; padding-left: 12px; padding-right: 0px;">
 							<?= $this->SystemIcon->sysIcon('search') ?>
 						</span>
 						<input 
@@ -96,7 +96,7 @@ $highlight = function (?string $text) use ($search): string {
 						<?php if (!empty($search)): ?>
 						
 							<!-- Keresés törlése gomb (X) -->
-							<span class="input-group-text pe-2 py-0 d-flex align-items-center" style="position: relative; z-index: 10;">
+							<span class="input-group-text pe-2 py-0 d-flex align-items-center" style="position: relative; z-index: 10; border-left: 0;">
 								<a href="<?= $this->Url->build(['prefix' => 'Admin', 'controller' => 'Cities', 'action' => 'index', '?' => ['clear' => 'search']]) ?>" 
 								   id="btn-clear-search"
 								   class="btn-search-clear text-muted text-decoration-none" 
@@ -106,7 +106,7 @@ $highlight = function (?string $text) use ($search): string {
 							</span>
 						<?php else: ?>
 						
-							<span class="input-group-text pe-2">
+							<span class="input-group-text pe-2" style="border-left: 0px;">
 								<kbd id="search-shortcut-hint" class="search-kbd-badge">ctrl + K</kbd>
 							</span>
 						<?php endif; ?>						
@@ -311,6 +311,15 @@ $this->Html->scriptBlock(
                 }
             });
         }
+		
+		const clearBtn = document.getElementById('btn-clear-search');
+		if (clearBtn) {
+			clearBtn.addEventListener('click', function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+				window.location.href = this.getAttribute('href');
+			});
+		}		
 
         // --- 2. AUTOMATIKUS FINOM GÖRGETÉS AZ UTOLSÓ REKORDHOZ ---
         " . (!empty($scrollToId) ? "

@@ -1038,55 +1038,49 @@ input.form-control[readonly].flatpickr-input {
 }
 
 
-/* ==========================================================================
-   KERESŐ TÖRLÉS (X) GOMB - NAGYOBB MÉRET ÉS OPTIKAI EMELÉS
-   ========================================================================== */
 
-/* Az X gomb konténere */
-.input-group .btn-search-clear,
-.search-input-group .btn-search-clear {
+/* ==========================================================================
+   KERESŐ TÖRLÉS (X) GOMB KATTINTHATÓSÁG ÉS MÉRET
+   ========================================================================== */
+.search-input-group .input-group-text {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.btn-search-clear,
+a#btn-clear-search {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     width: 38px !important;
     height: 38px !important;
-    min-width: 28px !important;
-    min-height: 28px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
     padding: 0 !important;
     margin: 0 !important;
-    line-height: 1 !important;
-    cursor: pointer;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 20 !important;
+    transform: translateY(0px) !important;
+    transform: translateX(8px) !important;
     border-radius: 4px;
-    
-    /* Függőleges finomhangolás: FELJEBB emelés */
-    transform: translateY(-0px) !important;
-    transform: translateX(7px) !important;
-    transition: all 0.15s ease-in-out;
 }
 
-/* Maga az X SVG ikon méretének és vonalvastagságának kényszerítése */
-.input-group .btn-search-clear svg,
-.input-group .btn-search-clear .icon,
-.search-input-group .btn-search-clear svg,
-.search-input-group .btn-search-clear .icon {
-    width: 22px !important;              /* Jól látható, nagyobb méret */
+.btn-search-clear svg,
+.btn-search-clear .icon,
+a#btn-clear-search svg {
+    width: 22px !important;
     height: 22px !important;
-    min-width: 22px !important;
-    min-height: 22px !important;
-    stroke-width: 2.2 !important;        /* Határozottabb vonalak */
+    stroke-width: 2.2 !important;
     stroke: currentColor !important;
-    display: block !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    pointer-events: none !important; /* Fontos: a kattintás magát az <a> taget érje */
 }
 
-/* Hover állapot */
-.btn-search-clear:hover {
-    color: #d63939 !important;           /* Pirosas kiemelés ráfutáskor */
-    background-color: rgba(214, 57, 57, 0.1) !important;
+.btn-search-clear:hover,
+a#btn-clear-search:hover {
+    color: #d63939 !important;
+    background-color: rgba(214, 57, 57, 0.12) !important;
 }
 
-[data-bs-theme="dark"] .btn-search-clear:hover {
-    color: #f87171 !important;
-    background-color: rgba(239, 68, 68, 0.2) !important;
-}
