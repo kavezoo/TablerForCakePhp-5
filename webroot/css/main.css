@@ -1,0 +1,799 @@
+/* ==========================================================================
+   1. ÁLTALÁNOS & OLDAL ELRENDEZÉS
+   ========================================================================== */
+
+.page-body {
+    margin-top: 0;
+}
+
+
+/* ==========================================================================
+   2. TÁBLÁZATOK ÉS KÁRTYÁK (TABLES & CARDS)
+   ========================================================================== */
+
+th {
+    font-weight: bold;
+}
+
+.table {
+    width: 100% !important;
+}
+
+/* Nagyon alacsony sorok (table-sm finomhangolás) */
+.card-table th,
+.card-table td {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+}
+
+/* Függőleges és vízszintes szegélyek */
+.table th:not(:first-child),
+.table td:not(:first-child) {
+    border-left: 1px solid rgba(0, 0, 0, 0.12) !important;
+}
+
+.table thead th {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.25) !important;
+}
+
+.card-footer {
+    border-top: 2px solid rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Utoljára megtekintett sor kiemelése */
+.table tbody tr.last-viewed {
+    background-color: rgba(32, 107, 196, 0.08) !important;
+    border-left: 3px solid #206bc4 !important;
+}
+
+/* --- Oszloptípusok formázása --- */
+
+/* Közös oszlop-tulajdonságok a fix szélességű mezőkhöz */
+.table th.id, .table td.id,
+.table th.integer, .table td.integer,
+.table th.number, .table td.number,
+.table th.currency, .table td.currency,
+.table th.count, .table td.count,
+.table th.date, .table td.date,
+.table th.time, .table td.time,
+.table th.datetime, .table td.datetime,
+.table th.created, .table td.created,
+.table th.modified, .table td.modified,
+.table th.boolean, .table td.boolean,
+.table th.bool, .table td.bool {
+    width: 1%;
+    white-space: nowrap;
+}
+
+/* Igazítások és minimális szélességek */
+.table th.id, .table td.id {
+    min-width: 4.5rem !important;
+    text-align: center;
+}
+
+.table th.actions, .table td.actions {
+    padding-left: 12px;
+    text-align: center;
+}
+
+td.actions button {
+    margin: 0;
+}
+
+.table th.integer, .table td.integer,
+.table th.number, .table td.number,
+.table th.currency, .table td.currency {
+    min-width: 7.5rem !important;
+    text-align: right;
+    padding-right: 0.75rem !important;
+}
+
+.table th.count, .table td.count,
+.table th.boolean, .table td.boolean,
+.table th.bool, .table td.bool {
+    min-width: 3.5rem !important;
+    text-align: center;
+}
+
+.table th.date, .table td.date {
+    min-width: 6rem !important;
+    text-align: center;
+}
+
+.table th.time, .table td.time {
+    min-width: 4.5rem !important;
+    text-align: center;
+}
+
+.table th.datetime, .table td.datetime,
+.table th.created, .table td.created,
+.table th.modified, .table td.modified {
+    min-width: 8rem !important;
+    text-align: center;
+}
+
+.table td.created,
+.table td.modified,
+.table td.datetime {
+    font-size: 0.75rem !important;
+    color: #6c757d;
+}
+
+/* Pénznem prefix / suffix álelemek */
+td.currency::before,
+td.currency::after {
+    color: #6c757d;
+    font-size: 0.85em;
+    font-weight: normal;
+}
+
+td.currency[currency-position="prefix"]::before {
+    content: attr(currency);
+    margin-right: -1px;
+}
+
+td.currency[currency-position="suffix"]::after {
+    content: " " attr(currency);
+    margin-left: 0.05rem;
+}
+
+
+/* ==========================================================================
+   3. GOMBOK ÉS MŰVELETI ELEMEK (BUTTONS & ACTIONS)
+   ========================================================================== */
+
+/* Kompakt akció ikon-gomb a táblázatokban (28x28px) */
+td.actions .btn-icon,
+.table .btn-icon,
+.btn-list .btn-icon {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 4px !important;
+    border: none !important;
+    background-color: transparent;
+    transition: all 0.15s ease-in-out;
+}
+
+td.actions .btn-icon .icon,
+td.actions .btn-icon svg,
+.table .btn-icon .icon,
+.table .btn-icon svg,
+.btn-list .btn-icon .icon,
+.btn-list .btn-icon svg {
+    width: 20px !important;
+    height: 20px !important;
+    display: block !important;
+}
+
+/* Műveleti gombok állapotai */
+.btn-action-default {
+    color: #495057 !important;
+    opacity: 0.5;
+}
+.btn-action-default:hover {
+    background-color: #e9ecef !important;
+    color: #000000 !important;
+    opacity: 1;
+}
+
+.btn-action-danger {
+    color: #dc3545 !important;
+    opacity: 0.5;
+}
+.btn-action-danger:hover {
+    background-color: #dc3545 !important;
+    color: #ffffff !important;
+    opacity: 1;
+}
+
+/* Általános .btn-action méretezés */
+.btn-action {
+    padding: 0.5rem 1.1rem !important;
+    min-width: auto !important;
+    line-height: 0.5 !important;
+    opacity: 0.75;
+}
+.btn-action .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Finoman forgó gomb (pl. beállítások) */
+.btn-smooth-rotate {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+}
+
+.btn-smooth-rotate .icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    height: auto !important;
+    line-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.btn-smooth-rotate svg {
+    display: block !important;
+    margin: 0 !important;
+    transform: translate(0.5px, 0.5px) rotate(0deg) !important;
+    transform-origin: 50% 50% !important;
+    transition: transform 0.2s ease-in-out !important;
+}
+
+.btn-smooth-rotate:hover svg {
+    transform: translate(0.5px, 0.5px) rotate(90deg) !important;
+}
+
+/* Nagy bezárás gomb */
+.btn-close-lg {
+    font-size: 1.25rem;
+    padding: 1.25rem;
+}
+
+/* Fejléc Új elem gomb optikai és geometriai középre zárása */
+.btn.btn-header-new {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    line-height: 1 !important;
+}
+
+.btn.btn-header-new .icon,
+.btn.btn-header-new svg {
+    margin: 0 !important;
+    padding: 0 !important;
+    vertical-align: middle !important;
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+    stroke-width: 2 !important;
+    display: inline-block !important;
+    flex-shrink: 0 !important;
+    transform: translate(-3px, -1px) !important;
+}
+
+@media (max-width: 575.98px) {
+    .btn.btn-header-new {
+        padding-left: 0.6rem !important;
+        padding-right: 0.6rem !important;
+    }
+
+    .btn.btn-header-new .icon,
+    .btn.btn-header-new svg {
+        transform: translate(0px, -1px) !important;
+    }
+}
+
+
+/* ==========================================================================
+   4. IKONOK & RENDEZŐ NYILAK (ICONS & PAGINATION)
+   ========================================================================== */
+
+/* Paginator rendező nyilak */
+.sort-arrows {
+    position: relative;
+    display: inline-block;
+    width: 14px;
+    height: 1em;
+    vertical-align: baseline;
+    margin-left: 4px;
+}
+
+.sort-arrows .arrow-up,
+.sort-arrows .arrow-down {
+    display: none;
+    position: absolute;
+    left: 0;
+    width: 14px;
+    height: 14px;
+}
+
+a.asc .sort-arrows .arrow-up {
+    display: block;
+    top: -2px;
+    opacity: 1;
+    stroke-width: 4;
+}
+
+a.desc .sort-arrows .arrow-down {
+    display: block;
+    bottom: 0;
+    opacity: 1;
+    stroke-width: 4;
+}
+
+/* Nagyobb SVG méret modalokhoz */
+.icon-lg svg {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Vékonyabb stroke formokon */
+.stroke-thin svg {
+    stroke-width: 1;
+    opacity: 0.7;
+}
+
+
+/* ==========================================================================
+   5. TABOK (NAV & TABS)
+   ========================================================================== */
+
+.nav-link.nav-link-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+}
+
+.nav-link.nav-link-icon .icon,
+.nav-link.nav-link-icon svg {
+    display: block !important;
+    margin: 0 !important;
+    transform: translateY(-1px) !important;
+}
+
+.nav-tabs .nav-link svg {
+    vertical-align: middle !important;
+    margin-top: -10px !important;
+    margin-left: -2px !important;
+}
+
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:hover svg,
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active svg {
+    color: #000000 !important;
+    stroke: #000000 !important;
+}
+
+
+/* ==========================================================================
+   6. KERESŐ SÁV (SEARCH BAR)
+   ========================================================================== */
+
+@media (min-width: 768px) {
+    .search-input-group {
+        width: 270px !important;
+    }
+}
+
+.search-kbd-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 64px !important;
+    text-align: center !important;
+    font-size: 0.75rem !important;
+    padding: 0.15rem 0.4rem !important;
+    user-select: none;
+    transition: all 0.15s ease-in-out;
+}
+
+.input-group.input-group-flat,
+.input-group.input-group-flat:focus-within {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.input-group-flat .form-control:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.input-group-flat:focus-within .form-control,
+.input-group-flat:focus-within .input-group-text {
+    border-color: #90b5e2 !important;
+}
+
+
+/* ==========================================================================
+   7. FLATPICKR DÁTUM- ÉS IDŐVÁLASZTÓ
+   ========================================================================== */
+
+/* Popup naptár konténer */
+.flatpickr-calendar {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
+                0 8px 10px -6px rgba(0, 0, 0, 0.1), 
+                0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+.flatpickr-calendar.arrowTop:before,
+.flatpickr-calendar.arrowTop:after,
+.flatpickr-calendar.arrowBottom:before,
+.flatpickr-calendar.arrowBottom:after {
+    border-bottom-color: #ffffff !important;
+    border-top-color: #ffffff !important;
+}
+
+/* Időválasztó sáv (flatpickr-time) */
+.flatpickr-time,
+.flatpickr-calendar.noCalendar,
+.flatpickr-calendar.hasTime.noCalendar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 8px 12px !important;
+    height: auto !important;
+    line-height: normal !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+    background-color: #ffffff !important;
+    border-radius: 0 0 6px 6px;
+}
+
+/* Mező burkoló (numInputWrapper) */
+.flatpickr-time .numInputWrapper {
+    flex: 0 1 54px !important;
+    height: 38px !important;
+    background: #ffffff !important;
+    border: 1px solid #dce1e7;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.flatpickr-time .numInputWrapper:hover {
+    border-color: #206bc4;
+}
+
+.flatpickr-time input.flatpickr-hour,
+.flatpickr-time input.flatpickr-minute {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    height: 100% !important;
+    line-height: 36px !important;
+    padding: 0 !important;
+    text-align: center;
+    border: none !important;
+    background: transparent !important;
+}
+
+.flatpickr-time input:focus {
+    outline: none !important;
+}
+
+.flatpickr-time .flatpickr-time-separator {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
+    width: 20px !important;
+    height: 38px !important;
+    line-height: 38px !important;
+}
+
+.flatpickr-time .numInputWrapper span.arrowUp,
+.flatpickr-time .numInputWrapper span.arrowDown {
+    width: 16px !important;
+    padding: 0 !important;
+}
+
+/* Input beviteli mezők fehér háttere */
+.flatpickr-time-input[readonly],
+.flatpickr-time[readonly],
+input.flatpickr-input[readonly],
+input.form-control[readonly].flatpickr-input {
+    background-color: #ffffff !important;
+    cursor: pointer;
+}
+
+/* Input ikon integráció */
+.input-icon {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+.input-icon > .input-icon-addon {
+    position: absolute !important;
+    top: 60% !important;
+    transform: translateY(-60%) !important;
+    left: 0 !important;
+    bottom: auto !important;
+    height: auto !important;
+    min-width: 2.5rem !important;
+    width: 2.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    pointer-events: none !important;
+    z-index: 5 !important;
+    color: #6c757d;
+}
+
+.input-icon > .input-icon-addon svg,
+.input-icon > .input-icon-addon .icon {
+    width: 1.15rem !important;
+    height: 1.15rem !important;
+    stroke-width: 1.25 !important;
+    margin: 0 !important;
+    display: block !important;
+}
+
+.input-icon input.form-control,
+.input-icon input.flatpickr-input {
+    padding-left: 2.5rem !important;
+}
+
+
+/* ==========================================================================
+   8. FEJLÉC, NAVBAR & DROPDOWN MENÜK
+   ========================================================================== */
+
+/* Menüpontok alapállapota (ugrálásmentes, enyhén halványabb normál megjelenés) */
+.navbar-nav .nav-item .nav-link {
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    border-radius: var(--tblr-border-radius, 4px);
+    font-weight: 400 !important;
+    color: rgba(30, 41, 59, 0.7) !important;
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+    color: #000000 !important;
+}
+
+/* Alapértelmezett aktív állapot */
+.navbar-nav:not(.has-dropdown-open) .nav-item.active > .nav-link {
+    background-color: rgba(0, 0, 0, 0.06) !important;
+    color: #000000 !important;
+}
+
+/* Dropdown nyitott állapot */
+.navbar-nav .nav-item.dropdown .nav-link.show,
+.navbar-nav .nav-item.dropdown.show > .nav-link {
+    background-color: rgba(0, 0, 0, 0.06) !important;
+    color: #000000 !important;
+}
+
+/* Ha bármilyen dropdown megnyílik, az inaktívvá vált active menü visszahalkul */
+.navbar-nav.has-dropdown-open .nav-item.active:not(.show) > .nav-link {
+    background-color: transparent !important;
+    color: rgba(30, 41, 59, 0.7) !important;
+}
+
+/* Főmenü és almenük ikon vonalvastagsága */
+.navbar .nav-link-icon svg,
+.navbar .nav-link-icon .icon,
+.navbar .dropdown-item svg,
+.navbar .dropdown-item .icon {
+    stroke-width: 1 !important;
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+    vertical-align: middle !important;
+    opacity: 0.9;
+}
+
+.navbar .dropdown-item .icon-inline {
+    stroke-width: 1.25 !important;
+}
+
+/* Jobb oldali fejlécsáv vékony ikonjai */
+.navbar-nav.order-md-last .icon,
+.navbar-nav.order-md-last svg,
+.navbar .dropdown-menu-card .icon,
+.navbar .dropdown-menu-card svg {
+    stroke-width: 1.15 !important;
+    opacity: 0.8;
+}
+
+/* Dropdown listaelemek jobbra zárt ikonjai */
+.dropdown-menu .dropdown-item.d-flex {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.dropdown-menu .dropdown-item.d-flex .icon {
+    margin: 0 0 0 auto !important;
+    align-self: center !important;
+    vertical-align: 0 !important;
+    width: 1.15rem !important;
+    height: 1.15rem !important;
+}
+
+
+/* ==========================================================================
+   9. IKONOK OPTIKAI FÜGGŐLEGES ÉS VÍZSZINTES POZICIONÁLÁSA
+   ========================================================================== */
+
+/* 1. Főmenüpontok (Home, Interface, Plugins stb.) - gyári pozíció */
+.navbar-nav .nav-link-icon svg,
+.navbar-nav .nav-link-icon .icon {
+    position: static !important;
+    top: 0 !important;
+    vertical-align: middle !important;
+}
+
+/* 2. Almenüpontok ikonjai (dropdown listák és profil menü) */
+.dropdown-menu .dropdown-item .icon,
+.dropdown-menu .dropdown-item svg {
+    position: relative !important;
+    top: -4.5px !important;
+    vertical-align: middle !important;
+    margin-bottom: 0 !important;
+}
+
+/* 3. Fejléc gombok ikonjai (Source code, Sponsor) */
+.navbar-nav .btn .icon,
+.navbar-nav .btn svg {
+    position: relative !important;
+    top: -3px !important;
+    vertical-align: middle !important;
+    margin-bottom: 0 !important;
+}
+
+/* 4. Jobb felső fejléceszközök (Hold/Nap téma, Harang, Apps rács) */
+.navbar-nav.order-md-last > .d-none .nav-link .icon,
+.navbar-nav.order-md-last > .d-none .nav-link svg,
+.navbar-nav.order-md-last .nav-item:not(.dropdown) > .nav-link > .icon,
+.navbar-nav.order-md-last .nav-item.dropdown > .nav-link > .icon {
+    position: relative !important;
+    top: -3.5px !important;
+    vertical-align: middle !important;
+}
+
+/* 5. Értesítési kártya és Apps belső kis ikonjai */
+.navbar .dropdown-menu-card .list-group-item-actions .icon,
+.navbar .dropdown-menu-card .list-group-item-actions svg,
+.navbar .dropdown-menu-card .btn-actions .icon,
+.navbar .dropdown-menu-card .btn-actions svg {
+    position: relative !important;
+    top: -3px !important;
+    vertical-align: middle !important;
+}
+
+/* 6. Értesítések (harang) és Apps ikon balra igazítása */
+.navbar-nav.order-md-last .icon-apps,
+.navbar-nav.order-md-last .icon-bell,
+.navbar-nav.order-md-last .nav-link[aria-label="Show app menu"] .icon,
+.navbar-nav.order-md-last .nav-link[aria-label="Show notifications"] .icon {
+    position: relative !important;
+    left: -3px !important;
+}
+
+/* 7. Értesítési piros jelzőpötty rögzítése a harang jobb felső sarkára */
+.navbar-nav.order-md-last .nav-link[aria-label="Show notifications"] {
+    position: relative !important;
+}
+
+.navbar-nav.order-md-last .nav-link[aria-label="Show notifications"] .badge {
+    position: absolute !important;
+    top: 4px !important;
+    right: 2px !important;
+    left: auto !important;
+    transform: translate(0, 0) !important;
+    padding: 0 !important;
+    min-width: 8px !important;
+    min-height: 8px !important;
+    border-radius: 50% !important;
+    border: 2px solid var(--tblr-navbar-bg, #ffffff) !important;
+}
+
+
+/* ==========================================================================
+   10. SÖTÉT MÓD (DARK MODE) ÖSSZESÍTVE
+   ========================================================================== */
+
+/* Táblázatok */
+[data-bs-theme="dark"] .table th:not(:first-child),
+[data-bs-theme="dark"] .table td:not(:first-child) {
+    border-left-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-bs-theme="dark"] .table thead th {
+    border-bottom-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+[data-bs-theme="dark"] .card-footer {
+    border-top-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+[data-bs-theme="dark"] .table tbody tr.last-viewed {
+    background-color: rgba(66, 153, 225, 0.15) !important;
+    border-left-color: #4299e1 !important;
+}
+
+[data-bs-theme="dark"] .table td.created,
+[data-bs-theme="dark"] .table td.modified,
+[data-bs-theme="dark"] .table td.datetime {
+    color: #a0a7b1;
+}
+
+/* Keresőmező */
+[data-bs-theme="dark"] .input-group-flat:focus-within .form-control,
+[data-bs-theme="dark"] .input-group-flat:focus-within .input-group-text {
+    border-color: #206bc4 !important;
+}
+
+/* Fejléc menü */
+[data-bs-theme="dark"] .navbar-nav .nav-item .nav-link {
+    color: rgba(255, 255, 255, 0.65) !important;
+    font-weight: 400 !important;
+}
+
+[data-bs-theme="dark"] .navbar-nav:not(.has-dropdown-open) .nav-item.active > .nav-link,
+[data-bs-theme="dark"] .navbar-nav .nav-item.dropdown .nav-link.show,
+[data-bs-theme="dark"] .navbar-nav .nav-item .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+/* Flatpickr */
+[data-bs-theme="dark"] .flatpickr-calendar {
+    background: var(--tblr-bg-surface);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 
+                0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--tblr-body-color);
+}
+
+[data-bs-theme="dark"] .flatpickr-day,
+[data-bs-theme="dark"] .flatpickr-month,
+[data-bs-theme="dark"] .flatpickr-current-month .flatpickr-monthDropdown-months,
+[data-bs-theme="dark"] .flatpickr-time input {
+    color: var(--tblr-body-color);
+}
+
+[data-bs-theme="dark"] .flatpickr-day.flatpickr-disabled,
+[data-bs-theme="dark"] .flatpickr-day.prevMonthDay,
+[data-bs-theme="dark"] .flatpickr-day.nextMonthDay {
+    color: var(--tblr-secondary-color);
+}
+
+[data-bs-theme="dark"] .flatpickr-calendar.arrowTop:before,
+[data-bs-theme="dark"] .flatpickr-calendar.arrowTop:after,
+[data-bs-theme="dark"] .flatpickr-calendar.arrowBottom:before,
+[data-bs-theme="dark"] .flatpickr-calendar.arrowBottom:after {
+    border-bottom-color: var(--tblr-bg-surface, #1b2431) !important;
+    border-top-color: var(--tblr-bg-surface, #1b2431) !important;
+}
+
+[data-bs-theme="dark"] .flatpickr-time,
+[data-bs-theme="dark"] .flatpickr-calendar.noCalendar,
+[data-bs-theme="dark"] .flatpickr-calendar.hasTime.noCalendar {
+    background-color: var(--tblr-bg-surface) !important;
+    border-top-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-bs-theme="dark"] .flatpickr-time .numInputWrapper {
+    background-color: #1b2431 !important;
+    border-color: #2c3b4f;
+}
+
+[data-bs-theme="dark"] .flatpickr-time input.flatpickr-hour,
+[data-bs-theme="dark"] .flatpickr-time input.flatpickr-minute {
+    color: #f8fafc !important;
+}
+
+[data-bs-theme="dark"] .flatpickr-time .flatpickr-time-separator {
+    color: #94a3b8 !important;
+}
+
+[data-bs-theme="dark"] .flatpickr-time-input[readonly],
+[data-bs-theme="dark"] .flatpickr-time[readonly],
+[data-bs-theme="dark"] input.flatpickr-input[readonly],
+[data-bs-theme="dark"] input.form-control[readonly].flatpickr-input {
+    background-color: var(--tblr-bg-surface) !important;
+}
+
