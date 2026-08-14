@@ -1038,3 +1038,24 @@ input.form-control[readonly].flatpickr-input {
 }
 
 
+/* ==========================================================================
+   KERESÉSI TALÁLATOK KIEMELÉSE (SEARCH HIGHLIGHT)
+   ========================================================================== */
+
+mark.search-highlight,
+.search-highlight {
+    color: #b91c1c !important;             /* Sötétpiros szövegszín */
+    background-color: rgba(220, 38, 38, 0.12) !important; /* Finom halványpiros háttér */
+    font-weight: 700 !important;           /* Félkövér kiemelés */
+    padding: 0.1em 0.25em !important;
+    border-radius: 3px !important;
+    display: inline-block;
+    line-height: 1.1;
+}
+
+/* Sötét mód támogatás */
+[data-bs-theme="dark"] mark.search-highlight,
+[data-bs-theme="dark"] .search-highlight {
+    color: #f87171 !important;             /* Világosabb, élénk piros a jó kontrasztért */
+    background-color: rgba(239, 68, 68, 0.25) !important;
+}

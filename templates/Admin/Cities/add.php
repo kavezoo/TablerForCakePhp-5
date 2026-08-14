@@ -11,7 +11,7 @@ $this->assign('title', __('Város hozzáadása'));
 <div class="page-header d-print-none mb-3">
     <div class="row align-items-center">
         <div class="col">
-            <h2 class="page-title"><?= __('Új város hozzáadása') ?></h2>
+            <h2 class="page-title"><?= __('Új település hozzáadása') ?></h2>
         </div>
 
         <div class="col-auto ms-auto">
