@@ -73,13 +73,13 @@ $highlight = function (?string $text) use ($search): string {
 			<!-- Kereső űrlap -->
 			<div class="col-12 col-md-auto ms-md-auto">
 				<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]) ?>
-					<!-- Megtartjuk az esetleges rendezést keresés közben is -->
+					<!-- Megtartjuk az esetleges oszloprendezést keresés közben -->
 					<?php if (!empty($this->getRequest()->getQuery('sort'))): ?>
 						<?= $this->Form->hidden('sort', ['value' => $this->getRequest()->getQuery('sort')]) ?>
 						<?= $this->Form->hidden('direction', ['value' => $this->getRequest()->getQuery('direction')]) ?>
 					<?php endif; ?>
 
-					<div class="input-group input-group-flat search-input-group w-100">
+					<div class="input-group input-group-flat search-input-group w-100 position-relative">
 						<span class="input-group-text">
 							<?= $this->SystemIcon->sysIcon('search') ?>
 						</span>
@@ -94,26 +94,29 @@ $highlight = function (?string $text) use ($search): string {
 						>
 						
 						<?php if (!empty($search)): ?>
-							<!-- Ha van keresés, megjelenik a törlés gomb -->
-							<span class="input-group-text p-0">
-								<?= $this->Html->link(
-									$this->Icon->outline('x'),
-									['action' => 'index'],
-									[
-										'escape' => false, 
-										'class' => 'btn btn-link text-muted p-1 me-1',
-										'title' => __('Keresés törlése')
-									]
-								) ?>
+						
+							<!-- Keresés törlése gomb (X) -->
+							<span class="input-group-text pe-2 py-0 d-flex align-items-center" style="position: relative; z-index: 10;">
+								<a href="<?= $this->Url->build(['prefix' => 'Admin', 'controller' => 'Cities', 'action' => 'index', '?' => ['clear' => 'search']]) ?>" 
+								   id="btn-clear-search"
+								   class="btn-search-clear text-muted text-decoration-none" 
+								   title="<?= __('Keresés törlése és összes rekord mutatása') ?>">
+									<?= $this->Icon->outline('x') ?>
+								</a>
 							</span>
 						<?php else: ?>
+						
 							<span class="input-group-text pe-2">
 								<kbd id="search-shortcut-hint" class="search-kbd-badge">ctrl + K</kbd>
 							</span>
-						<?php endif; ?>
+						<?php endif; ?>						
+						
 					</div>
 				<?= $this->Form->end() ?>
 			</div>
+
+
+
 
 
 
@@ -145,6 +148,7 @@ $highlight = function (?string $text) use ($search): string {
                     <th class="actions w-1"><?= __('Műveletek') ?></th>
                 </tr>
             </thead>
+
             <tbody>
                 <?php if (!empty($cities) && count($cities) > 0): ?>
                     <?php foreach ($cities as $city): ?>

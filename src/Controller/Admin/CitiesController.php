@@ -56,13 +56,16 @@ class CitiesController extends AppController
 			}
 		}
 
-		// Alap lekérdezés a szülő táblák (Counties, Countries) betöltésével
-		$query = $this->Cities->find()
-			->contain(['Countries', 'Counties']);
+		$query = $this->Cities->find()->contain(['Countries', 'Counties']);
 
 		// =========================================================================
 		// 🔍 KERESÉS VÉGREHAJTÁSA A KONFIGURÁLT MEZŐK ALAPJÁN
 		// =========================================================================
+		// Ha kifejezetten törölni szeretné a keresést (vagy nincs search a kérésben de volt sessionben):
+		if (isset($queryParams['search']) && trim($queryParams['search']) === '') {
+			$session->delete('Paging.Cities.params.search');
+		}
+
 		$search = trim((string)($queryParams['search'] ?? ''));
 		if ($search !== '' && !empty($searchableFields)) {
 			$searchLike = '%' . $search . '%';

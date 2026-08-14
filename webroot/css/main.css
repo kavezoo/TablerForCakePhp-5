@@ -1039,23 +1039,54 @@ input.form-control[readonly].flatpickr-input {
 
 
 /* ==========================================================================
-   KERESÉSI TALÁLATOK KIEMELÉSE (SEARCH HIGHLIGHT)
+   KERESŐ TÖRLÉS (X) GOMB - NAGYOBB MÉRET ÉS OPTIKAI EMELÉS
    ========================================================================== */
 
-mark.search-highlight,
-.search-highlight {
-    color: #b91c1c !important;             /* Sötétpiros szövegszín */
-    background-color: rgba(220, 38, 38, 0.12) !important; /* Finom halványpiros háttér */
-    font-weight: 700 !important;           /* Félkövér kiemelés */
-    padding: 0.1em 0.25em !important;
-    border-radius: 3px !important;
-    display: inline-block;
-    line-height: 1.1;
+/* Az X gomb konténere */
+.input-group .btn-search-clear,
+.search-input-group .btn-search-clear {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    cursor: pointer;
+    border-radius: 4px;
+    
+    /* Függőleges finomhangolás: FELJEBB emelés */
+    transform: translateY(-0px) !important;
+    transform: translateX(7px) !important;
+    transition: all 0.15s ease-in-out;
 }
 
-/* Sötét mód támogatás */
-[data-bs-theme="dark"] mark.search-highlight,
-[data-bs-theme="dark"] .search-highlight {
-    color: #f87171 !important;             /* Világosabb, élénk piros a jó kontrasztért */
-    background-color: rgba(239, 68, 68, 0.25) !important;
+/* Maga az X SVG ikon méretének és vonalvastagságának kényszerítése */
+.input-group .btn-search-clear svg,
+.input-group .btn-search-clear .icon,
+.search-input-group .btn-search-clear svg,
+.search-input-group .btn-search-clear .icon {
+    width: 22px !important;              /* Jól látható, nagyobb méret */
+    height: 22px !important;
+    min-width: 22px !important;
+    min-height: 22px !important;
+    stroke-width: 2.2 !important;        /* Határozottabb vonalak */
+    stroke: currentColor !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Hover állapot */
+.btn-search-clear:hover {
+    color: #d63939 !important;           /* Pirosas kiemelés ráfutáskor */
+    background-color: rgba(214, 57, 57, 0.1) !important;
+}
+
+[data-bs-theme="dark"] .btn-search-clear:hover {
+    color: #f87171 !important;
+    background-color: rgba(239, 68, 68, 0.2) !important;
 }
