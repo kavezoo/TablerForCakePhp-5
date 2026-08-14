@@ -300,7 +300,7 @@ th a {
     vertical-align: middle !important;
 }
 
-/* A háromszög mérete és színe (közös) */
+/* A háromszög mérete és kitöltése (közös) */
 .sort-arrows svg,
 .sort-arrows .icon {
     width: 9px !important;
@@ -309,22 +309,34 @@ th a {
     fill: currentColor !important;
 }
 
-/* FELFELÉ NYÍL (ASC) -> Picit lejjebb tolva */
+/* FELFELÉ NYÍL (ASC) -> Picit lejjebb tolva + zöld szín */
 a.asc .sort-arrows svg,
 a.asc .sort-arrows .icon,
 th.asc .sort-arrows svg,
 th.asc .sort-arrows .icon {
     transform: translateY(1px) !important;
-	color: green;
+    color: green;
 }
 
-/* LEFELÉ NYÍL (DESC) -> Picit feljebb emelve */
+/* LEFELÉ NYÍL (DESC) -> Normál pozíció + piros szín */
 a.desc .sort-arrows svg,
 a.desc .sort-arrows .icon,
 th.desc .sort-arrows svg,
 th.desc .sort-arrows .icon {
     transform: translateY(0px) !important;
-	color: red;
+    color: red;
+}
+
+/* Nagyobb SVG méret modalokhoz */
+.icon-lg svg {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Vékonyabb stroke formokon */
+.stroke-thin svg {
+    stroke-width: 1;
+    opacity: 0.7;
 }
 
 
@@ -401,25 +413,48 @@ th.desc .sort-arrows .icon {
 
 
 /* ==========================================================================
-   7. FLATPICKR DÁTUM- ÉS IDŐVÁLASZTÓ
+   7. FLATPICKR DÁTUM- ÉS IDŐVÁLASZTÓ + MUTATÓ HÁROMSZÖG (ARROW)
    ========================================================================== */
 
-/* Popup naptár konténer */
+/* Popup naptár konténer távolságának és árnyékának beállítása */
 .flatpickr-calendar {
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
                 0 8px 10px -6px rgba(0, 0, 0, 0.1), 
                 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
     border-radius: 8px !important;
-    overflow: hidden;
+    overflow: visible !important; /* Engedélyezi a kis háromszög kilógását */
 }
 
-.flatpickr-calendar.arrowTop:before,
-.flatpickr-calendar.arrowTop:after,
-.flatpickr-calendar.arrowBottom:before,
-.flatpickr-calendar.arrowBottom:after {
+/* Távolságtartás a beviteli mezőtől */
+.flatpickr-calendar.arrowTop {
+    margin-top: 6px !important;
+}
+
+.flatpickr-calendar.arrowBottom {
+    margin-bottom: 6px !important;
+}
+
+/* --- KIS MUTATÓ HÁROMSZÖG (ARROW) VILÁGOS MÓDBAN --- */
+
+/* Felfelé mutató háromszög (amikor a naptár a mező ALATT nyílik meg) */
+.flatpickr-calendar.arrowTop:before {
+    border-bottom-color: rgba(0, 0, 0, 0.12) !important;
+    border-width: 7px !important;
+}
+.flatpickr-calendar.arrowTop:after {
     border-bottom-color: #ffffff !important;
+    border-width: 6px !important;
+}
+
+/* Lefelé mutató háromszög (amikor a naptár a mező FELETT nyílik meg) */
+.flatpickr-calendar.arrowBottom:before {
+    border-top-color: rgba(0, 0, 0, 0.12) !important;
+    border-width: 7px !important;
+}
+.flatpickr-calendar.arrowBottom:after {
     border-top-color: #ffffff !important;
+    border-width: 6px !important;
 }
 
 /* Időválasztó sáv (flatpickr-time) */
@@ -711,7 +746,7 @@ input.form-control[readonly].flatpickr-input {
     border-color: #206bc4 !important;
 }
 
-/* Flatpickr */
+/* Flatpickr Sötét Módban */
 [data-bs-theme="dark"] .flatpickr-calendar {
     background: var(--tblr-bg-surface);
     box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 
@@ -733,11 +768,18 @@ input.form-control[readonly].flatpickr-input {
     color: var(--tblr-secondary-color);
 }
 
-[data-bs-theme="dark"] .flatpickr-calendar.arrowTop:before,
-[data-bs-theme="dark"] .flatpickr-calendar.arrowTop:after,
-[data-bs-theme="dark"] .flatpickr-calendar.arrowBottom:before,
-[data-bs-theme="dark"] .flatpickr-calendar.arrowBottom:after {
+/* Kis mutató háromszög Sötét Módban */
+[data-bs-theme="dark"] .flatpickr-calendar.arrowTop:before {
+    border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+}
+[data-bs-theme="dark"] .flatpickr-calendar.arrowTop:after {
     border-bottom-color: var(--tblr-bg-surface, #1b2431) !important;
+}
+
+[data-bs-theme="dark"] .flatpickr-calendar.arrowBottom:before {
+    border-top-color: rgba(255, 255, 255, 0.15) !important;
+}
+[data-bs-theme="dark"] .flatpickr-calendar.arrowBottom:after {
     border-top-color: var(--tblr-bg-surface, #1b2431) !important;
 }
 
@@ -789,7 +831,6 @@ input.form-control[readonly].flatpickr-input {
         margin-right: 0 !important;
     }
 
-    /* A Home (első) elem bal széle és a kék vonal nem lóg ki balra */
     #navbar-menu .navbar-nav:first-child > .nav-item:first-child {
         margin-left: 0 !important;
     }
@@ -827,11 +868,12 @@ input.form-control[readonly].flatpickr-input {
     }
 }
 
+
 /* ==========================================================================
-   12. AKTÍV MENÜPONT ÉS HOVER MEGJELENÉS (LEGUTOLSÓ / LEGERŐSEBB SZABÁLYOK)
+   12. AKTÍV MENÜPONT ÉS HOVER MEGJELENÉS (HIERARCHIA CSÚCSA)
    ========================================================================== */
 
-/* Felülírjuk a Tabler belső aktív háttér változóját és minden aktív állapotot */
+/* Felülírjuk a Tabler belső aktív háttér változóját és minden alapértelmezett állapotot */
 .navbar-nav {
     --tblr-navbar-active-bg: transparent !important;
 }
@@ -892,3 +934,107 @@ input.form-control[readonly].flatpickr-input {
     background-color: rgba(255, 255, 255, 0.08) !important;
     color: #ffffff !important;
 }
+
+
+/* ==========================================================================
+   13. EGYEDI GOMB IGAZÍTÁSOK (BUTTON OVERRIDES)
+   ========================================================================== */
+
+/* Mentés és egyéb egyedi gombok ikonjának optikai emelése */
+.btn-icon-adjust {
+    transform: translateY(-3.5px) !important;
+}
+
+
+/* ==========================================================================
+   ALERT BEZÁRÁS (BTN-CLOSE): HALVÁNYSZÜRKE HÁTTÉR + SZEGÉLY, TÉMÁHOZ IGAZODÓ HOVER
+   ========================================================================== */
+
+/* 1. Alapállapot: Jól látható doboz halványszürke háttérrel és szegéllyel */
+.alert.alert-dismissible .btn-close {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    padding: 0 !important;
+    
+    /* Vékony szürke szegély és finom lekerekítés */
+    border: 1px solid rgba(0, 0, 0, 0.16) !important;
+    border-radius: var(--tblr-border-radius, 4px) !important;
+    
+    /* Halvány szürke háttér alapból */
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    
+    /* Éles, beágyazott X ikon */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231e293b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 14px 14px !important;
+    
+    opacity: 0.8 !important;
+    transition: all 0.15s ease-in-out !important;
+    box-sizing: border-box !important;
+}
+
+/* 2. Általános hover */
+.alert.alert-dismissible .btn-close:hover {
+    opacity: 1 !important;
+}
+
+/* --- 3. Témánkénti hover hatások (Világos mód) --- */
+
+/* Success (Zöld alert) */
+.alert-success .btn-close:hover {
+    border-color: #2fb344 !important;
+    background-color: rgba(47, 179, 68, 0.2) !important;
+}
+
+/* Danger / Error (Piros alert) */
+.alert-danger .btn-close:hover {
+    border-color: #d63939 !important;
+    background-color: rgba(214, 57, 57, 0.2) !important;
+}
+
+/* Warning (Sárgás / Narancs alert) */
+.alert-warning .btn-close:hover {
+    border-color: #f76707 !important;
+    background-color: rgba(247, 103, 7, 0.2) !important;
+	
+}
+
+/* Info (Kék alert) */
+.alert-info .btn-close:hover {
+    border-color: #4299e1 !important;
+    background-color: rgba(66, 153, 225, 0.2) !important;
+}
+
+
+/* --- 4. Sötét mód (Dark Mode) --- */
+
+[data-bs-theme="dark"] .alert.alert-dismissible .btn-close {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E") !important;
+}
+
+[data-bs-theme="dark"] .alert-success .btn-close:hover {
+    border-color: #2fb344 !important;
+    background-color: rgba(47, 179, 68, 0.3) !important;
+}
+
+[data-bs-theme="dark"] .alert-danger .btn-close:hover {
+    border-color: #d63939 !important;
+    background-color: rgba(214, 57, 57, 0.3) !important;
+}
+
+[data-bs-theme="dark"] .alert-warning .btn-close:hover {
+    border-color: #f76707 !important;
+    background-color: rgba(247, 103, 7, 0.3) !important;
+}
+
+[data-bs-theme="dark"] .alert-info .btn-close:hover {
+    border-color: #4299e1 !important;
+    background-color: rgba(66, 153, 225, 0.3) !important;
+}
+
+

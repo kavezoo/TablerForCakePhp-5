@@ -13,7 +13,7 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
 }
 ?>
 
-					<div class="alert alert-success ?> alert-dismissible" role="alert">
+					<div class="alert alert-success alert-dismissible" role="alert">
 						<div class="alert-icon">
 							<?= $this->Icon->outline("check") ?>
 						</div>

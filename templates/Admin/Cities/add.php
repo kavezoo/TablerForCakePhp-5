@@ -343,17 +343,17 @@ $this->assign('title', __('Város hozzáadása'));
         
     </div>
     
-    <div class="card-footer text-start">
-        <?= $this->Form->button(
-            $this->Icon->outline('cloud-upload') . ' ' . __('Save'),
-            [
-                'type' => 'submit',
-                'escapeTitle' => false,
-                'class' => 'btn btn-outline-success btn-animate-icon btn-animate-icon-rotate d-inline-flex align-items-center gap-2'
-            ]
-        ) ?>
-    </div>
-    
+	<div class="card-footer text-start">
+		<?= $this->Form->button(
+			$this->Icon->outline('cloud-upload', ['class' => 'icon btn-icon-adjust']) . ' ' . __('Save'),
+			[
+				'type' => 'submit',
+				'escapeTitle' => false,
+				'class' => 'btn btn-outline-secondary btn-animate-icon btn-animate-icon-rotate d-inline-flex align-items-center gap-2'
+			]
+		) ?>
+	</div>
+
     <?= $this->Form->end() ?>
 </div>
 
