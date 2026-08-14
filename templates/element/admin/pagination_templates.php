@@ -1,7 +1,7 @@
 <?php
 	$this->Paginator->setTemplates([
-		'sort' => '<a href="{{url}}" class="d-inline-flex align-items-center text-reset text-decoration-none">{{text}} <span class="sort-arrows d-inline-flex ms-1">' . $this->SystemIcon->sysIcon('sort-asc-desc') . '</span></a>',
-		'sortAsc' => '<a href="{{url}}" class="d-inline-flex align-items-center text-reset text-decoration-none active asc">{{text}} <span class="sort-arrows d-inline-flex ms-1">' . $this->SystemIcon->sysIcon('sort-asc-desc') . '</span></a>',
-		'sortDesc' => '<a href="{{url}}" class="d-inline-flex align-items-center text-reset text-decoration-none active desc">{{text}} <span class="sort-arrows d-inline-flex ms-1">' . $this->SystemIcon->sysIcon('sort-asc-desc') . '</span></a>',
+		'sort' => '<a href="{{url}}">{{text}}</a>',
+		'sortAsc' => '<a class="asc" href="{{url}}">{{text}} <span class="sort-arrows">' . $this->Icon->filled('triangle') . '</span></a>',
+		'sortDesc' => '<a class="desc" href="{{url}}">{{text}} <span class="sort-arrows">' . $this->Icon->filled('triangle-inverted') . '</span></a>',
 	]);
 ?>

@@ -283,49 +283,48 @@ td.actions .btn-icon svg,
    4. IKONOK & RENDEZŐ NYILAK (ICONS & PAGINATION)
    ========================================================================== */
 
-/* Paginator rendező nyilak */
+/* A link szövege és az ikon egymás mellett */
+th a {
+    display: inline-flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+/* Rendező háromszög konténere a szöveg mellett */
 .sort-arrows {
-    position: relative;
-    display: inline-block;
-    width: 14px;
-    height: 1em;
-    vertical-align: baseline;
-    margin-left: 4px;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: 6px !important;
+    vertical-align: middle !important;
 }
 
-.sort-arrows .arrow-up,
-.sort-arrows .arrow-down {
-    display: none;
-    position: absolute;
-    left: 0;
-    width: 14px;
-    height: 14px;
+/* A háromszög mérete és színe (közös) */
+.sort-arrows svg,
+.sort-arrows .icon {
+    width: 9px !important;
+    height: 9px !important;
+    display: block !important;
+    fill: currentColor !important;
 }
 
-a.asc .sort-arrows .arrow-up {
-    display: block;
-    top: -2px;
-    opacity: 1;
-    stroke-width: 4;
+/* FELFELÉ NYÍL (ASC) -> Picit lejjebb tolva */
+a.asc .sort-arrows svg,
+a.asc .sort-arrows .icon,
+th.asc .sort-arrows svg,
+th.asc .sort-arrows .icon {
+    transform: translateY(1px) !important;
+	color: green;
 }
 
-a.desc .sort-arrows .arrow-down {
-    display: block;
-    bottom: 0;
-    opacity: 1;
-    stroke-width: 4;
-}
-
-/* Nagyobb SVG méret modalokhoz */
-.icon-lg svg {
-    width: 100% !important;
-    height: 100% !important;
-}
-
-/* Vékonyabb stroke formokon */
-.stroke-thin svg {
-    stroke-width: 1;
-    opacity: 0.7;
+/* LEFELÉ NYÍL (DESC) -> Picit feljebb emelve */
+a.desc .sort-arrows svg,
+a.desc .sort-arrows .icon,
+th.desc .sort-arrows svg,
+th.desc .sort-arrows .icon {
+    transform: translateY(0px) !important;
+	color: red;
 }
 
 
@@ -537,40 +536,8 @@ input.form-control[readonly].flatpickr-input {
 
 
 /* ==========================================================================
-   8. FEJLÉC, NAVBAR & DROPDOWN MENÜK
+   8. FEJLÉC, NAVBAR & DROPDOWN MENÜK (ÁLTALÁNOS TULAJDONSÁGOK)
    ========================================================================== */
-
-/* Menüpontok alapállapota (ugrálásmentes, enyhén halványabb normál megjelenés) */
-.navbar-nav .nav-item .nav-link {
-    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
-    border-radius: var(--tblr-border-radius, 4px);
-    font-weight: 400 !important;
-    color: rgba(30, 41, 59, 0.7) !important;
-}
-
-.navbar-nav .nav-item .nav-link:hover {
-    background-color: rgba(0, 0, 0, 0.04) !important;
-    color: #000000 !important;
-}
-
-/* Alapértelmezett aktív állapot */
-.navbar-nav:not(.has-dropdown-open) .nav-item.active > .nav-link {
-    background-color: rgba(0, 0, 0, 0.06) !important;
-    color: #000000 !important;
-}
-
-/* Dropdown nyitott állapot */
-.navbar-nav .nav-item.dropdown .nav-link.show,
-.navbar-nav .nav-item.dropdown.show > .nav-link {
-    background-color: rgba(0, 0, 0, 0.06) !important;
-    color: #000000 !important;
-}
-
-/* Ha bármilyen dropdown megnyílik, az inaktívvá vált active menü visszahalkul */
-.navbar-nav.has-dropdown-open .nav-item.active:not(.show) > .nav-link {
-    background-color: transparent !important;
-    color: rgba(30, 41, 59, 0.7) !important;
-}
 
 /* Főmenü és almenük ikon vonalvastagsága */
 .navbar .nav-link-icon svg,
@@ -612,12 +579,30 @@ input.form-control[readonly].flatpickr-input {
     height: 1.15rem !important;
 }
 
+/* Keskeny képernyőn a többoszlopos dropdown egyoszlopossá válik */
+@media (max-width: 991.98px) {
+    .dropdown-menu-columns {
+        flex-direction: column !important;
+    }
+    
+    .dropdown-menu-column {
+        min-width: 100% !important;
+    }
+
+    .dropdown-menu .dropend .dropdown-menu {
+        position: static !important;
+        margin-left: 1rem !important;
+        box-shadow: none !important;
+        border-left: 2px solid var(--tblr-border-color, #e6e7e9) !important;
+    }
+}
+
 
 /* ==========================================================================
    9. IKONOK OPTIKAI FÜGGŐLEGES ÉS VÍZSZINTES POZICIONÁLÁSA
    ========================================================================== */
 
-/* 1. Főmenüpontok (Home, Interface, Plugins stb.) - gyári pozíció */
+/* 1. Főmenüpontok ikonjai */
 .navbar-nav .nav-link-icon svg,
 .navbar-nav .nav-link-icon .icon {
     position: static !important;
@@ -625,7 +610,7 @@ input.form-control[readonly].flatpickr-input {
     vertical-align: middle !important;
 }
 
-/* 2. Almenüpontok ikonjai (dropdown listák és profil menü) */
+/* 2. Almenüpontok ikonjai */
 .dropdown-menu .dropdown-item .icon,
 .dropdown-menu .dropdown-item svg {
     position: relative !important;
@@ -634,7 +619,7 @@ input.form-control[readonly].flatpickr-input {
     margin-bottom: 0 !important;
 }
 
-/* 3. Fejléc gombok ikonjai (Source code, Sponsor) */
+/* 3. Fejléc gombok ikonjai */
 .navbar-nav .btn .icon,
 .navbar-nav .btn svg {
     position: relative !important;
@@ -643,7 +628,7 @@ input.form-control[readonly].flatpickr-input {
     margin-bottom: 0 !important;
 }
 
-/* 4. Jobb felső fejléceszközök (Hold/Nap téma, Harang, Apps rács) */
+/* 4. Jobb felső fejléceszközök */
 .navbar-nav.order-md-last > .d-none .nav-link .icon,
 .navbar-nav.order-md-last > .d-none .nav-link svg,
 .navbar-nav.order-md-last .nav-item:not(.dropdown) > .nav-link > .icon,
@@ -672,7 +657,7 @@ input.form-control[readonly].flatpickr-input {
     left: -3px !important;
 }
 
-/* 7. Értesítési piros jelzőpötty rögzítése a harang jobb felső sarkára */
+/* 7. Értesítési piros jelzőpötty rögzítése */
 .navbar-nav.order-md-last .nav-link[aria-label="Show notifications"] {
     position: relative !important;
 }
@@ -724,19 +709,6 @@ input.form-control[readonly].flatpickr-input {
 [data-bs-theme="dark"] .input-group-flat:focus-within .form-control,
 [data-bs-theme="dark"] .input-group-flat:focus-within .input-group-text {
     border-color: #206bc4 !important;
-}
-
-/* Fejléc menü */
-[data-bs-theme="dark"] .navbar-nav .nav-item .nav-link {
-    color: rgba(255, 255, 255, 0.65) !important;
-    font-weight: 400 !important;
-}
-
-[data-bs-theme="dark"] .navbar-nav:not(.has-dropdown-open) .nav-item.active > .nav-link,
-[data-bs-theme="dark"] .navbar-nav .nav-item.dropdown .nav-link.show,
-[data-bs-theme="dark"] .navbar-nav .nav-item .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.08) !important;
-    color: #ffffff !important;
 }
 
 /* Flatpickr */
@@ -797,3 +769,126 @@ input.form-control[readonly].flatpickr-input {
     background-color: var(--tblr-bg-surface) !important;
 }
 
+
+/* ==========================================================================
+   11. NAVBAR ELHELYEZKEDÉS ÉS KILÓGÁSMENTESÍTÉS (RESPONSIVE)
+   ========================================================================== */
+
+/* Megakadályozza a vízszintes scrollt */
+.navbar-expand-md .navbar {
+    overflow-x: clip;
+}
+
+/* 1. Desktop nézet: A Home aláhúzása és szövege pontosan a táblázat bal széléhez igazodik */
+@media (min-width: 768px) {
+    #navbar-menu .navbar-nav:first-child {
+        margin-left: 0 !important;
+    }
+    
+    #navbar-menu .navbar-nav:last-child {
+        margin-right: 0 !important;
+    }
+
+    /* A Home (első) elem bal széle és a kék vonal nem lóg ki balra */
+    #navbar-menu .navbar-nav:first-child > .nav-item:first-child {
+        margin-left: 0 !important;
+    }
+    
+    #navbar-menu .navbar-nav:first-child > .nav-item:first-child > .nav-link {
+        padding-left: 0.75rem !important;
+        margin-left: 0 !important;
+    }
+}
+
+/* 2. Mobil nézet: Teljes szélességű, egyenletes kitöltés */
+@media (max-width: 767.98px) {
+    #navbar-menu .navbar-nav {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #navbar-menu .navbar-nav .nav-link {
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+        box-sizing: border-box !important;
+    }
+
+    #navbar-menu .navbar-nav .dropdown-toggle::after {
+        margin-left: auto !important;
+    }
+
+    #navbar-menu .dropdown-menu {
+        min-width: 100% !important;
+        width: 100% !important;
+    }
+}
+
+/* ==========================================================================
+   12. AKTÍV MENÜPONT ÉS HOVER MEGJELENÉS (LEGUTOLSÓ / LEGERŐSEBB SZABÁLYOK)
+   ========================================================================== */
+
+/* Felülírjuk a Tabler belső aktív háttér változóját és minden aktív állapotot */
+.navbar-nav {
+    --tblr-navbar-active-bg: transparent !important;
+}
+
+.navbar-nav .nav-item .nav-link {
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    border-radius: var(--tblr-border-radius, 4px) !important;
+    font-weight: 400 !important;
+    color: rgba(30, 41, 59, 0.7) !important;
+}
+
+/* Aktív menüpont: NINCS szürke háttér se nyitva, se zárva */
+.navbar-nav .nav-item,
+.navbar-nav .nav-item.active,
+.navbar-nav .nav-item.show,
+.navbar-nav .nav-link,
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-item.active > .nav-link,
+.navbar-nav .nav-item.dropdown .nav-link.show,
+.navbar-nav .nav-item.dropdown.show > .nav-link {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    color: var(--tblr-navbar-active-color, var(--tblr-body-color, #1e293b)) !important;
+}
+
+/* Aktív alsó kék indikátor vonal */
+.navbar-nav .nav-item.active > .nav-link::after,
+.navbar-nav .nav-link.active::after {
+    display: block !important;
+    background-color: var(--tblr-primary, #066fd1) !important;
+}
+
+/* KIZÁRÓLAG hover esetén finom szürke háttér */
+.navbar-nav .nav-link:hover {
+    background-color: rgba(var(--tblr-body-color-rgb, 30, 41, 59), 0.06) !important;
+    color: #000000 !important;
+}
+
+/* Sötét mód aktív és hover szabályai */
+[data-bs-theme="dark"] .navbar-nav .nav-item .nav-link {
+    color: rgba(255, 255, 255, 0.65) !important;
+}
+
+[data-bs-theme="dark"] .navbar-nav .nav-item,
+[data-bs-theme="dark"] .navbar-nav .nav-item.active,
+[data-bs-theme="dark"] .navbar-nav .nav-item.show,
+[data-bs-theme="dark"] .navbar-nav .nav-link,
+[data-bs-theme="dark"] .navbar-nav .nav-link.active,
+[data-bs-theme="dark"] .navbar-nav .nav-item.active > .nav-link,
+[data-bs-theme="dark"] .navbar-nav .nav-item.dropdown .nav-link.show {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+
+[data-bs-theme="dark"] .navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}

@@ -2,115 +2,123 @@
     <div class="collapse navbar-collapse" id="navbar-menu">
         <div class="navbar">
             <div class="container-xl">
-                <div class="row flex-column flex-md-row flex-fill align-items-center">
-                    <div class="col">
-                        <!-- BEGIN NAVBAR MENU -->
-                        <ul class="navbar-nav">
+                <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
+                    
+                    <!-- ========================================================= -->
+                    <!-- 1. BAL OLDALRA IGAZÍTOTT MENÜCSOPORT                     -->
+                    <!-- ========================================================= -->
+                    <ul class="navbar-nav">
+                        
+                        <!-- Home -->
+                        <li class="nav-item active">
+                            <?= $this->Html->link(
+                                '<span class="nav-link-icon d-md-none d-lg-inline-block">' . $this->Icon->outline('home') . '</span>' .
+                                '<span class="nav-link-title">' . __('Home') . '</span>',
+                                '/',
+                                ['escape' => false, 'class' => 'nav-link']
+                            ) ?>
+                        </li>
 
-                            <li class="nav-item active">
-                                <?= $this->Html->link(
-                                    '<span class="nav-link-icon d-md-none d-lg-inline-block">' . $this->Icon->outline('home') . '</span>' .
-                                    '<span class="nav-link-title">' . __('Home') . '</span>',
-                                    '/',
-                                    ['escape' => false, 'class' => 'nav-link']
-                                ) ?>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <?= $this->Icon->outline('package') ?>
-                                    </span>
-                                    <span class="nav-link-title"><?= __('Interface') ?></span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <div class="dropdown-menu-columns">
-                                        <div class="dropdown-menu-column">
-                                            <?= $this->Html->link(
-                                                __('Accordion') . ' <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">' . __('New') . '</span>',
-                                                ['controller' => 'Pages', 'action' => 'display', 'accordion'],
-                                                ['escape' => false, 'class' => 'dropdown-item']
-                                            ) ?>
-                                            <?= $this->Html->link(__('Alerts'), ['controller' => 'Pages', 'action' => 'display', 'alerts'], ['class' => 'dropdown-item']) ?>
-                                            <?= $this->Html->link(__('Alerts 2'), ['controller' => 'Pages', 'action' => 'display', 'alerts'], ['class' => 'dropdown-item']) ?>
-                                            <?= $this->Html->link(__('Alerts 3'), ['controller' => 'Pages', 'action' => 'display', 'alerts'], ['class' => 'dropdown-item']) ?>
-                                            <?= $this->Html->link(__('Alerts 4'), ['controller' => 'Pages', 'action' => 'display', 'alerts'], ['class' => 'dropdown-item']) ?>
-                                            
-                                            <div class="dropend">
-                                                <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                                    <?= __('Authentication') ?>
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <?= $this->Html->link(__('Sign in'), ['controller' => 'Users', 'action' => 'login'], ['class' => 'dropdown-item']) ?>
-                                                    <?= $this->Html->link(__('Sign up'), ['controller' => 'Users', 'action' => 'register'], ['class' => 'dropdown-item']) ?>
-                                                    <?= $this->Html->link(__('Forgot password'), ['controller' => 'Users', 'action' => 'forgotPassword'], ['class' => 'dropdown-item']) ?>
-                                                    <?= $this->Html->link(__('Terms of service'), ['controller' => 'Pages', 'action' => 'display', 'terms'], ['class' => 'dropdown-item']) ?>
-                                                </div>
+                        <!-- Interface (Teljes almenülista 2 oszlopban + Authentication al-dropdownnal) -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <?= $this->Icon->outline('package') ?>
+                                </span>
+                                <span class="nav-link-title"><?= __('Interface') ?></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-menu-columns">
+                                    <div class="dropdown-menu-column">
+                                        <?= $this->Html->link(
+                                            __('Accordion') . ' <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">' . __('New') . '</span>',
+                                            ['controller' => 'Pages', 'action' => 'display', 'accordion'],
+                                            ['escape' => false, 'class' => 'dropdown-item']
+                                        ) ?>
+                                        <?= $this->Html->link(__('Alerts'), ['controller' => 'Pages', 'action' => 'display', 'alerts'], ['class' => 'dropdown-item']) ?>
+                                        <?= $this->Html->link(__('Alerts 2'), ['controller' => 'Pages', 'action' => 'display', 'alerts'], ['class' => 'dropdown-item']) ?>
+                                        <?= $this->Html->link(__('Alerts 3'), ['controller' => 'Pages', 'action' => 'display', 'alerts'], ['class' => 'dropdown-item']) ?>
+                                        <?= $this->Html->link(__('Alerts 4'), ['controller' => 'Pages', 'action' => 'display', 'alerts'], ['class' => 'dropdown-item']) ?>
+                                        
+                                        <!-- Authentication al-dropdown -->
+                                        <div class="dropend">
+                                            <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                                <?= __('Authentication') ?>
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                <?= $this->Html->link(__('Sign in'), ['prefix' => 'Admin', 'controller' => 'Users', 'action' => 'login'], ['class' => 'dropdown-item']) ?>
+                                                <?= $this->Html->link(__('Sign up'), ['prefix' => 'Admin', 'controller' => 'Users', 'action' => 'register'], ['class' => 'dropdown-item']) ?>
+                                                <?= $this->Html->link(__('Forgot password'), ['prefix' => 'Admin', 'controller' => 'Users', 'action' => 'forgotPassword'], ['class' => 'dropdown-item']) ?>
+                                                <?= $this->Html->link(__('Terms of service'), ['controller' => 'Pages', 'action' => 'display', 'terms'], ['class' => 'dropdown-item']) ?>
                                             </div>
                                         </div>
-                                        <div class="dropdown-menu-column">
-                                            <?= $this->Html->link(
-                                                __('Segmented control') . ' <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">' . __('New') . '</span>',
-                                                ['controller' => 'Pages', 'action' => 'display', 'segmented-control'],
-                                                ['escape' => false, 'class' => 'dropdown-item']
-                                            ) ?>
-                                            <?= $this->Html->link(__('Social icons'), ['controller' => 'Pages', 'action' => 'display', 'social-icons'], ['class' => 'dropdown-item']) ?>
-                                        </div>
+                                    </div>
+                                    <div class="dropdown-menu-column">
+                                        <?= $this->Html->link(
+                                            __('Segmented control') . ' <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">' . __('New') . '</span>',
+                                            ['controller' => 'Pages', 'action' => 'display', 'segmented-control'],
+                                            ['escape' => false, 'class' => 'dropdown-item']
+                                        ) ?>
+                                        <?= $this->Html->link(__('Social icons'), ['controller' => 'Pages', 'action' => 'display', 'social-icons'], ['class' => 'dropdown-item']) ?>
                                     </div>
                                 </div>
-                            </li>
+                            </div>
+                        </li>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-plugins" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <?= $this->Icon->outline('puzzle') ?>
-                                    </span>
-                                    <span class="nav-link-title"><?= __('Plugins') ?></span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <?= $this->Html->link(__('Charts'), ['controller' => 'Plugins', 'action' => 'charts'], ['class' => 'dropdown-item']) ?>
-                                    <?= $this->Html->link(__('Color picker'), ['controller' => 'Plugins', 'action' => 'colorpicker'], ['class' => 'dropdown-item']) ?>
-                                    <?= $this->Html->link(__('Datatables'), ['controller' => 'Plugins', 'action' => 'datatables'], ['class' => 'dropdown-item']) ?>
-                                    <?= $this->Html->link(__('Dropzone'), ['controller' => 'Plugins', 'action' => 'dropzone'], ['class' => 'dropdown-item']) ?>
-                                    <?= $this->Html->link(__('Fullcalendar'), ['controller' => 'Plugins', 'action' => 'fullcalendar'], ['class' => 'dropdown-item']) ?>
-                                </div>
-                            </li>
-                        </ul>
-                        <!-- END NAVBAR MENU -->
-                    </div>
+                        <!-- Plugins (Teljes almenülista) -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#navbar-plugins" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <?= $this->Icon->outline('puzzle') ?>
+                                </span>
+                                <span class="nav-link-title"><?= __('Plugins') ?></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <?= $this->Html->link(__('Charts'), ['controller' => 'Plugins', 'action' => 'charts'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Color picker'), ['controller' => 'Plugins', 'action' => 'colorpicker'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Datatables'), ['controller' => 'Plugins', 'action' => 'datatables'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Dropzone'), ['controller' => 'Plugins', 'action' => 'dropzone'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Fullcalendar'), ['controller' => 'Plugins', 'action' => 'fullcalendar'], ['class' => 'dropdown-item']) ?>
+                            </div>
+                        </li>
+                    </ul>
 
-                    <div class="col col-md-auto">
-                        <ul class="navbar-nav">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <?= $this->Icon->outline('lifebuoy') ?>
-                                    </span>
-                                    <span class="nav-link-title"><?= __('Help') ?></span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <?= $this->Html->link(__('Documentation'), 'https://tabler.io/docs', ['class' => 'dropdown-item', 'target' => '_blank', 'rel' => 'noopener']) ?>
-                                    <?= $this->Html->link(__('Changelog'), ['controller' => 'Pages', 'action' => 'display', 'changelog'], ['class' => 'dropdown-item']) ?>
-                                    <?= $this->Html->link(__('Source code'), 'https://github.com/tabler/tabler', ['class' => 'dropdown-item', 'target' => '_blank', 'rel' => 'noopener']) ?>
-                                    <?= $this->Html->link(
-                                        $this->Icon->outline('heart', ['class' => 'icon icon-inline me-1']) . __('Sponsor project!'),
-                                        'https://github.com/sponsors/codecalm',
-                                        ['escape' => false, 'class' => 'dropdown-item text-pink', 'target' => '_blank', 'rel' => 'noopener']
-                                    ) ?>
-                                </div>
-                            </li>
+                    <!-- ========================================================= -->
+                    <!-- 2. JOBB OLDALRA IGAZÍTOTT MENÜCSOPORT (Help + Settings)   -->
+                    <!-- ========================================================= -->
+                    <ul class="navbar-nav ms-md-auto">
+                        <!-- Help -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <?= $this->Icon->outline('lifebuoy') ?>
+                                </span>
+                                <span class="nav-link-title"><?= __('Help') ?></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <?= $this->Html->link(__('Documentation'), 'https://tabler.io/docs', ['class' => 'dropdown-item', 'target' => '_blank', 'rel' => 'noopener']) ?>
+                                <?= $this->Html->link(__('Changelog'), ['controller' => 'Pages', 'action' => 'display', 'changelog'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Source code'), 'https://github.com/tabler/tabler', ['class' => 'dropdown-item', 'target' => '_blank', 'rel' => 'noopener']) ?>
+                                <?= $this->Html->link(
+                                    $this->Icon->outline('heart', ['class' => 'icon icon-inline me-1']) . __('Sponsor project!'),
+                                    'https://github.com/sponsors/codecalm',
+                                    ['escape' => false, 'class' => 'dropdown-item text-pink', 'target' => '_blank', 'rel' => 'noopener']
+                                ) ?>
+                            </div>
+                        </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings">
-                                    <span class="badge badge-sm bg-red text-red-fg"><?= __('New') ?></span>
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <?= $this->Icon->outline('settings') ?>
-                                    </span>
-                                    <span class="nav-link-title"><?= __('Theme Settings') ?></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                        <!-- Theme Settings -->
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <?= $this->Icon->outline('settings') ?>
+                                </span>
+                                <span class="nav-link-title"><?= __('Theme Settings') ?></span>
+                                <span class="badge badge-sm bg-red text-red-fg ms-2"><?= __('New') ?></span>
+                            </a>
+                        </li>
+                    </ul>
+
                 </div>
             </div>
         </div>
