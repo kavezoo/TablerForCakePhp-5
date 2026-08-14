@@ -160,7 +160,11 @@ class CitiesController extends AppController
         $city = $this->Cities->get($id, contain: ['Countries', 'Counties']);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            $city = $this->Cities->patchEntity($city, $this->getRequest()->getData());
+			$data = $this->getRequest()->getData();
+			//dd($data);
+            $city = $this->Cities->patchEntity($city, $data);
+			//dd($city->toArray());
+			//dd($city->getErrors());
             if ($this->Cities->save($city)) {
                 $this->Flash->success(__('A település adatai sikeresen mentve.'));
 

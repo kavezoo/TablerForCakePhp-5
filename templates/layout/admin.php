@@ -5,7 +5,7 @@
  */
 ?>
 <!doctype html>
-<html lang="hu">
+<html lang="hu"> <?php // data-bs-theme="dark"> ?>
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
