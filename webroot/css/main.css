@@ -1084,3 +1084,17 @@ a#btn-clear-search:hover {
     background-color: rgba(214, 57, 57, 0.12) !important;
 }
 
+.search-box-left-side{
+	border-right: 0px; 
+	padding-left: 12px; 
+	padding-right: 0px;
+}
+.search-clear-icon{
+	position: relative; 
+	z-index: 10; 
+	border-left: 0;	
+}
+
+.search-box-right-side {
+	border-left: 0px !important;
+}

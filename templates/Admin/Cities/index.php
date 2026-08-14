@@ -80,7 +80,7 @@ $highlight = function (?string $text) use ($search): string {
 					<?php endif; ?>
 
 					<div class="input-group input-group-flat search-input-group w-100 position-relative">
-						<span class="input-group-text" style="border-right: 0px; padding-left: 12px; padding-right: 0px;">
+						<span class="input-group-text search-box-left-side">
 							<?= $this->SystemIcon->sysIcon('search') ?>
 						</span>
 						<input 
@@ -96,17 +96,20 @@ $highlight = function (?string $text) use ($search): string {
 						<?php if (!empty($search)): ?>
 						
 							<!-- Keresés törlése gomb (X) -->
-							<span class="input-group-text pe-2 py-0 d-flex align-items-center" style="position: relative; z-index: 10; border-left: 0;">
+							<span class="input-group-text pe-2 py-0 d-flex align-items-center">
 								<a href="<?= $this->Url->build(['prefix' => 'Admin', 'controller' => 'Cities', 'action' => 'index', '?' => ['clear' => 'search']]) ?>" 
-								   id="btn-clear-search"
-								   class="btn-search-clear text-muted text-decoration-none" 
-								   title="<?= __('Keresés törlése és összes rekord mutatása') ?>">
+									id="btn-clear-search"
+									class="btn-search-clear text-muted text-decoration-none" 
+									title="<?= __('Keresés törlése és összes rekord mutatása') ?>"
+									data-bs-toggle = 'tooltip'
+									data-bs-html = 'true'
+									data-bs-placement = 'top'>
 									<?= $this->Icon->outline('x') ?>
 								</a>
 							</span>
 						<?php else: ?>
 						
-							<span class="input-group-text pe-2" style="border-left: 0px;">
+							<span class="input-group-text pe-2" style="border-left-width: 0px; border-left-style: none;">
 								<kbd id="search-shortcut-hint" class="search-kbd-badge">ctrl + K</kbd>
 							</span>
 						<?php endif; ?>						
