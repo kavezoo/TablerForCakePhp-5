@@ -1087,3 +1087,142 @@ input.form-control[readonly].flatpickr-input {
     border-color: #4299e1 !important;
     background-color: rgba(66, 153, 225, 0.3) !important;
 }
+
+
+
+
+
+.icon-link-subtle {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    top: -3px;                 /* Felfelé emeli a szöveghez képest (állítható -2px és -5px között) */
+    margin-left: 0px;          /* Távolság a szó végétől */
+    color: #ced4da;            /* Nagyon világos szürke */
+    line-height: 1;
+}
+
+.icon-link-subtle svg {
+    width: 0.7em !important;
+    height: 0.7em !important;
+    stroke-width: 2 !important;
+    stroke: currentColor;
+}
+
+.logo{
+	height: 20px;
+}
+
+
+/* --- TomSelect Kontrasztos Multi-select Címkék (Tags) --- */
+
+/* 1. A kiválasztott elem konténere (a kék doboz) */
+.ts-wrapper.multi .ts-control > div {
+    /* Színátmenet kikapcsolása, sima egyszínű háttér (Tabler primary kék) */
+    background-image: none !important;
+    background-color: #206bc4 !important; /* Erős Tabler kék */
+    
+    /* Szöveg színe: tiszta fehér a maximális kontrasztért */
+    color: #ffffff !important;
+    
+    /* Keret eltávolítása vagy sötétítése a flat hatáshoz */
+    border: none !important;
+    
+    /* Nagyobb padding (térköz) a tétel belsejében */
+    padding: 4px 8px !important; /* függőleges, vízszintes */
+    
+    /* Lekerekítés finomhangolása (opcionális) */
+    border-radius: 4px !important;
+    
+    /* Árnyék eltávolítása (flat dizájn) */
+    box-shadow: none !important;
+    
+    /* Igazítás */
+    display: inline-flex;
+    align-items: center;
+}
+
+/* 2. Az 'X' (törlés) gomb stílusa a dobozon belül */
+.ts-wrapper.multi .ts-control > div .remove {
+    color: #ffffff !important; /* Fehér X */
+    opacity: 0.8;
+    border-left: 1px solid rgba(255, 255, 255, 0.3) !important; /* Fehér elválasztó */
+    margin-left: 8px !important;
+    padding-left: 6px !important;
+    text-decoration: none !important;
+    font-weight: bold;
+}
+
+/* 3. 'X' gomb hover állapota */
+.ts-wrapper.multi .ts-control > div .remove:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 4. Térköz a beviteli kurzor és a címkék között */
+.ts-wrapper.multi .ts-control > input {
+    margin-left: 8px !important;
+}
+
+
+/* Eltávolítja a színátmenetet és egyszínű hátteret, szegélyt állít be */
+.ts-control {
+    background-image: none !important;
+    background-color: #ffffff !important;
+    border: 1px solid #d1d5db;
+    box-shadow: none !important;
+}
+
+/* Fókusz állapot (amikor aktív a mező) */
+.ts-control.focus {
+    background-image: none !important;
+    background-color: #ffffff !important;
+    border-color: #3b82f6;
+    box-shadow: none !important;
+}
+
+/* Lenyíló menü és elemek átmeneteinek törlése */
+.ts-dropdown,
+.ts-dropdown .option,
+.ts-dropdown .active {
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+.ts-dropdown .active {
+    background-color: #f3f4f6 !important;
+    color: #111827;
+}
+
+/* Kizárólag a multi-selectben lévő kiválasztott elemek (tagek) */
+.ts-wrapper.multi .ts-control > .item,
+.ts-wrapper.plugin-remove_button .ts-control > .item {
+    background-color: #777 !important; /* Sötétszürke háttér */
+    background-image: none !important;
+    color: #ffffff !important;
+    border: 1px solid #1f2937 !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+/* Az 'X' eltávolító gomb és az elválasztó vonal */
+.ts-wrapper.multi .ts-control > .item .remove,
+.ts-wrapper.plugin-remove_button .ts-control > .item .remove {
+    color: #d1d5db !important;
+    border-left: 1px solid #4b5563 !important;
+    text-shadow: none !important;
+}
+
+/* Az 'X' gomb hover hatása */
+.ts-wrapper.multi .ts-control > .item .remove:hover,
+.ts-wrapper.plugin-remove_button .ts-control > .item .remove:hover {
+    background-color: #111827 !important;
+    color: #ffffff !important;
+}
+
+/* Kijelölt állapotú tag (pl. billentyűzetes törlés előtt) */
+.ts-wrapper.multi .ts-control > .item.active,
+.ts-wrapper.plugin-remove_button .ts-control > .item.active {
+    background-color: #1f2937 !important;
+    color: #ffffff !important;
+}

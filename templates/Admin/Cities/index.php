@@ -64,7 +64,7 @@ $highlight = function (?string $text) use ($search): string {
             <!-- Kereső mező -->
             <div class="input-group input-group-flat search-input-group w-100 w-md-auto">
                 <span class="input-group-text">
-                    <?= $this->SystemIcon->sysIcon('search') ?>
+                    <?= $this->Icon->outline('search') ?>
                 </span>
                 <input id="advanced-table-search" type="text" class="form-control" placeholder="<?= __('Search...') ?>" autocomplete="off">
                 <span class="input-group-text pe-2">
@@ -84,7 +84,7 @@ $highlight = function (?string $text) use ($search): string {
 
 					<div class="input-group input-group-flat search-input-group w-100 position-relative">
 						<span class="input-group-text search-box-left-side">
-							<?= $this->SystemIcon->sysIcon('search') ?>
+							<?= $this->Icon->outline('search') ?>
 						</span>
 						<input 
 							id="advanced-table-search" 
@@ -198,7 +198,7 @@ $highlight = function (?string $text) use ($search): string {
                             <!-- Megye kapcsolat -->
                             <td>
                                 <?= $city->hasValue('county') ? $this->Html->link(
-                                    h($city->county->name) . ' <span class="text-muted d-inline-block" style="transform: translateY(4px);">' . $this->SystemIcon->sysIcon('link') . '</span>',
+									h($city->county->name) . '<span class="icon-link-subtle">' . $this->Icon->outline('link') . '</span>',
                                     ['controller' => 'Counties', 'action' => 'view', $city->county->id],
                                     [
                                         'escape' => false,
@@ -214,7 +214,7 @@ $highlight = function (?string $text) use ($search): string {
                             <!-- Ország kapcsolat -->
                             <td>
                                 <?= $city->hasValue('country') ? $this->Html->link(
-                                    h($city->country->name) . ' <span class="text-muted d-inline-block" style="transform: translateY(4px);">' . $this->SystemIcon->sysIcon('link') . '</span>',
+									h($city->country->name) . '<span class="icon-link-subtle">' . $this->Icon->outline('link') . '</span>',
                                     ['controller' => 'Countries', 'action' => 'view', $city->country->id],
                                     [
                                         'escape' => false,

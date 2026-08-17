@@ -137,45 +137,135 @@ $this->assign('title', __('Város hozzáadása'));
                             ],
                         ]) ?>
                     </div>
-                </div>
 
-                <div class="row g-3 mb-3">
-                    <div class="col-12">
-                        <label class="form-label"><?= __('Select') ?></label>
-                        <div>
-                            <select class="form-select">
-                                <option><?= __('Option 1') ?></option>
-                                <optgroup label="Optgroup 1">
-                                    <option><?= __('Option 1') ?></option>
-                                    <option><?= __('Option 2') ?></option>
-                                </optgroup>
-                                <optgroup label="Optgroup 2">
-                                    <option><?= __('Option 1') ?></option>
-                                    <option><?= __('Option 2') ?></option>
-                                </optgroup>
-                                <optgroup label="Optgroup 3">
-                                    <option><?= __('Option 1') ?></option>
-                                    <option><?= __('Option 2') ?></option>
-                                </optgroup>
-                                <option><?= __('Option 3') ?></option>
-                                <option><?= __('Option 4') ?></option>
-                            </select>
-                        </div>
-                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
                 </div>
 
                 <div class="row g-3">
-                    <div class="col-12">
-                        <label class="form-label"><?= __('Leírás / Tartalom') ?></label>
-                        <textarea id="editor" name="body">Hello, <b>Tabler</b>!</textarea>
+                    <div class="col-md-6">
+                        <?= $this->Form->control('name', [
+                            'label' => ['text' => __('Name'), 'class' => 'form-label'],
+                            'class' => 'form-control',
+                            'required' => true
+                        ]) ?>
                     </div>
+                    <div class="col-md-3">
+                        <?= $this->Form->control('zip', [
+                            'label' => ['text' => __('Zip'), 'class' => 'form-label'],
+                            'class' => 'form-control'
+                        ]) ?>
+                    </div>
+                    <div class="col-md-3">
+                        <?= $this->Form->control('shortname', [
+                            'label' => ['text' => __('Short name'), 'class' => 'form-label'],
+                            'class' => 'form-control',
+                            'required' => true
+                        ]) ?>
+                    </div>
+
+                    <div class="col-md-6">
+						<?= $this->Form->control('country_id', [
+							'options' => $countries,
+							'label' => ['text' => __('Country'), 'class' => 'form-label'],
+							'class' => 'tom-select', // form-select nélkül!
+							'empty' => __('Válasszon országot...'),
+						]) ?>
+                    </div>
+
+                    <div class="col-md-6">
+                        <?= $this->Form->control('county_id', [
+                            'options' => $counties,
+                            'label' => ['text' => __('County'), 'class' => 'form-label'],
+                            'class' => 'tom-select',
+                            'empty' => __('Válasszon megyét...')
+                        ]) ?>
+                    </div>
+
                 </div>
+
+<?php /*
+				<!-- TEXT -->
+				<div class="row g-3">
+					<div class="col-12">
+						<?= $this->Form->control('description', [
+							'type' => 'textarea',
+							'id' => 'editor',
+							'label' => ['class' => 'form-label', 'text' => __('Leírás / Tartalom')],
+							'class' => 'form-control',
+							'rows' => 5,
+
+						]) ?>
+					</div>
+				</div>
+					<div class="col-12">
+*/ ?>
+
+                <div class="row g-3 mt-1">
+                    <div class="col-md-6">
+						<?= $this->Form->control('tags', [
+							'type' => 'select',
+							'multiple' => true,
+							'label' => ['text' => __('Tags input'), 'class' => 'form-label'],
+							'id' => 'select-tags',
+							'class' => 'tom-select multi-select',
+							'options' => [
+								'JavaScript' => 'JavaScript',
+								'jQuery' => 'jQuery',
+								'Ruby' => 'Ruby',
+								'HTML' => 'HTML',
+								'Bootstrap' => 'Bootstrap',
+								'CSS' => 'CSS',
+								'Python' => 'Python',
+							],
+							'empty' => false,
+						]) ?>
+					</div>
+				</div>
 
             </div>
 
             <!-- 2. További adatok fül tartalma -->
             <div class="tab-pane fade" id="tabs-profile-1" role="tabpanel">                
                 <div class="row g-3">
+
+					<div class="row g-3 mb-3">
+						<div class="col-12">
+							<label class="form-label"><?= __('Select') ?></label>
+							<div>
+								<select class="form-select">
+									<option><?= __('Option 1') ?></option>
+									<optgroup label="Optgroup 1">
+										<option><?= __('Option 1') ?></option>
+										<option><?= __('Option 2') ?></option>
+									</optgroup>
+									<optgroup label="Optgroup 2">
+										<option><?= __('Option 1') ?></option>
+										<option><?= __('Option 2') ?></option>
+									</optgroup>
+									<optgroup label="Optgroup 3">
+										<option><?= __('Option 1') ?></option>
+										<option><?= __('Option 2') ?></option>
+									</optgroup>
+									<option><?= __('Option 3') ?></option>
+									<option><?= __('Option 4') ?></option>
+								</select>
+							</div>
+						</div>
+					</div>
+							
+
                     
                     <div class="col-12">
                         <?= $this->Form->control('phone', [
@@ -231,63 +321,7 @@ $this->assign('title', __('Város hozzáadása'));
                         </div>
                     </div>
 
-                    <div class="col-12">
-                        <?= $this->Form->control('tags', [
-                            'type' => 'select',
-                            'multiple' => true,
-                            'label' => ['text' => __('Tags input'), 'class' => 'form-label'],
-                            'id' => 'select-tags',
-                            'class' => 'form-select',
-                            'options' => [
-                                'JavaScript' => 'JavaScript',
-                                'jQuery' => 'jQuery',
-                                'Ruby' => 'Ruby',
-                                'HTML' => 'HTML',
-                                'Bootstrap' => 'Bootstrap',
-                                'CSS' => 'CSS',
-                                'Python' => 'Python',
-                            ],
-                            'empty' => false,
-                        ]) ?>
-                    </div>
 
-                    <div class="col-md-6">
-                        <?= $this->Form->control('name', [
-                            'label' => ['text' => __('Name'), 'class' => 'form-label'],
-                            'class' => 'form-control',
-                            'required' => true
-                        ]) ?>
-                    </div>
-                    <div class="col-md-3">
-                        <?= $this->Form->control('zip', [
-                            'label' => ['text' => __('Zip'), 'class' => 'form-label'],
-                            'class' => 'form-control'
-                        ]) ?>
-                    </div>
-                    <div class="col-md-3">
-                        <?= $this->Form->control('shortname', [
-                            'label' => ['text' => __('Short name'), 'class' => 'form-label'],
-                            'class' => 'form-control',
-                            'required' => true
-                        ]) ?>
-                    </div>
-
-                    <div class="col-md-6">
-                        <?= $this->Form->control('country_id', [
-                            'options' => $countries,
-                            'label' => ['text' => __('Country'), 'class' => 'form-label'],
-                            'class' => 'form-select tom-select',
-                            'empty' => __('Válasszon országot...')
-                        ]) ?>
-                    </div>
-                    <div class="col-md-6">
-                        <?= $this->Form->control('county_id', [
-                            'options' => $counties,
-                            'label' => ['text' => __('County'), 'class' => 'form-label'],
-                            'class' => 'form-select tom-select',
-                            'empty' => __('Válasszon megyét...')
-                        ]) ?>
-                    </div>
 
                     <div class="col-12">
                         <label class="form-label"><?= __('Bio') ?></label>
@@ -363,16 +397,21 @@ $this->assign('title', __('Város hozzáadása'));
 
 <?php
     $this->Html->css([
-        '/vendor/tom-select/tom-select.default.min',
-        '/vendor/flatpickr/dist/flatpickr.min',
+        'KvAdmin./vendor/tom-select/css/tom-select.default.min',
+        //'KvAdmin./vendor/tom-select/css/tom-select.bootstrap5',
+        'KvAdmin./vendor/flatpickr/dist/flatpickr.min',
     ], ['block' => 'css']);
     
     $this->Html->script([
-        '/vendor/tom-select/tom-select.complete',
-        '/vendor/imask/dist/imask.min',
-        '/vendor/hugerte/hugerte.min',
-        '/vendor/flatpickr/dist/flatpickr.min',
-        '/vendor/flatpickr/dist/l10n/hu',
+        'KvAdmin./vendor/tom-select/js/tom-select.complete',
+        'KvAdmin./vendor/tom-select/js/plugins/remove_button',
+        'KvAdmin./vendor/tom-select/js/plugins/checkbox_options',
+        'KvAdmin./vendor/tom-select/js/plugins/caret_position',
+        'KvAdmin./vendor/tom-select/js/plugins/restore_on_backspace',
+        'KvAdmin./vendor/imask/dist/imask.min',
+        'KvAdmin./vendor/hugerte/hugerte.min',
+        'KvAdmin./vendor/flatpickr/dist/flatpickr.min',
+        'KvAdmin./vendor/flatpickr/dist/l10n/hu',
     ], ['block' => 'script']);
 ?>
 
@@ -387,11 +426,90 @@ $this->Html->scriptBlock(
             IMask(phoneElem, { mask: '+{36} 00/000-00-00' });
         }
 
+
+//        // 2. TomSelect
+//        const countryElem = document.getElementById('country-id');
+//        if (countryElem && typeof TomSelect !== 'undefined') {
+////            new TomSelect(countryElem, { 
+////				maxOptions: 5
+////			});
+//        }
+
+
+
+
+
+
+		//document.querySelectorAll('.tom-select').forEach(function (selectElement) {
+		//	if (!selectElement.tomselect) {
+		//		new TomSelect(selectElement, {
+		//			copyClassesToDropdown: false,
+		//			dropdownParent: 'body',
+		//			maxOptions: null,
+		//			create: false,
+		//		});
+		//	}
+		//});
+
+
+		//new TomSelect('#ex-input-autogrow',{
+		//	plugins: ['input_autogrow'],
+		//});
+
+
         // 2. TomSelect Tag-ek
-        const tagsElem = document.getElementById('select-tags');
-        if (tagsElem && typeof TomSelect !== 'undefined') {
-            new TomSelect(tagsElem, { maxItems: 3 });
-        }
+		// Csak azokat jelöljük ki, amik .tom-select-ek, de NEM .multi-select-ek
+
+		const singleSelects = document.querySelectorAll('.tom-select:not(.multi-select)');
+		singleSelects.forEach(function (element) {
+			new TomSelect(element, {
+				plugins: ['caret_position','input_autogrow'],
+			});
+		});
+		
+		// és a .multi-select-ek is
+		document.querySelectorAll('.tom-select.multi-select').forEach(function (element) {
+			if (!element.tomselect) {
+				new TomSelect(element, {
+					plugins: {
+						// Már meglévő pluginok:
+						'remove_button': {
+							title: 'Eltávolítás',
+						},
+						'clear_button': {
+							title: 'Összes törlése',
+						},
+						
+						// AZ ÚJ PLUGIN: automatikus méretezés
+						'input_autogrow': {}
+					},
+					persist: false,
+					create: false,                  						// Sima selectnél ritkán engedünk új elemet
+					
+					// Biztosítjuk, hogy multi-select módban inicializálódjon
+					mode: 'multi', 
+					
+					// Placeholder szöveg, ha üres
+					placeholder: 'Válasszon vagy írjon be...',
+					
+					// Kontraszt javítása miatt kikapcsoljuk az alapértelmezett 
+					// Bootstrap/Tabler osztályok másolását a dropdown-ra
+					copyClassesToDropdown: false,
+				});
+			}
+		});
+
+
+
+
+
+
+
+
+
+		
+		
+
 
         // 3. HugeRTE szerkesztő
         if (document.getElementById('editor') && typeof hugerte !== 'undefined') {
@@ -406,6 +524,7 @@ $this->Html->scriptBlock(
                 toolbar: 'undo redo | bold italic underline | forecolor backcolor | alignright alignjustify | bullist numlist outdent indent | link image | removeformat | code'
             });
         }
+
 
         // 4. Flatpickr Dátum & Idő
         if (typeof flatpickr !== 'undefined') {

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace KvAdmin\View\Helper; // <-- NEM App\View\Helper!
 
+use Cake\Core\Plugin;
 use Cake\View\Helper;
 use Cake\View\StringTemplateTrait;
 
@@ -43,6 +44,20 @@ class IconHelper extends Helper
         // A pontos fájlelérési út a webroot-on belül
         $basePath = rtrim((string)$this->getConfig('basePath'), '/');
         $filePath = WWW_ROOT . $basePath . DS . $type . DS . $name . '.svg';
+
+		//if($name == "logo"){
+		//	dd($basePath);			
+		//}
+
+		if (!file_exists($filePath)) {
+			// A plugin belső webroot mappájának fizikai útvonala:
+			$pluginPath = Plugin::path('KvAdmin');
+			$filePath = $pluginPath . 'webroot' . DS . 'icons' . DS . $type . DS . $name . '.svg';
+		}
+
+		if (file_exists($filePath)) {
+			$svgContent = file_get_contents($filePath);
+		}
 
         $svgContent = $this->_getSvgContent($filePath);
 

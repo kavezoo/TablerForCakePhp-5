@@ -236,7 +236,7 @@ ServerRequest::addDetector('tablet', function ($request) {
 // \Cake\I18n\Date::setToStringFormat('dd.MM.yyyy');
 // \Cake\I18n\Time::setToStringFormat('dd.MM.yyyy HH:mm');
 
-Configure::write('Bake.theme', 'kvAdmin');
+Configure::write('Bake.theme', 'KvAdmin');
 
 Configure::write('Session', [
     'defaults' => 'php',

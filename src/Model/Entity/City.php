@@ -57,5 +57,6 @@ class City extends Entity
         'datumido' => true,
         'datum' => true,
         'ido' => true,
+		'description' => true
     ];
 }

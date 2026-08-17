@@ -26,6 +26,9 @@ class LocalizedDataBehavior extends Behavior
     {
         $locale = $this->getConfig('locale') ?? I18n::getLocale();
         $schema = $this->_table->getSchema();
+		//debug($data);
+		//debug($schema);
+		//dd($locale);
 
         foreach ($data as $field => $value) {
             // Csak kitöltött string értékeket vizsgálunk
@@ -62,6 +65,11 @@ class LocalizedDataBehavior extends Behavior
         if (preg_match('/^\d{4}-\d{2}-\d{2}( \d{2}:\d{2}(:\d{2})?)?$/', $value)) {
             return $value;
         }
+
+		//debug($value);
+		//debug($type);
+		//dd($locale);
+
         // 1. Próbálkozás a PHP IntlDateFormatter-rel az adott locale szerint
         $formatters = [
             new IntlDateFormatter($locale, IntlDateFormatter::SHORT, IntlDateFormatter::SHORT),
@@ -101,7 +109,7 @@ class LocalizedDataBehavior extends Behavior
                 return $type === 'date' ? $d->format('Y-m-d') : $d->format($targetFormat);
             }
         }
-dd($value);
+
         return $value;
     }
 

@@ -158,14 +158,16 @@ class CitiesController extends AppController
         $session->write('ScrollTo.city_id', (int)$id);
 
         $city = $this->Cities->get($id, contain: ['Countries', 'Counties']);
+		//dd($city->toArray());
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
 			$data = $this->getRequest()->getData();
-			//dd($data);
+			//debug($data);
             $city = $this->Cities->patchEntity($city, $data);
 			//dd($city->toArray());
 			//dd($city->getErrors());
             if ($this->Cities->save($city)) {
+				//dd($city->toArray());
                 $this->Flash->success(__('A település adatai sikeresen mentve.'));
 
                 $redirectParams = $session->read('Paging.Cities.params') ?? [];

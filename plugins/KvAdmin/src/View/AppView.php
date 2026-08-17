@@ -38,8 +38,8 @@ class AppView extends View
     public function initialize(): void
     {
 		parent::initialize();
-		
-		$this->loadHelper('SystemIcon');
-		$this->loadHelper('Icon');
+
+		//$this->loadHelper('KvAdmin.SystemIcon');
+		//$this->loadHelper('KvAdmin.Icon');
     }
 }
