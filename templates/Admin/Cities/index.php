@@ -8,6 +8,9 @@
  */
 use Cake\I18n\I18n;
 
+$showCreated = false;
+$showModified = false;
+
 $this->assign('title', __('Cities'));
 $this->element('admin/pagination_templates');
 
@@ -143,11 +146,30 @@ $highlight = function (?string $text) use ($search): string {
                     <th class="string link"><?= $this->Paginator->sort('county_id', __('Megye')) ?></th>
                     <th class="string link"><?= $this->Paginator->sort('country_id', __('Ország')) ?></th>
                     <th class="integer count"><?= $this->Paginator->sort('club_count', __('Clubs')) ?></th>
+                    
+					<th class="datetime"><?= $this->Paginator->sort('datumido') ?></th>
+					<th class="date"><?= $this->Paginator->sort('datum') ?></th>
+					<th class="time"><?= $this->Paginator->sort('ido') ?></th>
+					
                     <th class="boolean"><?= $this->Paginator->sort('is_active', __('Aktív')) ?></th>
+<?php if($showCreated || $showModified){ ?>
+
                     <th class="datetime">
-                        <?= $this->Paginator->sort('created', __('Létrehozva')) ?><br>
+<?php 	if($showCreated){ ?>
+
+                        <?= $this->Paginator->sort('created', __('Létrehozva')) ?>
+<?php 	} ?>
+<?php if($showCreated && $showModified){ ?>
+						<br>
+<?php 	} ?>
+<?php 	if($showModified){ ?>
+
                         <?= $this->Paginator->sort('modified', __('Módosítva')) ?>
+<?php 	} ?>
+
                     </th>
+<?php } ?>
+
                     <th class="actions w-1"><?= __('Műveletek') ?></th>
                 </tr>
             </thead>
@@ -209,14 +231,48 @@ $highlight = function (?string $text) use ($search): string {
                                 <?= $this->Number->format($city->club_count ?? 0) ?>
                             </td>
 
+
+
+                            <td class="text-center">
+                                <?= h($city->datumido) ?>
+                            </td>
+                            <td class="text-center">
+                                <?= h($city->datum) ?>
+                            </td>
+                            <td class="text-center">
+                                <?= h($city->ido) ?>
+                            </td>
+
+
                             <td class="boolean">
                                 <?= $this->SystemIcon->boolean($city->is_active ?? true) ?>
                             </td>
                             
-                            <td class="datetime created modified">
-                                <?= $city->created ? $city->created->format('Y.m.d. H:i') : '-' ?><br>
-                                <?= $city->modified ? $city->modified->format('Y.m.d. H:i') : '-' ?>
-                            </td>
+                            
+                                
+                                
+
+<?php if($showCreated || $showModified){ ?>
+
+							<td class="datetime created modified">
+<?php 	if($showCreated){ ?>
+
+                        <?= $city->created ? $city->created->format('Y.m.d. H:i') : '-' ?><br>
+<?php 	} ?>
+<?php if($showCreated && $showModified){ ?>
+						<br>
+<?php 	} ?>
+<?php 	if($showModified){ ?>
+
+                        <?= $city->modified ? $city->modified->format('Y.m.d. H:i') : '-' ?>
+<?php 	} ?>
+
+							</td>
+<?php } ?>
+
+
+
+
                             
                             <td class="actions">
                                 <div class="btn-list flex-nowrap align-items-center">

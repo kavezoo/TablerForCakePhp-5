@@ -51,5 +51,8 @@ class City extends Entity
         'county' => true,
         'clubs' => true,
         'competitions' => true,
+        'datumido' => true,
+        'datum' => true,
+        'ido' => true,
     ];
 }

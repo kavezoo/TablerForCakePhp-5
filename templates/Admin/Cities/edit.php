@@ -5,6 +5,8 @@
  * @var \Cake\Collection\CollectionInterface|string[] $countries
  * @var \Cake\Collection\CollectionInterface|string[] $counties
  */
+use Cake\I18n\I18n;
+
 $this->assign('title', __('Város hozzáadása'));
 ?>
 
@@ -90,11 +92,11 @@ $this->assign('title', __('Város hozzáadása'));
                 <div class="row g-3 mb-3">
                     <!-- Dátum és Idő beviteli mező -->
                     <div class="col-md-4">
-                        <?= $this->Form->control('published_at', [
+                        <?= $this->Form->control('datumido', [
                             'type' => 'text',
                             'label' => ['text' => __('Dátum és időpont'), 'class' => 'form-label'],
                             'class' => 'form-control flatpickr-datetime',
-                            'value' => $this->Form->getSourceValue('published_at') ?? '2025-12-25 14:00',
+                            'value' => $this->Time->format($city->datumido, 'yyyy-MM-dd HH:mm:ss'),
                             'placeholder' => 'ÉÉÉÉ.HH.NN ÓÓ:PP',
                             'autocomplete' => 'off',
                             'templates' => [
@@ -106,10 +108,11 @@ $this->assign('title', __('Város hozzáadása'));
 
                     <!-- Csak Dátum beviteli mező -->
                     <div class="col-md-4">
-                        <?= $this->Form->control('event_date', [
+                        <?= $this->Form->control('datum', [
                             'type' => 'text',
                             'label' => ['text' => __('Dátum'), 'class' => 'form-label'],
                             'class' => 'form-control flatpickr-date',
+							'value' => $this->Time->format($city->datum, 'yyyy-MM-dd'),
                             'placeholder' => 'ÉÉÉÉ.HH.NN',
                             'autocomplete' => 'off',
                             'templates' => [
@@ -121,10 +124,11 @@ $this->assign('title', __('Város hozzáadása'));
 
                     <!-- Csak Idő beviteli mező -->
                     <div class="col-md-4">
-                        <?= $this->Form->control('event_time', [
+                        <?= $this->Form->control('ido', [
                             'type' => 'text',
                             'label' => ['text' => __('Időpont'), 'class' => 'form-label'],
                             'class' => 'form-control flatpickr-time',
+							'value' => $this->Time->format($city->ido, 'HH:mm:ss'),
                             'placeholder' => 'ÓÓ:PP',
                             'autocomplete' => 'off',
                             'templates' => [
