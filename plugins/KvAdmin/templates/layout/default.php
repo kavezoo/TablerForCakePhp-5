@@ -11,21 +11,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <title>Tabler • <?= $this->fetch('title') ?></title>
 
-    <!-- Tabler CSS -->
-    <?= $this->Html->css(['tabler.min', 'main']) ?>
+    <!-- Tabler CSS --><?= $this->Html->css(['KvAdmin.tabler.min', 'KvAdmin.main']) ?>
 	
-	<!-- Vendor CSS -->
-    <?= $this->fetch('css') ?>
+	<!-- Vendor CSS --><?= $this->fetch('css') ?>
 	
 </head>
 <body>
 
     <div class="page">
         <!-- TopHeader (Header + Menü) -->
-        <?= $this->element('admin/topheader') ?>
+        <?= $this->element('KvAdmin.topheader') ?>
 
         <!-- Header (Header + Menü) -->
-        <?= $this->element('admin/header') ?>
+        <?= $this->element('KvAdmin.header') ?>
 
         <!-- Fő tartalom -->
         <div class="page-wrapper">
@@ -40,19 +38,19 @@
             </div>
 
             <!-- Footer -->
-            <?= $this->element('admin/footer') ?>
+            <?= $this->element('KvAdmin.footer') ?>
 			
         </div>
     </div>
 
-    <!-- Tabler JS -->
-    <?= $this->Html->script(['tabler.min']) ?>
+
+    <!-- Tabler JS --><?= $this->Html->script(['KvAdmin.tabler.min']) ?>
 	
-	<!-- Vendor JS -->
-    <?= $this->fetch('script') ?>
+	<!-- KvAdmin/Vendor JS -->
+	<?= $this->fetch('script') ?>
 	
-	<!-- My JS -->
-    <?= $this->fetch('footer') ?>
+	<!-- KvAdmin JS -->
+	<?= $this->fetch('footer') ?>
 	
 </body>
 </html>

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace KvAdmin\Controller;
 
 use App\Controller\AppController as BaseController;
 
@@ -11,7 +11,7 @@ class AppController extends BaseController
     {
         parent::initialize();
 
-        // Beállítja a /kv_admin/templates/layout/default.php fájlt alapértelmezettnek
-        $this->viewBuilder()->setLayout('KvAdmin.default');
+        // Beállítjuk a plugin saját AppView osztályát:
+        $this->viewBuilder()->setClassName('KvAdmin.App');
     }
 }

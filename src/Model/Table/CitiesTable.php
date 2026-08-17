@@ -51,6 +51,7 @@ class CitiesTable extends Table
         $this->addBehavior('CounterCache', [
             'Counties' => ['city_count'],
         ]);
+        $this->addBehavior('KvAdmin.LocalizedData');
 
         $this->belongsTo('Countries', [
             'foreignKey' => 'country_id',
