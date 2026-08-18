@@ -41,5 +41,6 @@ class AppView extends View
 
 		$this->loadHelper('KvAdmin.SystemIcon');
 		$this->loadHelper('KvAdmin.Icon');
+		$this->loadHelper('KvAdmin.KvForm'); // Vagy simán $this->loadHelper('KvForm') ha a plugin layoutjában vagy
     }
 }

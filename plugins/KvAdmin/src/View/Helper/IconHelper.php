@@ -45,10 +45,6 @@ class IconHelper extends Helper
         $basePath = rtrim((string)$this->getConfig('basePath'), '/');
         $filePath = WWW_ROOT . $basePath . DS . $type . DS . $name . '.svg';
 
-		//if($name == "logo"){
-		//	dd($basePath);			
-		//}
-
 		if (!file_exists($filePath)) {
 			// A plugin belső webroot mappájának fizikai útvonala:
 			$pluginPath = Plugin::path('KvAdmin');

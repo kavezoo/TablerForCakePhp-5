@@ -66,10 +66,6 @@ class LocalizedDataBehavior extends Behavior
             return $value;
         }
 
-		//debug($value);
-		//debug($type);
-		//dd($locale);
-
         // 1. Próbálkozás a PHP IntlDateFormatter-rel az adott locale szerint
         $formatters = [
             new IntlDateFormatter($locale, IntlDateFormatter::SHORT, IntlDateFormatter::SHORT),

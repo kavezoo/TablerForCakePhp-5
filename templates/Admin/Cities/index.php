@@ -12,7 +12,7 @@ $showCreated = false;
 $showModified = false;
 
 $this->assign('title', __('Cities'));
-$this->element('admin/pagination_templates');
+$this->element('KvAdmin.pagination_templates');
 
 $lastViewedId = $lastViewedId ?? $this->getRequest()->getSession()->read('LastViewed.city_id');
 $scrollToId = $scrollToId ?? $this->getRequest()->getSession()->read('ScrollTo.city_id') ?? $lastViewedId;
@@ -24,16 +24,10 @@ $highlight = function (?string $text) use ($search): string {
     }
 
     $escapedText = h($text);
-
     if (!empty($search)) {
         $cleanSearch = preg_quote(trim($search), '/');
-        return preg_replace(
-            '/(' . $cleanSearch . ')/iu',
-            '<mark class="search-highlight">$1</mark>',
-            $escapedText
-        );
+        return preg_replace('/(' . $cleanSearch . ')/iu', '<mark class="search-highlight">$1</mark>', $escapedText );
     }
-
     return $escapedText;
 };
 ?>
@@ -47,7 +41,7 @@ $highlight = function (?string $text) use ($search): string {
             <div class="col-auto">
                 <?= $this->Html->link(
                     $this->Icon->outline('plus') . '<span class="d-none d-sm-inline ms-1">' . __('Új település') . '</span>',
-                    ['prefix' => 'Admin', 'controller' => 'Cities', 'action' => 'add'],
+                    ['controller' => 'Cities', 'action' => 'add'],
                     [
                         'escape' => false,
                         'class' => 'btn btn-outline-secondary btn-header-new'
@@ -100,7 +94,7 @@ $highlight = function (?string $text) use ($search): string {
 						
 							<!-- Keresés törlése gomb (X) -->
 							<span class="input-group-text pe-2 py-0 d-flex align-items-center">
-								<a href="<?= $this->Url->build(['prefix' => 'Admin', 'controller' => 'Cities', 'action' => 'index', '?' => ['clear' => 'search']]) ?>" 
+								<a href="<?= $this->Url->build(['controller' => 'Cities', 'action' => 'index', '?' => ['clear' => 'search']]) ?>" 
 									id="btn-clear-search"
 									class="btn-search-clear text-muted text-decoration-none" 
 									title="<?= __('Keresés törlése és összes rekord mutatása') ?>"
@@ -328,11 +322,11 @@ $highlight = function (?string $text) use ($search): string {
         </table>
     </div>
 
-    <?= $this->element('admin/pagination') ?>
+    <?= $this->element('KvAdmin.pagination') ?>
 
 </div>
 
-<?= $this->element('admin/modal-delete') ?>
+<?= $this->element('KvAdmin.modal-delete') ?>
 
 <?php
 $this->Html->scriptBlock(
