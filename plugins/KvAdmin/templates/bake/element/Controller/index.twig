@@ -21,16 +21,97 @@
     public function index()
     {
 {% set belongsTo = Bake.aliasExtractor(modelObj, 'BelongsTo') %}
+		$session = $this->getRequest()->getSession();
+		$queryParams = $this->getRequest()->getQueryParams();
+
+		// =========================================================================
+		// ⚙️ KERESÉSI BEÁLLÍTÁSOK (Itt kapcsold be/ki a kívánt keresési mezőket)
+		// =========================================================================
+		$searchableFields = [
+			// --- 1. Saját tábla ({{ currentModelName }}) mezői ---
+			// '{{ currentModelName }}.id',             // ID alapján keresés
+			'{{ currentModelName }}.name',              // Település neve
+
+			// --- 2. Szülő mezői ---
+			// 'Parents.name',
+
+			// --- 3. Szülő mezői ---
+			// 'Parents.name',
+		];
+
+		// =========================================================================
+		// ⚙️ LAPOZÓ ÉS RELÁCIÓK BEÁLLÍTÁSA
+		// =========================================================================
+		$this->paginate = [
+			'limit' => 20,
+			'maxLimit' => 100,
+		];
+
+		// Ha üres az URL, de a Sessionben van mentett állapot, oda irányítunk vissza
+		if (empty($queryParams) && $session->check('Paging.{{ currentModelName }}.params')) {
+			$savedParams = $session->read('Paging.{{ currentModelName }}.params');
+			if (!empty($savedParams)) {
+				return $this->redirect([
+					'action' => 'index',
+					'?' => $savedParams,
+				]);
+			}
+		}
+		
 {% if belongsTo %}
         $query = $this->{{ currentModelName }}->find()
             ->contain({{ Bake.exportArray(belongsTo)|raw }});
 {% else %}
         $query = $this->{{ currentModelName }}->find();
 {% endif %}
-{% if Bake.hasPlugin('Authorization') %}
-        $query = $this->Authorization->applyScope($query);
-{% endif %}
-        ${{ pluralName }} = $this->paginate($query);
 
-        $this->set(compact('{{ pluralName }}'));
-    }
+		// =========================================================================
+		// 🔍 KERESÉS VÉGREHAJTÁSA A KONFIGURÁLT MEZŐK ALAPJÁN
+		// =========================================================================
+		// Ha kifejezetten törölni szeretné a keresést (vagy nincs search a kérésben de volt sessionben):
+		if (isset($queryParams['search']) && trim($queryParams['search']) === '') {
+			$session->delete('Paging.{{ currentModelName }}.params.search');
+		}
+
+		$search = trim((string)($queryParams['search'] ?? ''));
+		if ($search !== '' && !empty($searchableFields)) {
+			$searchLike = '%' . $search . '%';
+			$conditions = [];
+
+			foreach ($searchableFields as $field) {
+				$conditions[$field . ' LIKE'] = $searchLike;
+			}
+
+			// Egyetlen közös OR blokkba tesszük az aktív feltételeket
+			$query->where(['OR' => $conditions]);
+		}
+
+		// =========================================================================
+		// 📄 LAPOZÁS VÉGREHAJTÁSA HIBAKEZELÉSSEL
+		// =========================================================================
+		try {
+			${{ pluralName }} = $this->paginate($query);
+
+			if (!empty($queryParams)) {
+				$session->write('Paging.{{ currentModelName }}.params', $queryParams);
+			}
+		} catch (NotFoundException $e) {
+			$this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+
+			$fallbackParams = $queryParams;
+			unset($fallbackParams['page']);
+
+			$session->write('Paging.{{ currentModelName }}.params', $fallbackParams);
+
+			return $this->redirect([
+				'action' => 'index',
+				'?' => $fallbackParams,
+			]);
+		}
+
+		// Kiemelés és görgetés ID-k
+		$lastViewedId = $session->read('LastViewed.city_id');
+		$scrollToId = $session->read('ScrollTo.city_id') ?? $lastViewedId;
+
+		$this->set(compact('{{ pluralName }}', 'lastViewedId', 'scrollToId', 'search'));
+	}

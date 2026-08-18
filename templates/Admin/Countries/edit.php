@@ -2,34 +2,21 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Country $country
- * @var \Cake\Collection\CollectionInterface|string[] $continents
- * @var \KvAdmin\View\Helper\KvFormHelper $KvForm
+ * @var string[]|\Cake\Collection\CollectionInterface $continents
  */
-
-$this->assign('title', __('Country módosítása'));
 ?>
-
-<div class="page-header d-print-none mb-3">
+<div class="page-header d-print-none mb-3 countries">
     <div class="row align-items-center">
         <div class="col">
-            <h2 class="page-title"><?= __('Country módosítása') ?></h2>
+            <h2 class="page-title"><?= __('Edit Country') ?></h2>
         </div>
         <div class="col-auto ms-auto">
-            <?= $this->Html->link(
-                $this->Icon->outline('x'),
-                ['action' => 'index'],
-                [
-                    'escape' => false,
-                    'class' => 'btn btn-icon btn-action-default btn-smooth-rotate',
-                    'data-bs-toggle' => 'tooltip',
-                    'title' => __('Vissza a listához')
-                ]
-            ) ?>
+            <?= $this->Html->link($this->Icon->outline('x'), ['action' => 'index'], ['escape' => false, 'class' => 'btn btn-icon btn-action-default btn-smooth-rotate', 'data-bs-toggle' => 'tooltip', 'title' => __('Vissza a listához')]) ?>
         </div>
     </div>
 </div>
 
-<div class="card">
+<div class="card countries">
     <?= $this->Form->create($country) ?>
 
     <div class="card-header">
@@ -37,15 +24,10 @@ $this->assign('title', __('Country módosítása'));
             <li class="nav-item" role="presentation">
                 <?= $this->Html->link(__('Datasheet'), '#tabs-datesheet', ['class' => 'nav-link active', 'data-bs-toggle' => 'tab', 'aria-selected' => 'true', 'role' => 'tab']) ?>
             </li>
-            <li class="nav-item" role="presentation">
-                <?= $this->Html->link(__('Content'), '#tabs-biography', ['class' => 'nav-link', 'data-bs-toggle' => 'tab', 'aria-selected' => 'false', 'role' => 'tab', 'tabindex' => '-1']) ?>
-            </li>
+
+
             <li class="nav-item ms-auto" role="presentation">
-                <?= $this->Html->link(
-                    $this->Icon->render('settings', ['class' => 'stroke-thin']),
-                    '#tabs-settings',
-                    ['escape' => false, 'class' => 'nav-link', 'data-bs-toggle' => 'tab', 'title' => __('Settings'), 'aria-selected' => 'false', 'role' => 'tab', 'tabindex' => '-1']
-                ) ?>
+                <?= $this->Html->link($this->Icon->render('settings', ['class' => 'stroke-thin']), '#tabs-settings', ['escape' => false, 'class' => 'nav-link', 'data-bs-toggle' => 'tab', 'title' => __('Settings'), 'aria-selected' => 'false', 'role' => 'tab', 'tabindex' => '-1']) ?>
             </li>
         </ul>
     </div>
@@ -53,67 +35,74 @@ $this->assign('title', __('Country módosítása'));
     <div class="card-body pb-4">
         <div class="tab-content">
 
-            <!-- 1. Alapadatok fül -->
+            <!-- 1. Datasheet TAB -->
             <div class="tab-pane fade show active" id="tabs-datesheet" role="tabpanel">
                 <div class="row g-3">
                     <div class="col-md-6">
                         <?= $this->Form->control('continent_id', [
                             'options' => $continents,
-                            'label' => ['text' => __('Continents'), 'class' => 'form-label'],
+                            'label' => ['text' => __('Continent Id'), 'class' => 'form-label'],
                             'class' => 'form-select tom-select',
-                            'empty' => __('Válasszon continentst...')
+                            'empty' => __('Please select...'),
+                            'required' => true
                         ]) ?>
-                    </div>                    <div class="col-md-6">
-                        <?= $this->Form->control('iso2', ['label' => ['text' => __('Iso2'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>                    <div class="col-md-6">
-                        <?= $this->Form->control('name', ['label' => ['text' => __('Name'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>                    <div class="col-md-6">
-                        <?= $this->Form->control('endonim_name', ['label' => ['text' => __('Endonim Name'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>                    <div class="col-md-6">
-                        <?= $this->Form->control('locale', ['label' => ['text' => __('Locale'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
+                        <?= $this->Form->control('iso2', ['label' => ['text' => __('Iso2'), 'class' => 'form-label'], 'class' => 'form-control', 'required' => true]) ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?= $this->Form->control('name', ['label' => ['text' => __('Name'), 'class' => 'form-label'], 'class' => 'form-control', 'required' => true]) ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?= $this->Form->control('endonim_name', ['label' => ['text' => __('Endonim Name'), 'class' => 'form-label'], 'class' => 'form-control', 'required' => true]) ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?= $this->Form->control('locale', ['label' => ['text' => __('Locale'), 'class' => 'form-label'], 'class' => 'form-control', 'required' => true]) ?>
+                    </div>
+                    <div class="col-md-6">
                         <?= $this->Form->control('timezone', ['label' => ['text' => __('Timezone'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>                    <div class="col-md-6">
-                        <?= $this->KvForm->maskedInput('phone_prefix', '+36 00/000-00-00', [
-                            'id' => 'phone_prefix',
-                            'class' => 'form-control',
-                            'label' => [
-                                'text' => __('Phone Prefix'),
-                                'class' => 'form-label'
-                            ],
-                        ]) ?>
-                    </div>                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
+                        <?= $this->Form->control('phone_prefix', ['label' => ['text' => __('Phone Prefix'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
+                    </div>
+                    <div class="col-md-6">
                         <?= $this->Form->control('logo', ['label' => ['text' => __('Logo'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
                         <?= $this->Form->control('currency', ['label' => ['text' => __('Currency'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
                         <?= $this->KvForm->numberSpinner('club_count', [
                             'label' => ['text' => __('Club Count')],
+                            'min' => 0,
+                            'max' => 4294967295,
                             'step' => '1',
+                            'value' => '', 'required' => true
                         ]) ?>
-                    </div>                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
                         <?= $this->KvForm->numberSpinner('setup_count', [
                             'label' => ['text' => __('Setup Count')],
+                            'min' => 0,
+                            'max' => 4294967295,
                             'step' => '1',
+                            'value' => '0'
                         ]) ?>
-                    </div>                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
                         <?= $this->KvForm->numberSpinner('user_count', [
                             'label' => ['text' => __('User Count')],
+                            'min' => 0,
                             'step' => '1',
+                            'value' => '0'
                         ]) ?>
-                    </div>                </div>
+                    </div>
+
+                </div>
             </div> <!-- /#tabs-datesheet -->
 
-            <!-- 2. További tartalmak fül (HugeRTE) -->
-            <div class="tab-pane fade" id="tabs-biography" role="tabpanel">
-                <div class="row g-3">
-                    <div class="col-12 text-muted py-4 text-center">
-                        <?= __('Nincs hosszú szöveges mező definiálva.') ?>
-                    </div>
-                </div>
-            </div> <!-- /#tabs-biography -->
 
-            <!-- 3. Beállítások fül -->
+            <!-- 3. Settings TAB -->
             <div class="tab-pane fade" id="tabs-settings" role="tabpanel">
                 <div class="mb-3">
                     <h4 class="card-title mb-1"><?= __('Beállítások') ?></h4>
@@ -121,30 +110,19 @@ $this->assign('title', __('Country módosítása'));
                 </div>
 
                 <div class="row g-3">
-                    <!-- Láthatóság / Státusz -->
+                    <!-- Láthatóság -->
                     <div class="col-12">
                         <div class="col-sm-6 col-md-4">
                             <label class="form-label"><?= __('Visible') ?></label>
                             <div class="pt-2">
-                                <?= $this->KvForm->switch('visible', [
-                                    'label' => __('Aktív / Látható'),
-                                    'size' => '3',
-                                    'checked' => true
-                                ]) ?>
+                                <?= $this->KvForm->switch('visible', ['label' => __('Active / Visible'), 'size' => '3', 'checked' => true]) ?>
                             </div>
                         </div>
                     </div>
-
                     <!-- Pozíció Spinner -->
                     <div class="col-12">
                         <div class="col-sm-6 col-md-4">
-                            <?= $this->KvForm->numberSpinner('pos', [
-                                'label' => ['text' => __('Position')],
-                                'min' => -10000,
-                                'max' => 10000,
-                                'step' => '1',
-                                'value' => '1000'
-                            ]) ?>
+                            <?= $this->KvForm->numberSpinner('pos', ['label' => ['text' => __('Position')], 'min' => -10000, 'max' => 10000, 'step' => '1', 'value' => '1000']) ?>
                         </div>
                     </div>
                 </div>
@@ -157,7 +135,7 @@ $this->assign('title', __('Country módosítása'));
         <!-- Mentés gomb -->
         <?= $this->KvForm->saveButton() ?>
 
-        <!-- Mégse gomb -->
+        <!-- Mégse gomb: visszatér a jelenlegi controller index() akciójára -->
         <?= $this->KvForm->cancelButton() ?>
     </div>
 
@@ -190,7 +168,7 @@ $this->Html->scriptBlock(
             IMask(phoneElem, { mask: '+{36} 00/000-00-00' });
         }
 
-        // 2. TomSelect Inicializálás
+        // 2. Sima (egyszeres) Select: valódi natív select hatás
         document.querySelectorAll('.tom-select:not(.multi-select)').forEach(function (element) {
             if (!element.tomselect && typeof TomSelect !== 'undefined') {
                 new TomSelect(element, {
@@ -204,14 +182,35 @@ $this->Html->scriptBlock(
             }
         });
 
-        // 3. HugeRTE szerkesztő
+        // 3. Többes választó (Tags / Multi-select)
+        document.querySelectorAll('.tom-select.multi-select').forEach(function (element) {
+            if (!element.tomselect && typeof TomSelect !== 'undefined') {
+                new TomSelect(element, {
+                    plugins: {
+                        'remove_button': { 
+                            title: 'Eltávolítás' 
+                        },
+                        'clear_button': { 
+                            title: 'Összes törlése' 
+                        }
+                    },
+                    persist: false,
+                    create: false,
+                    mode: 'multi',
+                    copyClassesToDropdown: false,
+                    wrapperClass: 'ts-wrapper form-select multi'
+                });
+            }
+        });
+        
+        // 4. HugeRTE szerkesztő
         if (typeof hugerte !== 'undefined') {
             const isDarkMode = document.body.getAttribute('data-bs-theme') === 'dark';
 
             document.querySelectorAll('.hugerte-editor').forEach(function (editorElement) {
                 hugerte.init({
                     target: editorElement,
-                    height: 500,
+                    height: 600,
                     menubar: 'file edit view insert format tools table help',
                     statusbar: true,
                     promotion: false,
@@ -242,9 +241,9 @@ $this->Html->scriptBlock(
                 });
             });
 
-            const tabTrigger = document.querySelector('a[href=\"#tabs-biography\"], button[data-bs-target=\"#tabs-biography\"]');
-            if (tabTrigger) {
-                tabTrigger.addEventListener('shown.bs.tab', function () {
+            // Bootstrap fülváltáskor az editor újrarajzolása
+            document.querySelectorAll('a[data-bs-toggle=\"tab\"]').forEach(function (tabEl) {
+                tabEl.addEventListener('shown.bs.tab', function () {
                     document.querySelectorAll('.hugerte-editor').forEach(function (el) {
                         const editor = hugerte.get(el.id);
                         if (editor) {
@@ -252,10 +251,10 @@ $this->Html->scriptBlock(
                         }
                     });
                 });
-            }
+            });
         }
 
-        // 4. Flatpickr Dátum & Idő
+        // 5. Flatpickr Dátum & Idő (Magyar lokalizáció)
         if (typeof flatpickr !== 'undefined') {
             flatpickr('.flatpickr-datetime', {
                 locale: 'hu',
@@ -290,7 +289,7 @@ $this->Html->scriptBlock(
             });
         }
 
-        // 5. Number Spinner vezérlés
+        // 6. Number Spinner gombok
         document.body.addEventListener('click', function (e) {
             const button = e.target.closest('.input-group [data-action]');
             if (!button) return;

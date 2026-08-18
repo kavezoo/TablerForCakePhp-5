@@ -8,7 +8,7 @@
  */
 
 $this->assign('title', __('Település módosítása'));
-$list = ['JavaScript' => 'JavaScript', 'jQuery' => 'jQuery', 'Ruby' => 'Ruby', 'HTML' => 'HTML', 'Bootstrap' => 'Bootstrap', 'CSS' => 'CSS', 'Python' => 'Python'];
+$list = ['JavaScript' => 'JavaScript', 'Ruby' => 'Ruby', 'HTML' => 'HTML'];
 ?>
 
 <div class="page-header d-print-none mb-3">

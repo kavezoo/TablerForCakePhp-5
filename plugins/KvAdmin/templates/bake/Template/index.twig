@@ -15,15 +15,182 @@
 #}
 <?php
 /**
- * @var \{{ namespace }}\View\AppView $this
- * @var iterable<\{{ entityClass }}> ${{ pluralVar }}
+ * @var \App\View\AppView $this
+ * @var iterable<\App\Model\Entity\City> $cities
+ * @var int|null $lastViewedId
+ * @var int|null $scrollToId
+ * @var string|null $search
  */
+use Cake\I18n\I18n;
+
+$showCreated = false;
+$showModified = false;
+
+$this->assign('title', __('Cities'));
+$this->element('KvAdmin.pagination_templates');
+
+$lastViewedId = $lastViewedId ?? $this->getRequest()->getSession()->read('LastViewed.city_id');
+$scrollToId = $scrollToId ?? $this->getRequest()->getSession()->read('ScrollTo.city_id') ?? $lastViewedId;
+
+// 🔍 Keresési kiemelő segédfüggvény
+$highlight = function (?string $text) use ($search): string {
+    if ($text === null || $text === '') {
+        return '';
+    }
+
+    $escapedText = h($text);
+    if (!empty($search)) {
+        $cleanSearch = preg_quote(trim($search), '/');
+        return preg_replace('/(' . $cleanSearch . ')/iu', '<mark class="search-highlight">$1</mark>', $escapedText );
+    }
+    return $escapedText;
+};
 ?>
-<div class="{{ pluralVar }} index content">
 {% set fields = Bake.filterFields(fields, schema, modelObject, indexColumns, ['binary', 'text']) %}
     <?= $this->Html->link({% if useDomain %}__d('{{ plugin }}', {% else %}__({% endif %}'New {{ singularHumanName }}'), ['action' => 'add'], ['class' => 'button float-right']) ?>
 {% set done = [] %}
-    <h3><?= {% if useDomain %}__d('{{ plugin }}', {% else %}__({% endif %}'{{ pluralHumanName }}') ?></h3>
+
+<div class="card">
+    <div class="card-header pe-3">
+        <div class="row w-full align-items-center gy-2 gy-md-0">
+
+            <!-- Új település gomb (a cím előtt) -->
+            <div class="col-auto">
+                <?= $this->Html->link(
+                    $this->Icon->outline('plus') . '<span class="d-none d-sm-inline ms-1">' . __('Új település') . '</span>',
+                    ['controller' => 'Cities', 'action' => 'add'],
+                    [
+                        'escape' => false,
+                        'class' => 'btn btn-outline-secondary btn-header-new'
+                    ]
+                ) ?>
+            </div>
+
+            <!-- Cím és infó blokk -->
+            <div class="col">
+                <h3 class="card-title mb-0"><?= {% if useDomain %}__d('{{ plugin }}', {% else %}__({% endif %}'{{ pluralHumanName }}') ?></h3>
+                <p class="text-secondary m-0"><?= __('Doubleclick to') . ' ' . __('edit') ?></p>
+            </div>
+
+            <!-- Kereső mező -->
+            <div class="input-group input-group-flat search-input-group w-100 w-md-auto">
+                <span class="input-group-text">
+                    <?= $this->Icon->outline('search') ?>
+                </span>
+                <input id="advanced-table-search" type="text" class="form-control" placeholder="<?= __('Search...') ?>" autocomplete="off">
+                <span class="input-group-text pe-2">
+                    <kbd id="search-shortcut-hint" class="search-kbd-badge">ctrl + K</kbd>
+                </span>
+            </div>
+
+
+			<!-- Kereső űrlap -->
+			<div class="col-12 col-md-auto ms-md-auto">
+				<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]) ?>
+					<!-- Megtartjuk az esetleges oszloprendezést keresés közben -->
+					<?php if (!empty($this->getRequest()->getQuery('sort'))): ?>
+						<?= $this->Form->hidden('sort', ['value' => $this->getRequest()->getQuery('sort')]) ?>
+						<?= $this->Form->hidden('direction', ['value' => $this->getRequest()->getQuery('direction')]) ?>
+					<?php endif; ?>
+
+					<div class="input-group input-group-flat search-input-group w-100 position-relative">
+						<span class="input-group-text search-box-left-side">
+							<?= $this->Icon->outline('search') ?>
+						</span>
+						<input 
+							id="advanced-table-search" 
+							type="text" 
+							name="search" 
+							class="form-control" 
+							placeholder="<?= __('Search...') ?>" 
+							value="<?= h($search ?? '') ?>" 
+							autocomplete="off"
+						/>
+						
+						<?php if (!empty($search)): ?>
+						
+							<!-- Keresés törlése gomb (X) -->
+							<span class="input-group-text pe-2 py-0 d-flex align-items-center">
+								<a href="<?= $this->Url->build(['controller' => 'Cities', 'action' => 'index', '?' => ['clear' => 'search']]) ?>" 
+									id="btn-clear-search"
+									class="btn-search-clear text-muted text-decoration-none" 
+									title="<?= __('Keresés törlése és összes rekord mutatása') ?>"
+									data-bs-toggle = 'tooltip'
+									data-bs-html = 'true'
+									data-bs-placement = 'top'>
+									<?= $this->Icon->outline('x') ?>
+								</a>
+							</span>
+						<?php else: ?>
+						
+							<span class="input-group-text pe-2" style="border-left-width: 0px; border-left-style: none;">
+								<kbd id="search-shortcut-hint" class="search-kbd-badge">ctrl + K</kbd>
+							</span>
+						<?php endif; ?>						
+						
+					</div>
+				<?= $this->Form->end() ?>
+			</div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table table-hover table-sm table-bordered-vertical">
+            <thead>
+
+
+
+
+
+                <tr>
+                    <th class="id"><?= $this->Paginator->sort('id', '#') ?></th>
+                    <th class="string"><?= $this->Paginator->sort('name', __('Név')) ?></th>
+                    <th class="text-center"><?= $this->Paginator->sort('zip', __('Irányítószám')) ?></th>
+                    <th class="number"><?= $this->Paginator->sort('zip', __('Number')) ?></th>
+                    <th class="currency"><?= $this->Paginator->sort('zip', __('Currency')) ?></th>
+                    <th class="string"><?= $this->Paginator->sort('shortname', __('Rövid név')) ?></th>
+                    <th class="string link"><?= $this->Paginator->sort('county_id', __('Megye')) ?></th>
+                    <th class="string link"><?= $this->Paginator->sort('country_id', __('Ország')) ?></th>
+                    <th class="integer count"><?= $this->Paginator->sort('club_count', __('Clubs')) ?></th>
+                    
+					<th class="datetime"><?= $this->Paginator->sort('datumido') ?></th>
+					<th class="date"><?= $this->Paginator->sort('datum') ?></th>
+					<th class="time"><?= $this->Paginator->sort('ido') ?></th>
+					
+                    <th class="boolean"><?= $this->Paginator->sort('is_active', __('Aktív')) ?></th>
+<?php if($showCreated || $showModified){ ?>
+
+                    <th class="datetime">
+<?php 	if($showCreated){ ?>
+
+                        <?= $this->Paginator->sort('created', __('Létrehozva')) ?>
+<?php 	} ?>
+<?php if($showCreated && $showModified){ ?>
+						<br>
+<?php 	} ?>
+<?php 	if($showModified){ ?>
+
+                        <?= $this->Paginator->sort('modified', __('Módosítva')) ?>
+<?php 	} ?>
+
+                    </th>
+<?php } ?>
+
+                    <th class="actions w-1"><?= __('Műveletek') ?></th>
+                </tr>
+
+
+            </thead>
+
+
+
+
+
+
+
+<div class="{{ pluralVar }} index content">
+
+
     <div class="table-responsive">
         <table>
             <thead>
@@ -79,14 +246,79 @@
             </tbody>
         </table>
     </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . {% if useDomain %}__d('{{ plugin }}', {% else %}__({% endif %}'first')) ?>
-            <?= $this->Paginator->prev('< ' . {% if useDomain %}__d('{{ plugin }}', {% else %}__({% endif %}'previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next({% if useDomain %}__d('{{ plugin }}', {% else %}__({% endif %}'next') . ' >') ?>
-            <?= $this->Paginator->last({% if useDomain %}__d('{{ plugin }}', {% else %}__({% endif %}'last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter({% if useDomain %}__d('{{ plugin }}', {% else %}__({% endif %}'Page {{ '{{' }}page{{ '}}' }} of {{ '{{' }}pages{{ '}}' }}, showing {{ '{{' }}current{{ '}}' }} record(s) out of {{ '{{' }}count{{ '}}' }} total')) ?></p>
-    </div>
+	
+	<?= $this->element('KvAdmin.pagination') ?>
+
 </div>
+
+<?= $this->element('KvAdmin.modal-delete') ?>
+
+<?php
+$this->Html->scriptBlock(
+    "
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- 1. KERESŐ GYORSGOMBOK (Ctrl + K) & INTERAKCIÓK ---
+        const searchInput = document.getElementById('advanced-table-search');
+        const shortcutHint = document.getElementById('search-shortcut-hint');
+
+        if (searchInput) {
+            // Gyorsbillentyű fókuszhoz (Ctrl + K vagy Cmd + K)
+            document.addEventListener('keydown', function (e) {
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+                    e.preventDefault();
+                    searchInput.focus();
+                    searchInput.select();
+                }
+            });
+
+            // Fókusz esetén visszajelzés
+            if (shortcutHint) {
+                searchInput.addEventListener('focus', function () {
+                    shortcutHint.innerHTML = 'Enter &crarr;';
+                });
+
+                searchInput.addEventListener('blur', function () {
+                    shortcutHint.textContent = 'ctrl + K';
+                });
+            }
+
+            // Escape lenyomására fókusz elvétele
+            searchInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    this.blur();
+                }
+            });
+        }
+		
+		const clearBtn = document.getElementById('btn-clear-search');
+		if (clearBtn) {
+			clearBtn.addEventListener('click', function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+				window.location.href = this.getAttribute('href');
+			});
+		}		
+
+        // --- 2. AUTOMATIKUS FINOM GÖRGETÉS AZ UTOLSÓ REKORDHOZ ---
+        " . (!empty($scrollToId) ? "
+        let targetRow = document.getElementById('row-" . (int)$scrollToId . "');
+        if (!targetRow) {
+            targetRow = document.querySelector('.table tr.last-viewed') || document.querySelector('.table tbody tr');
+        }
+
+        if (targetRow) {
+            const headerOffset = 120;
+            const rowPosition = targetRow.getBoundingClientRect().top;
+            const offsetPosition = rowPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+        " : "") . "
+    });
+    ",
+    ['block' => 'script']
+);
+?>

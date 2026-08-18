@@ -14,55 +14,410 @@
  */
 #}
 {% set fields = Bake.filterFields(fields, schema, modelObject) %}
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-{% if 'add' not in action %}
-            <?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', ${{ singularVar }}->{{ primaryKey[0] }}],
-                ['confirm' => __('Are you sure you want to delete # {0}?', ${{ singularVar }}->{{ primaryKey[0] }}), 'class' => 'side-nav-item']
-            ) ?>
-{% endif %}
-            <?= $this->Html->link(__('List {{ pluralHumanName }}'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-{% set done = [] %}
+<div class="page-header d-print-none mb-3 {{ pluralVar }}">
+    <div class="row align-items-center">
+        <div class="col">
+            <h2 class="page-title"><?= __('{{ action|humanize }} {{ singularHumanName }}') ?></h2>
         </div>
-    </aside>
-    <div class="column column-80">
-        <div class="{{ pluralVar }} form content">
-            <?= $this->Form->create(${{ singularVar }}) ?>
-            <fieldset>
-                <legend><?= __('{{ action|humanize }} {{ singularHumanName }}') ?></legend>
-                <?php
+        <div class="col-auto ms-auto">
+            <?= $this->Html->link($this->Icon->outline('x'), ['action' => 'index'], ['escape' => false, 'class' => 'btn btn-icon btn-action-default btn-smooth-rotate', 'data-bs-toggle' => 'tooltip', 'title' => __('Vissza a listához')]) ?>
+        </div>
+    </div>
+</div>
+
+<div class="card {{ pluralVar }}">
+    <?= $this->Form->create(${{ singularVar }}) ?>
+
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <?= $this->Html->link(__('Datasheet'), '#tabs-datesheet', ['class' => 'nav-link active', 'data-bs-toggle' => 'tab', 'aria-selected' => 'true', 'role' => 'tab']) ?>
+            </li>
+
+{%~ for field in fields %}
+{%~ set fieldData = Bake.columnData(field, schema) %}
+{%~ if fieldData.type in ['text'] %}
+            <li class="nav-item" role="presentation">
+                <?= $this->Html->link(__('{{ field|humanize }}'), '#tabs-{{ field|lower }}', ['class' => 'nav-link', 'data-bs-toggle' => 'tab', 'aria-selected' => 'false', 'role' => 'tab', 'tabindex' => '-1']) ?>
+            </li>
+{%~ endif %}
+{%~ endfor %}
+
+{%~ set hasVisibleOrPos = false %}
+{%~ set hasPos = false %}
+{%~ set hasVisible = false %}
+{%~ for field in fields %}
+    {%~ if field in ['pos', 'visible'] %}
+        {%~ set hasVisibleOrPos = true %}
+    {%~ endif %}
+    {%~ if field in ['pos'] %}
+        {%~ set hasPos = true %}
+    {%~ endif %}
+    {%~ if field in ['visible'] %}
+        {%~ set hasVisible = true %}
+    {%~ endif %}
+{%~ endfor %}
+{%~ if hasVisibleOrPos == true %}
+            <li class="nav-item ms-auto" role="presentation">
+                <?= $this->Html->link($this->Icon->render('settings', ['class' => 'stroke-thin']), '#tabs-settings', ['escape' => false, 'class' => 'nav-link', 'data-bs-toggle' => 'tab', 'title' => __('Settings'), 'aria-selected' => 'false', 'role' => 'tab', 'tabindex' => '-1']) ?>
+            </li>
+{%~ endif %}
+        </ul>
+    </div>
+
+    <div class="card-body pb-4">
+        <div class="tab-content">
+
+            <!-- 1. Datasheet TAB -->
+            <div class="tab-pane fade show active" id="tabs-datesheet" role="tabpanel">
+                <div class="row g-3">
 {% for field in fields %}
-    {%~ if field not in primaryKey %}
+    {%~ if field not in primaryKey and field not in ['pos', 'visible'] %}
         {%~ if keyFields[field] is defined %}
             {%~ set fieldData = Bake.columnData(field, schema) %}
             {%~ if fieldData.null %}
-                    echo $this->Form->control('{{ field }}', ['options' => ${{ keyFields[field] }}, 'empty' => true]);
+                    <div class="col-md-6">
+                        <?= $this->Form->control('{{ field }}', [
+                            'options' => ${{ keyFields[field] }},
+                            'label' => ['text' => __('{{ field|humanize }}'), 'class' => 'form-label'],
+                            'class' => 'form-select tom-select',
+                            'empty' => true
+                        ]) ?>
+                    </div>
             {%~ else %}
-                    echo $this->Form->control('{{ field }}', ['options' => ${{ keyFields[field] }}]);
+                    <div class="col-md-6">
+                        <?= $this->Form->control('{{ field }}', [
+                            'options' => ${{ keyFields[field] }},
+                            'label' => ['text' => __('{{ field|humanize }}'), 'class' => 'form-label'],
+                            'class' => 'form-select tom-select',
+                            'empty' => __('Please select...'),
+                            'required' => true
+                        ]) ?>
+                    </div>
             {%~ endif %}
         {%~ elseif field not in ['created', 'modified', 'updated'] %}
             {%~ set fieldData = Bake.columnData(field, schema) %}
-            {%~ if fieldData.type in ['date', 'datetime', 'time'] and fieldData.null %}
-                    echo $this->Form->control('{{ field }}', ['empty' => true]);
-            {%~ else %}
-                    echo $this->Form->control('{{ field }}');
+            {%~ set isRequired = (not fieldData.null and fieldData.default is null and field not in primaryKey) %}
+            {%~ if fieldData.type in ['datetime', 'timestamp', 'timestampfractional'] %}
+                    <div class="col-md-4">
+                        <?= $this->KvForm->dateTimePicker('{{ field }}', ['label' => ['text' => __('{{ field|humanize }}')]{{ isRequired ? ", 'required' => true" : "" }}]) ?>
+                    </div>
+            {%~ elseif fieldData.type == 'date' %}
+                    <div class="col-md-4">
+                        <?= $this->KvForm->datePicker('{{ field }}', ['label' => ['text' => __('{{ field|humanize }}')]{{ isRequired ? ", 'required' => true" : "" }}]) ?>
+                    </div>
+            {%~ elseif fieldData.type == 'time' %}
+                    <div class="col-md-4">
+                        <?= $this->KvForm->timePicker('{{ field }}', ['label' => ['text' => __('{{ field|humanize }}')]{{ isRequired ? ", 'required' => true" : "" }}]) ?>
+                    </div>
+            {%~ elseif fieldData.type in ['string', 'char', 'uuid'] %}
+                    <div class="col-md-6">
+                        <?= $this->Form->control('{{ field }}', ['label' => ['text' => __('{{ field|humanize }}'), 'class' => 'form-label'], 'class' => 'form-control'{{ isRequired ? ", 'required' => true" : "" }}]) ?>
+                    </div>
+            {%~ elseif fieldData.type in ['boolean'] %}
+                    <div class="col-md-6">
+                        <div class="form-label"><?= __('{{ field|humanize }}') ?></div>
+                        <?= $this->KvForm->switch('{{ field }}', ['label' => __('{{ field|humanize }}')]) ?>
+                    </div>
+            {%~ elseif fieldData.type in ['integer', 'biginteger', 'smallinteger', 'tinyinteger', 'decimal', 'float'] %}
+                {%~ set isUnsigned = fieldData.unsigned ?? false %}
+                {%~ set minValue = isUnsigned ? 0 : null %}
+                {%~ set maxValue = null %}
+                {%~ set precision = fieldData.precision ?? 0 %}
+                {%~ if fieldData.type == 'tinyinteger' %}
+                    {%~ set minValue = isUnsigned ? 0 : -128 %}
+                    {%~ set maxValue = isUnsigned ? 255 : 127 %}
+                {%~ elseif fieldData.type == 'smallinteger' %}
+                    {%~ set minValue = isUnsigned ? 0 : -32768 %}
+                    {%~ set maxValue = isUnsigned ? 65535 : 32767 %}
+                {%~ elseif fieldData.type == 'integer' %}
+                    {%~ set minValue = isUnsigned ? 0 : -2147483648 %}
+                    {%~ set maxValue = isUnsigned ? 4294967295 : 2147483647 %}
+                {%~ endif %}
+                    <div class="col-md-6">
+                        <?= $this->KvForm->numberSpinner('{{ field }}', [
+                            'label' => ['text' => __('{{ field|humanize }}')],
+{% if minValue is not null %}
+                            'min' => {{ minValue }},
+{% endif %}
+{% if maxValue is not null %}
+                            'max' => {{ maxValue }},
+{% endif %}
+{% if precision > 0 %}
+                            'precision' => {{ precision }},
+                            'step' => '{{ (1 / (10 ** precision))|number_format(precision, '.', '') }}',
+{% else %}
+                            'step' => '1',
+{% endif %}
+                            'value' => '{{ fieldData.default }}'{{ isRequired ? ", 'required' => true" : "" }}
+                        ]) ?>
+                    </div>
             {%~ endif %}
         {%~ endif %}
     {%~ endif %}
 {% endfor %}
+
 {% if associations.BelongsToMany is defined %}
     {%~ for assocName, assocData in associations.BelongsToMany %}
-                    echo $this->Form->control('{{ assocData.property }}._ids', ['options' => ${{ assocData.variable }}]);
+                    <!-- {{ assocData.property }} (Többes választás) -->
+                    <div class="col-md-6">
+                        <?= $this->Form->control('{{ assocData.property }}._ids', [
+                            'options' => ${{ assocData.variable }},
+                            'type' => 'select',
+                            'multiple' => true,
+                            'label' => ['text' => __('{{ assocData.property|humanize }} input'), 'class' => 'form-label'],
+                            'class' => 'form-select tom-select multi-select',
+                            'empty' => false
+                        ]) ?>
+                    </div>
     {%~ endfor %}
 {% endif %}
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
-        </div>
+                </div>
+            </div> <!-- /#tabs-datesheet -->
+
+{% for field in fields %}
+{%~ set fieldData = Bake.columnData(field, schema) %}
+{%~ if fieldData.type in ['text'] %}
+            <!-- 2. További adatok fül: {{ field }} -->
+            <div class="tab-pane fade" id="tabs-{{ field|lower }}" role="tabpanel">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <?= $this->Form->control('{{ field }}', [
+                            'type' => 'textarea',
+                            'id' => 'hugerte-{{ field|lower }}',
+                            'label' => false,
+                            'class' => 'form-control hugerte-editor',
+                            'rows' => 14,
+                        ]) ?>
+                    </div>
+                </div>
+            </div> <!-- /#tabs-{{ field|lower }} -->
+{%~ endif %}
+{% endfor %}
+
+{%~ if hasVisibleOrPos == true %}
+            <!-- 3. Settings TAB -->
+            <div class="tab-pane fade" id="tabs-settings" role="tabpanel">
+                <div class="mb-3">
+                    <h4 class="card-title mb-1"><?= __('Beállítások') ?></h4>
+                    <div class="text-secondary small"><?= __('Itt állítható a megjelenés és az alapértelmezett sorrend.') ?></div>
+                </div>
+
+                <div class="row g-3">
+{%~ if hasVisible == true %}
+                    <!-- Láthatóság -->
+                    <div class="col-12">
+                        <div class="col-sm-6 col-md-4">
+                            <label class="form-label"><?= __('Visible') ?></label>
+                            <div class="pt-2">
+                                <?= $this->KvForm->switch('visible', ['label' => __('Active / Visible'), 'size' => '3', 'checked' => true]) ?>
+                            </div>
+                        </div>
+                    </div>
+{%~ endif %}
+{%~ if hasPos == true %}
+                    <!-- Pozíció Spinner -->
+                    <div class="col-12">
+                        <div class="col-sm-6 col-md-4">
+                            <?= $this->KvForm->numberSpinner('pos', ['label' => ['text' => __('Position')], 'min' => -10000, 'max' => 10000, 'step' => '1', 'value' => '1000']) ?>
+                        </div>
+                    </div>
+{%~ endif %}
+                </div>
+            </div> <!-- /#tabs-settings -->
+{%~ endif %}
+
+        </div> <!-- /.tab-content -->
+    </div> <!-- /.card-body -->
+
+    <div class="card-footer text-start">
+        <!-- Mentés gomb -->
+        <?= $this->KvForm->saveButton() ?>
+
+        <!-- Mégse gomb: visszatér a jelenlegi controller index() akciójára -->
+        <?= $this->KvForm->cancelButton() ?>
     </div>
+
+    <?= $this->Form->end() ?>
 </div>
+
+<?php
+$this->Html->css([
+    'KvAdmin./vendor/tom-select/css/tom-select.bootstrap5.min',
+    'KvAdmin./vendor/flatpickr/dist/flatpickr.min',
+], ['block' => 'css']);
+
+$this->Html->script([
+    'KvAdmin./vendor/tom-select/js/tom-select.complete.min',
+    'KvAdmin./vendor/imask/dist/imask.min',
+    'KvAdmin./vendor/hugerte/hugerte.min',
+    'KvAdmin./vendor/flatpickr/dist/flatpickr.min',
+    'KvAdmin./vendor/flatpickr/dist/l10n/hu',
+], ['block' => 'script']);
+?>
+
+<?php
+$this->Html->scriptBlock(
+    "
+    document.addEventListener('DOMContentLoaded', function () {
+        
+        // 1. Telefon maszkolás (Vanilla IMask)
+        const phoneElem = document.getElementById('phone');
+        if (phoneElem && typeof IMask !== 'undefined') {
+            IMask(phoneElem, { mask: '+{36} 00/000-00-00' });
+        }
+
+        // 2. Sima (egyszeres) Select: valódi natív select hatás
+        document.querySelectorAll('.tom-select:not(.multi-select)').forEach(function (element) {
+            if (!element.tomselect && typeof TomSelect !== 'undefined') {
+                new TomSelect(element, {
+                    copyClassesToDropdown: false,
+                    create: false,
+                    allowEmptyOption: true,
+                    maxOptions: null,
+                    openOnFocus: true,
+                    wrapperClass: 'ts-wrapper form-select single'
+                });
+            }
+        });
+
+        // 3. Többes választó (Tags / Multi-select)
+        document.querySelectorAll('.tom-select.multi-select').forEach(function (element) {
+            if (!element.tomselect && typeof TomSelect !== 'undefined') {
+                new TomSelect(element, {
+                    plugins: {
+                        'remove_button': { 
+                            title: 'Eltávolítás' 
+                        },
+                        'clear_button': { 
+                            title: 'Összes törlése' 
+                        }
+                    },
+                    persist: false,
+                    create: false,
+                    mode: 'multi',
+                    copyClassesToDropdown: false,
+                    wrapperClass: 'ts-wrapper form-select multi'
+                });
+            }
+        });
+        
+        // 4. HugeRTE szerkesztő
+        if (typeof hugerte !== 'undefined') {
+            const isDarkMode = document.body.getAttribute('data-bs-theme') === 'dark';
+
+            document.querySelectorAll('.hugerte-editor').forEach(function (editorElement) {
+                hugerte.init({
+                    target: editorElement,
+                    height: 600,
+                    menubar: 'file edit view insert format tools table help',
+                    statusbar: true,
+                    promotion: false,
+                    branding: false,
+                    plugins: [
+                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                        'insertdatetime', 'media', 'table', 'help', 'wordcount', 'codesample'
+                    ],
+                    toolbar: [
+                        'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor backcolor | removeformat',
+                        'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table link image media codesample | code preview fullscreen'
+                    ],
+                    content_style: 'body { font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; color: ' + (isDarkMode ? '#f8fafc' : '#1e293b') + '; background-color: ' + (isDarkMode ? '#1b2431' : '#ffffff') + '; padding: 0.4375rem 0.75rem; margin: 0; } body > *:first-child { margin-top: 0 !important; } p { margin: 0 0 0.5rem 0; }',
+                    font_family_formats: 'Arial=Arial,Helvetica,sans-serif; Segoe UI=Segoe UI,Roboto,Helvetica,sans-serif; Courier New=courier new,courier,monospace; Georgia=georgia,palatino; Times New Roman=times new roman,times;',
+                    font_size_formats: '10px 12px 14px 16px 18px 24px 36px',
+                    skin: isDarkMode ? 'oxide-dark' : 'oxide',
+                    content_css: isDarkMode ? 'dark' : 'default',
+                    setup: function (editor) {
+                        editor.on('change keyup paste', function () {
+                            editor.save();
+                        });
+                        editor.on('init', function () {
+                            editor.getDoc().body.style.fontFamily = 'Arial, sans-serif';
+                            editor.getDoc().body.style.fontSize = '14px';
+                        });
+                    }
+                });
+            });
+
+            // Bootstrap fülváltáskor az editor újrarajzolása
+            document.querySelectorAll('a[data-bs-toggle=\"tab\"]').forEach(function (tabEl) {
+                tabEl.addEventListener('shown.bs.tab', function () {
+                    document.querySelectorAll('.hugerte-editor').forEach(function (el) {
+                        const editor = hugerte.get(el.id);
+                        if (editor) {
+                            editor.execCommand('mceRepaint');
+                        }
+                    });
+                });
+            });
+        }
+
+        // 5. Flatpickr Dátum & Idő (Magyar lokalizáció)
+        if (typeof flatpickr !== 'undefined') {
+            flatpickr('.flatpickr-datetime', {
+                locale: 'hu',
+                enableTime: true,
+                time_24hr: true,
+                dateFormat: 'Y-m-d H:i:S',
+                altInput: true,
+                altFormat: 'Y.m.d. H:i',
+                allowInput: true,
+                disableMobile: true
+            });
+
+            flatpickr('.flatpickr-date', {
+                locale: 'hu',
+                dateFormat: 'Y-m-d',
+                altInput: true,
+                altFormat: 'Y.m.d.',
+                allowInput: true,
+                disableMobile: true
+            });
+
+            flatpickr('.flatpickr-time', {
+                locale: 'hu',
+                enableTime: true,
+                noCalendar: true,
+                time_24hr: true,
+                dateFormat: 'H:i:S',
+                altInput: true,
+                altFormat: 'H:i',
+                allowInput: true,
+                disableMobile: true
+            });
+        }
+
+        // 6. Number Spinner gombok
+        document.body.addEventListener('click', function (e) {
+            const button = e.target.closest('.input-group [data-action]');
+            if (!button) return;
+
+            const group = button.closest('.input-group');
+            const input = group ? group.querySelector('input[type=\"number\"]') : null;
+            if (!input) return;
+
+            const stepStr = input.step && input.step !== 'any' ? input.step : '1';
+            const step = parseFloat(stepStr) || 1;
+            const min = input.min !== '' ? parseFloat(input.min) : -Infinity;
+            const max = input.max !== '' ? parseFloat(input.max) : Infinity;
+            let currentVal = parseFloat(input.value) || 0;
+
+            const decimals = stepStr.includes('.') ? stepStr.split('.')[1].length : 0;
+
+            if (button.dataset.action === 'increment') {
+                currentVal = Math.min(max, currentVal + step);
+            } else if (button.dataset.action === 'decrement') {
+                currentVal = Math.max(min, currentVal - step);
+            }
+
+            input.value = currentVal.toFixed(decimals);
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+
+    });
+    ",
+    ['block' => 'footer']
+);
+?>
