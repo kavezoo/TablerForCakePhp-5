@@ -48,7 +48,7 @@ class UsersTable extends Table
         parent::initialize($config);
 
         $this->setTable('users');
-        $this->setDisplayField('username');
+        $this->setDisplayField('first_name');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
@@ -59,7 +59,7 @@ class UsersTable extends Table
 
         $this->belongsTo('Cities', [
             'foreignKey' => 'city_id',
-            'joinType' => 'INNER',
+            //'joinType' => 'INNER',
         ]);
         $this->belongsTo('Clubs', [
             'foreignKey' => 'club_id',

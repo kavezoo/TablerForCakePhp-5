@@ -46,7 +46,7 @@ class UsersController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (Users) mezői ---
             // 'Users.id',
-            'Users.',
+            'Users.name',
             // --- 2. Kapcsolt (BelongsTo) táblák mezői ---
             // 'Cities.name',
             // 'Clubs.name',
