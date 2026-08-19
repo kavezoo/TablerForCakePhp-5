@@ -53,7 +53,7 @@ $highlight = function (?string $text) use ($search): string {
 
             <!-- Kereső űrlap -->
             <div class="col-12 col-md-auto ms-md-auto">
-                <?= $this->KvForm->search('search', ['controller' => 'Countries', 'action' => 'index', '?' => ['clear' => 'search']]) ?>
+                <?= $this->KvAdmin->search('search', ['controller' => '', 'action' => 'index', '?' => ['clear' => 'search']]) ?>
             </div>
 
         </div>

@@ -25,38 +25,28 @@
      */
     public function edit($id = null)
     {
-        ${{ singularName }} = $this->{{ currentModelName }}->get($id, contain: {{ Bake.exportArray(belongsToMany)|raw }});
+        ${{ singularName }} = $this->fetchTable('{{ currentModelName }}')->get($id, contain: {{ Bake.exportArray(belongsToMany)|raw }});
 {% if Bake.hasPlugin('Authorization') %}
         $this->Authorization->authorize(${{ singularName }});
 {% endif %}
-		$session = $this->getRequest()->getSession();
-		$session->write('LastViewed.${{ singularName }}_id', (int) $id);
-		$session->write('ScrollTo.${{ singularName }}_id', (int) $id);
+        $session = $this->getRequest()->getSession();
+        $session->write('LastViewed.{{ singularName }}_id', (int)$id);
+        $session->write('ScrollTo.{{ singularName }}_id', (int)$id);
 
-		${{ singularName }} = $this->{{ currentModelName }}->get($id, contain: {{ Bake.exportArray(belongsToMany)|raw }});
-		//dd(${{ singularName }}->toArray());
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $data = $this->getRequest()->getData();
+            ${{ singularName }} = $this->fetchTable('{{ currentModelName }}')->patchEntity(${{ singularName }}, $data);
+            if ($this->fetchTable('{{ currentModelName }}')->save(${{ singularName }})) {
+                $this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'A(z) {{ singularHumanName|lower }} adatai sikeresen mentésre kerültek.'));
 
-		if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-			$data = $this->getRequest()->getData();
-			//debug($data);
-			${{ singularName }} = $this->{{ currentModelName }}->patchEntity(${{ singularName }}, $data);
-			//dd(${{ singularName }}->toArray());
-			//dd(${{ singularName }}->getErrors());
-			if ($this->{{ currentModelName }}->save(${{ singularName }})) {
-				//dd(${{ singularName }}->toArray());
-				//$this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {{ singularHumanName|lower }} has been saved.'));
-				$this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'A(z) {{ singularHumanName|lower }} adatai sikeresen mentésre kerültek.'));
-
-                $redirectParams = $session->read('Paging.{{ currentModelName }}.params') ?? [];
+                $redirectParams = (array)$session->read('Paging.{{ currentModelName }}.params');
 
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,
                 ]);
             }
-			//$this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {{ singularHumanName|lower }} could not be saved. Please, try again.'));
-			$this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'A(z) {{ singularHumanName|lower }} mentése nem sikerült. Kérem, nézze át és javítsa az azadatokat majd mentsen újra.'));
-            //$this->Flash->error(__('A mentés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'A(z) {{ singularHumanName|lower }} mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
         }
 {% for assoc in belongsTo|merge(belongsToMany) %}
     {%~ set otherName = Bake.getAssociatedTableAlias(modelObj, assoc) %}
@@ -64,8 +54,8 @@
     {%~ if otherPlural == singularName %}
         {%~ set otherPlural = otherPlural ~ 'List' %}
     {%~ endif %}
-        ${{ otherPlural }} = $this->{{ currentModelName }}->{{ otherName }}->find('list', limit: 200, order: ['pos' => 'asc', 'name' => 'asc'], conditions: ['visible' => true])->all();
+        ${{ otherPlural }} = $this->fetchTable('{{ currentModelName }}')->{{ otherName }}->find('list', limit: 200)->all();
     {%~ set compact = compact|merge(["'#{otherPlural}'"]) %}
 {% endfor %}
         $this->set(compact({{ compact|join(', ')|raw }}));
-	}
+    }

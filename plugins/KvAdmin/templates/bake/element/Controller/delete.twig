@@ -13,6 +13,7 @@
  * @license       https://www.opensource.org/licenses/mit-license.php MIT License
  */
 #}
+{% set pkField = primaryKey[0] ?? 'id' %}
     /**
      * Delete method
      *
@@ -22,37 +23,49 @@
      */
     public function delete($id = null)
     {
-       $this->getRequest()->allowMethod(['post', 'delete']);
-        $session = $this->getRequest()->getSession();
-
-        $session->delete('LastViewed.${{ singularName }}_id');
-
-        $neighbor = $this->{{ currentModelName }}->find()
-            ->select(['id'])
-            ->where(['id !=' => (int) $id])
-            ->orderByDesc('id')
-            ->first();
-
-        if ($neighbor) {
-            $session->write('ScrollTo.${{ singularName }}_id', (int) $neighbor->id);
-        }
-
-		${{ singularName }} = $this->{{ currentModelName }}->get($id);
+        $this->getRequest()->allowMethod(['post', 'delete']);
+        
+        $table = $this->fetchTable('{{ currentModelName }}');
+        ${{ singularName }} = $table->get($id);
 {% if Bake.hasPlugin('Authorization') %}
         $this->Authorization->authorize(${{ singularName }});
 {% endif %}
-        if ($this->{{ currentModelName }}->delete(${{ singularName }})) {
-            //$this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {{ singularHumanName|lower }} has been deleted.'));
-            $this->Flash->success(__('A település sikeresen törölve lett.'));
-        } else {
-            //$this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {{ singularHumanName|lower }} could not be deleted. Please, try again.'));
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+
+        $session = $this->getRequest()->getSession();
+        $session->delete('LastViewed.{{ singularName }}_id');
+
+        // Törlés utáni visszagörgetés: megkeressük a közvetlenül előtte lévő rekordot
+        $neighbor = $table->find()
+            ->select(['{{ pkField }}'])
+            ->where(['{{ pkField }} <' => (int)$id])
+            ->orderByDesc('{{ pkField }}')
+            ->first();
+
+        // Ha nincs előtte lévő rekord (első volt), megpróbáljuk a következőt keresni
+        if (!$neighbor) {
+            $neighbor = $table->find()
+                ->select(['{{ pkField }}'])
+                ->where(['{{ pkField }} >' => (int)$id])
+                ->orderByAsc('{{ pkField }}')
+                ->first();
         }
 
-        $redirectParams = $session->read('Paging.{{ currentModelName }}.params') ?? [];
+        if ($neighbor) {
+            $session->write('ScrollTo.{{ singularName }}_id', (int)$neighbor->{{ pkField }});
+        } else {
+            $session->delete('ScrollTo.{{ singularName }}_id');
+        }
+
+        if ($table->delete(${{ singularName }})) {
+            $this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'A(z) {{ singularHumanName|lower }} sikeresen törölve lett.'));
+        } else {
+            $this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'A törlés sikertelen. Kérjük, próbálja újra.'));
+        }
+
+        $redirectParams = (array)$session->read('Paging.{{ currentModelName }}.params');
 
         return $this->redirect([
             'action' => 'index',
             '?' => $redirectParams,
         ]);
-	}
+    }

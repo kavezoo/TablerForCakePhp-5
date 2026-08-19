@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace KvAdmin\View\Helper;
 
 use Cake\I18n\DateTime;
+use Cake\I18n\I18n;
 use Cake\View\Helper;
+use NumberFormatter;
 
 /**
  * @property \Cake\View\Helper\FormHelper $Form
@@ -13,7 +15,7 @@ use Cake\View\Helper;
  */
 class KvFormHelper extends Helper
 {
-    protected array $helpers = ['Form', 'Html', 'Icon'];
+	protected array $helpers = ['Form', 'Html', 'Icon', 'Url'];
 
     /**
      * Dátum és időpont választó
@@ -279,8 +281,256 @@ class KvFormHelper extends Helper
 	}
 	
 	
+/*
+	class SearchHelper extends Helper
+	{
+		protected array $helpers = ['Form'];
+
+		public function inputSearch(string $name = 'search', ?string $value = null, array $options = []): string
+		{
+			$defaults = [
+				'id' => 'advanced-table-search',
+				'class' => 'form-control',
+				'placeholder' => __('Search...'),
+				'value' => $value ?? '',
+				'autocomplete' => 'off',
+			];
+
+			return $this->Form->text($name, array_merge($defaults, $options));
+		}
+	}	
+*/
+	
+
+
+
+	/**
+     * Kereső input mező generálása
+     */
+    public function input(string $name = 'search', ?string $value = null, array $options = []): string
+    {
+        $defaults = [
+            'id' => 'advanced-table-search',
+            'class' => 'form-control',
+            'placeholder' => __('Search...'),
+            'value' => $value ?? (string)$this->getView()->getRequest()->getQuery($name, ''),
+            'autocomplete' => 'off',
+        ];
+
+        return $this->Form->text($name, array_merge($defaults, $options));
+    }
+
+    /**
+     * Keresés törlése (X) gomb generálása
+     */
+    public function clearButton(array|string|null $url = null, array $options = []): string
+    {
+        $url = $url ?? [
+            'controller' => $this->getView()->getRequest()->getParam('controller'),
+            'action' => 'index',
+            '?' => ['clear' => 'search'],
+        ];
+
+        $defaultOptions = [
+            'escape' => false,
+            'id' => 'btn-clear-search',
+            'class' => 'btn-search-clear text-muted text-decoration-none',
+            'title' => __('Keresés törlése és összes rekord mutatása'),
+            'data-bs-toggle' => 'tooltip',
+            'data-bs-html' => 'true',
+            'data-bs-placement' => 'top',
+        ];
+
+        $link = $this->Html->link(
+            $this->Icon->outline('x'),
+            $url,
+            array_merge($defaultOptions, $options)
+        );
+
+        return '<span class="input-group-text pe-2 py-0 d-flex align-items-center">' . $link . '</span>';
+    }
+
+    /**
+     * Gyorsbillentyű (ctrl + K) badge elem
+     */
+    public function shortcutBadge(string $keyCombo = 'ctrl + K'): string
+    {
+        return '<span class="input-group-text pe-2" style="border-left-width: 0px; border-left-style: none;">'
+            . '<kbd id="search-shortcut-hint" class="search-kbd-badge">' . h($keyCombo) . '</kbd>'
+            . '</span>';
+    }
+
+    /**
+     * Teljes kereső űrlap generálása a rendezési mezőkkel és input-group-pal együtt
+     */
+    public function search(string $name = 'search', array|string|null $clearUrl = null, array $options = []): string
+    {
+        $request = $this->getView()->getRequest();
+        $searchValue = (string)$request->getQuery($name, '');
+
+        $out = $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query']]);
+
+        // Rendezési paraméterek megtartása (ha vannak)
+        $sort = $request->getQuery('sort');
+        $direction = $request->getQuery('direction');
+        if (!empty($sort)) {
+            $out .= $this->Form->hidden('sort', ['value' => $sort]);
+            $out .= $this->Form->hidden('direction', ['value' => $direction]);
+        }
+
+        // Input group konténer felépítése
+        $out .= '<div class="input-group input-group-flat search-input-group w-100 position-relative">';
+        
+        // Bal oldali kereső ikon
+        $out .= '<span class="input-group-text search-box-left-side">' . $this->Icon->outline('search') . '</span>';
+        
+        // Input mező
+        $out .= $this->input($name, $searchValue, $options['input'] ?? []);
+
+        // Jobb oldal: törlés gomb vagy billentyűkombináció jelvény
+        if (!empty($searchValue)) {
+            $out .= $this->clearButton($clearUrl, $options['clear'] ?? []);
+        } else {
+            $out .= $this->shortcutBadge($options['shortcut'] ?? 'ctrl + K');
+        }
+
+        $out .= '</div>';
+        $out .= $this->Form->end();
+
+        return $out;
+    }
+
+
+/**
+     * Visszaadja az aktuális locale pénznem adatait
+     * 
+     * @param string|null $locale Ha null, az I18n::getLocale() értéket használja (pl. 'hu_HU', 'en_US')
+     * @return array{symbol: string, position: string, has_space: bool, currency_code: string}
+     */
+    public function getLocaleCurrencyInfo(?string $locale = null): array
+    {
+        $locale = $locale ?? I18n::getLocale();
+        $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+
+        $symbol = $formatter->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
+        $currencyCode = $formatter->getTextAttribute(NumberFormatter::CURRENCY_CODE);
+        $pattern = $formatter->getPattern();
+
+        // Pozíció vizsgálata a formátum mintában (¤ jelöli a valutaszimbólum helyét)
+        $isPrefix = str_starts_with($pattern, '¤');
+        $position = $isPrefix ? 'prefix' : 'postfix';
+
+        // Szóköz vizsgálata a szimbólum és a számjegyek között
+        $hasSpace = str_contains($pattern, '¤ ') || str_contains($pattern, ' ¤') ||
+                    str_contains($pattern, "¤\u{00A0}") || str_contains($pattern, "\u{00A0}¤");
+
+        return [
+            'symbol' => $symbol,
+            'position' => $position,
+            'has_space' => $hasSpace,
+            'currency_code' => $currencyCode,
+        ];
+    }	
 	
 	
 	
+	
+/**
+     * Megtekintés (View) gomb
+     */
+    public function actionView(array|string $url, array $options = []): string
+    {
+        $defaultOptions = [
+            'escape' => false,
+            'class' => 'btn btn-icon btn-action-default',
+            'data-bs-toggle' => 'tooltip',
+            'data-bs-placement' => 'top',
+            'title' => __('View'),
+        ];
+
+        return $this->Html->link(
+            $this->Icon->outline('eye'),
+            $url,
+            array_merge($defaultOptions, $options)
+        );
+    }
+
+    /**
+     * Szerkesztés (Edit) gomb
+     */
+    public function actionEdit(array|string $url, array $options = []): string
+    {
+        $defaultOptions = [
+            'escape' => false,
+            'class' => 'btn btn-icon btn-action-default',
+            'data-bs-toggle' => 'tooltip',
+            'data-bs-placement' => 'top',
+            'title' => __('Edit'),
+        ];
+
+        return $this->Html->link(
+            $this->Icon->outline('edit'),
+            $url,
+            array_merge($defaultOptions, $options)
+        );
+    }
+
+    /**
+     * Törlés (Delete) gomb modal indítóval
+     */
+    public function actionDelete(
+        array|string $url,
+        string $itemName = '',
+        string $targetModal = '#delete-modal',
+        array $options = []
+    ): string {
+        $deleteUrl = is_array($url) ? $this->Url->build($url) : $url;
+
+        $button = sprintf(
+            '<button type="button" data-name="%s" data-url="%s" class="%s" data-bs-toggle="modal" data-bs-target="%s">%s</button>',
+            h($itemName),
+            $deleteUrl,
+            $options['class'] ?? 'btn btn-icon btn-action-danger',
+            $targetModal,
+            $this->Icon->outline('x')
+        );
+
+        return sprintf(
+            '<span title="%s" data-bs-toggle="tooltip" data-bs-placement="top">%s</span>',
+            h(__('Delete')),
+            $button
+        );
+    }
+
+    /**
+     * Komplett műveleti gomblista (View + Edit + Delete) TD wrapperrel
+     */
+	public function actions(
+        object $entity,
+        string $displayField = 'name',
+        array $buttons = ['view', 'edit', 'delete'],
+        string $targetModal = '#delete-modal'
+    ): string {
+        $id = $entity->id ?? null;
+        $itemName = (string)($entity->{$displayField} ?? '');
+
+        $html = '<td class="actions">';
+        $html .= '<div class="btn-list flex-nowrap align-items-center">';
+
+        if (in_array('view', $buttons)) {
+            $html .= $this->actionView(['action' => 'view', $id]);
+        }
+        if (in_array('edit', $buttons)) {
+            $html .= $this->actionEdit(['action' => 'edit', $id]);
+        }
+        if (in_array('delete', $buttons)) {
+            $html .= $this->actionDelete(['action' => 'delete', $id], $itemName, $targetModal);
+        }
+
+        $html .= '</div>';
+        $html .= '</td>';
+
+        return $html;
+    }
 	
 }

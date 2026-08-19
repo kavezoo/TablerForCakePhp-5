@@ -8,8 +8,11 @@
  */
 use Cake\I18n\I18n;
 
-$showCreated = false;
-$showModified = false;
+$showId 			= false;
+$showCounterFields 	= false;
+$showVisible 		= false;
+$showCreated 		= false;
+$showModified 		= false;
 
 $this->assign('title', __('Cities'));
 $this->element('KvAdmin.pagination_templates');
@@ -115,15 +118,6 @@ $highlight = function (?string $text) use ($search): string {
 				<?= $this->Form->end() ?>
 			</div>
 
-
-
-
-
-
-
-
-
-
         </div>
     </div>
 
@@ -131,7 +125,10 @@ $highlight = function (?string $text) use ($search): string {
         <table class="table table-vcenter card-table table-hover table-sm table-bordered-vertical">
             <thead>
                 <tr>
+<?php if(isset($showId) && $showId){ ?>
+
                     <th class="id"><?= $this->Paginator->sort('id', '#') ?></th>
+<?php } ?>
                     <th class="string"><?= $this->Paginator->sort('name', __('Név')) ?></th>
                     <th class="text-center"><?= $this->Paginator->sort('zip', __('Irányítószám')) ?></th>
                     <th class="number"><?= $this->Paginator->sort('zip', __('Number')) ?></th>
@@ -139,14 +136,19 @@ $highlight = function (?string $text) use ($search): string {
                     <th class="string"><?= $this->Paginator->sort('shortname', __('Rövid név')) ?></th>
                     <th class="string link"><?= $this->Paginator->sort('county_id', __('Megye')) ?></th>
                     <th class="string link"><?= $this->Paginator->sort('country_id', __('Ország')) ?></th>
+<?php if(isset($showCounterFields) && $showCounterFields){ ?>
+
                     <th class="integer count"><?= $this->Paginator->sort('club_count', __('Clubs')) ?></th>
-                    
+<?php } ?>
+
 					<th class="datetime"><?= $this->Paginator->sort('datumido') ?></th>
 					<th class="date"><?= $this->Paginator->sort('datum') ?></th>
 					<th class="time"><?= $this->Paginator->sort('ido') ?></th>
-					
+<?php if(isset($showVisible) && $showVisible){ ?>
+
                     <th class="boolean"><?= $this->Paginator->sort('is_active', __('Aktív')) ?></th>
-<?php if($showCreated || $showModified){ ?>
+<?php } ?>
+<?php if(isset($showCreated) && $showCreated || isset($showModified) && $showModified){ ?>
 
                     <th class="datetime">
 <?php 	if($showCreated){ ?>
@@ -178,7 +180,10 @@ $highlight = function (?string $text) use ($search): string {
                             id="row-<?= (int)$city->id ?>" 
                             class="<?= $isLastViewed ? 'last-viewed' : '' ?>"
                         >
+<?php if(isset($showCounterFields) && $showCounterFields){ ?>
                             <td class="id"><?= h($city->id) ?></td>
+<?php } ?>
+
                             <td class="font-weight-medium"><?= h($city->name) ?></td>
                             <td class="text-center"><?= h($city->zip) ?></td>
                             <td class="number"><?= h($city->zip) ?></td>
@@ -221,10 +226,11 @@ $highlight = function (?string $text) use ($search): string {
                                 ) : '' ?>
                             </td>
 
+<?php if(isset($showCounterFields) && $showCounterFields){ ?>
                             <td class="text-center">
                                 <?= $this->Number->format($city->club_count ?? 0) ?>
                             </td>
-
+<?php } ?>
 
 
                             <td class="text-center">
@@ -237,10 +243,11 @@ $highlight = function (?string $text) use ($search): string {
                                 <?= h($city->ido) ?>
                             </td>
 
-
+<?php if(isset($showVisible) && $showVisible){ ?>
                             <td class="boolean">
                                 <?= $this->SystemIcon->boolean($city->is_active ?? true) ?>
                             </td>
+<?php } ?>
                             
                             
                                 

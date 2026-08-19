@@ -21,25 +21,22 @@
      */
     public function add()
     {
-        ${{ singularName }} = $this->{{ currentModelName }}->newEmptyEntity();
+        ${{ singularName }} = $this->fetchTable('{{ currentModelName }}')->newEmptyEntity();
 {% if Bake.hasPlugin('Authorization') %}
         $this->Authorization->authorize(${{ singularName }});
 {% endif %}
-        if ($this->request->is('post')) {
-			$data = $this->request->getData();
-			// dd($data);
-            ${{ singularName }} = $this->{{ currentModelName }}->patchEntity(${{ singularName }}, $data);
-			// dd(${{ singularName }}->toArray());
-			// dd(${{ singularName }}->getErrors());
-            if ($this->{{ currentModelName }}->save(${{ singularName }})) {
-				// dd(${{ singularName }}->toArray());
+        if ($this->getRequest()->is('post')) {
+            $data = $this->getRequest()->getData();
+            ${{ singularName }} = $this->fetchTable('{{ currentModelName }}')->patchEntity(${{ singularName }}, $data);
+            if ($this->fetchTable('{{ currentModelName }}')->save(${{ singularName }})) {
                 $this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {{ singularHumanName|lower }} has been saved.'));
+
+                // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
+                $this->getRequest()->getSession()->write('ScrollTo.{{ singularName }}_id', ${{ singularName }}->{{ singularName }}_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            //$this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {{ singularHumanName|lower }} could not be saved. Please, try again.'));
-            //$this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'A(z) {{ singularHumanName|lower }} adatait nem sikerült menteni. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
-			$this->Flash->error('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.');
+            $this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
         }
 {% set associations = Bake.aliasExtractor(modelObj, 'BelongsTo') %}
 {% set associations = associations|merge(Bake.aliasExtractor(modelObj, 'BelongsToMany')) %}
@@ -50,9 +47,8 @@
     {%~ if otherPlural == singularName %}
         {%~ set otherPlural = otherPlural ~ 'List' %}
     {%~ endif %}
-		${{ otherPlural }} = $this->{{ currentModelName }}->{{ otherName }}->find('list', limit: 200, order: ['pos' => 'asc', 'name' => 'asc'], conditions: ['visible' => true])->all();
+        ${{ otherPlural }} = $this->fetchTable('{{ currentModelName }}')->{{ otherName }}->find('list', limit: 200)->all();
     {%~ set compact = compact|merge(["'#{otherPlural}'"]) %}
 {% endfor %}
         $this->set(compact({{ compact|join(', ')|raw }}));
     }
-
