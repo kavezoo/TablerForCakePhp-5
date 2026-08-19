@@ -4,53 +4,59 @@
  * @var \App\Model\Entity\Language $language
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Language'), ['action' => 'edit', $language->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Language'), ['action' => 'delete', $language->id], ['confirm' => __('Are you sure you want to delete # {0}?', $language->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Languages'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Language'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+<div class="card mb-3">
+    <div class="card-header pe-3">
+        <div class="row w-full align-items-center gy-2 gy-md-0">
+            <div class="col">
+                <h3 class="card-title mb-0"><?= h($language->name) ?></h3>
+            </div>
+            <div class="col-12 col-md-auto ms-md-auto">
+                <div class="btn-list">
+                    <?= $this->KvForm->actionEdit(['action' => 'edit', $language->id]) ?>
+                    <?= $this->KvForm->actionDelete(['action' => 'delete', $language->id], (string)($language->name ?? '')) ?>
+                </div>
+            </div>
         </div>
-    </aside>
-    <div class="column column-80">
-        <div class="languages view content">
-            <h3><?= h($language->name) ?></h3>
-            <table>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table table-sm table-bordered-vertical">
+            <tbody>
                 <tr>
-                    <th><?= __('Code') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Code') ?></th>
                     <td><?= h($language->code) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Name') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Name') ?></th>
                     <td><?= h($language->name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Endonim Name') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Endonim Name') ?></th>
                     <td><?= h($language->endonim_name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Id') ?></th>
                     <td><?= $this->Number->format($language->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Pos') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Pos') ?></th>
                     <td><?= $this->Number->format($language->pos) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Created') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Created') ?></th>
                     <td><?= h($language->created) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Modified') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Modified') ?></th>
                     <td><?= h($language->modified) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Visible') ?></th>
-                    <td><?= $language->visible ? __('Yes') : __('No'); ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Visible') ?></th>
+                    <td><?= $language->visible ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
                 </tr>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
 </div>
+
+
+<?= $this->element('KvAdmin.modal-delete') ?>

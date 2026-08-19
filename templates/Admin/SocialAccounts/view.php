@@ -4,83 +4,85 @@
  * @var \App\Model\Entity\SocialAccount $socialAccount
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Social Account'), ['action' => 'edit', $socialAccount->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Social Account'), ['action' => 'delete', $socialAccount->id], ['confirm' => __('Are you sure you want to delete # {0}?', $socialAccount->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Social Accounts'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Social Account'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-80">
-        <div class="socialAccounts view content">
-            <h3><?= h($socialAccount->provider) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= h($socialAccount->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('User') ?></th>
-                    <td><?= $socialAccount->hasValue('user') ? $this->Html->link($socialAccount->user->first_name, ['controller' => 'Users', 'action' => 'view', $socialAccount->user->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Provider') ?></th>
-                    <td><?= h($socialAccount->provider) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Username') ?></th>
-                    <td><?= h($socialAccount->username) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Reference') ?></th>
-                    <td><?= h($socialAccount->reference) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Link') ?></th>
-                    <td><?= h($socialAccount->link) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Token Secret') ?></th>
-                    <td><?= h($socialAccount->token_secret) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Token Expires') ?></th>
-                    <td><?= h($socialAccount->token_expires) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($socialAccount->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($socialAccount->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Active') ?></th>
-                    <td><?= $socialAccount->active ? __('Yes') : __('No'); ?></td>
-                </tr>
-            </table>
-            <div class="text">
-                <strong><?= __('Avatar') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($socialAccount->avatar)); ?>
-                </blockquote>
+<div class="card mb-3">
+    <div class="card-header pe-3">
+        <div class="row w-full align-items-center gy-2 gy-md-0">
+            <div class="col">
+                <h3 class="card-title mb-0"><?= h($socialAccount->provider) ?></h3>
             </div>
-            <div class="text">
-                <strong><?= __('Description') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($socialAccount->description)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Data') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($socialAccount->data)); ?>
-                </blockquote>
+            <div class="col-12 col-md-auto ms-md-auto">
+                <div class="btn-list">
+                    <?= $this->KvForm->actionEdit(['action' => 'edit', $socialAccount->id]) ?>
+                    <?= $this->KvForm->actionDelete(['action' => 'delete', $socialAccount->id], (string)($socialAccount->provider ?? '')) ?>
+                </div>
             </div>
         </div>
     </div>
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table table-sm table-bordered-vertical">
+            <tbody>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Id') ?></th>
+                    <td><?= h($socialAccount->id) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('User') ?></th>
+                    <td><?= $socialAccount->hasValue('user') ? $this->Html->link(h($socialAccount->user->first_name), ['controller' => 'Users', 'action' => 'view', $socialAccount->user->id], ['class' => 'text-reset text-decoration-none fw-bold']) : '' ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Provider') ?></th>
+                    <td><?= h($socialAccount->provider) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Username') ?></th>
+                    <td><?= h($socialAccount->username) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Reference') ?></th>
+                    <td><?= h($socialAccount->reference) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Link') ?></th>
+                    <td><?= h($socialAccount->link) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Token Secret') ?></th>
+                    <td><?= h($socialAccount->token_secret) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Token Expires') ?></th>
+                    <td><?= h($socialAccount->token_expires) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Created') ?></th>
+                    <td><?= h($socialAccount->created) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Modified') ?></th>
+                    <td><?= h($socialAccount->modified) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Active') ?></th>
+                    <td><?= $socialAccount->active ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <h4 class="m-0 mb-2"><?= __('Avatar') ?></h4>
+            <div class="text-secondary"><?= $this->Text->autoParagraph(h($socialAccount->avatar)); ?></div>
+        </div>
+        <div class="mb-3">
+            <h4 class="m-0 mb-2"><?= __('Description') ?></h4>
+            <div class="text-secondary"><?= $this->Text->autoParagraph(h($socialAccount->description)); ?></div>
+        </div>
+        <div class="mb-3">
+            <h4 class="m-0 mb-2"><?= __('Data') ?></h4>
+            <div class="text-secondary"><?= $this->Text->autoParagraph(h($socialAccount->data)); ?></div>
+        </div>
+    </div>
 </div>
+
+
+<?= $this->element('KvAdmin.modal-delete') ?>

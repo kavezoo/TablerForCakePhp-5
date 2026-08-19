@@ -4,156 +4,235 @@
  * @var \App\Model\Entity\User $user
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+<div class="card mb-3">
+    <div class="card-header pe-3">
+        <div class="row w-full align-items-center gy-2 gy-md-0">
+            <div class="col">
+                <h3 class="card-title mb-0"><?= h($user->first_name) ?></h3>
+            </div>
+            <div class="col-12 col-md-auto ms-md-auto">
+                <div class="btn-list">
+                    <?= $this->KvForm->actionEdit(['action' => 'edit', $user->id]) ?>
+                    <?= $this->KvForm->actionDelete(['action' => 'delete', $user->id], (string)($user->first_name ?? '')) ?>
+                </div>
+            </div>
         </div>
-    </aside>
-    <div class="column column-80">
-        <div class="users view content">
-            <h3><?= h($user->first_name) ?></h3>
-            <table>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table table-sm table-bordered-vertical">
+            <tbody>
                 <tr>
-                    <th><?= __('Id') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Id') ?></th>
                     <td><?= h($user->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('City') ?></th>
-                    <td><?= $user->hasValue('city') ? $this->Html->link($user->city->name, ['controller' => 'Cities', 'action' => 'view', $user->city->id]) : '' ?></td>
+                    <th class="w-1 text-nowrap"><?= __('City') ?></th>
+                    <td><?= $user->hasValue('city') ? $this->Html->link(h($user->city->name), ['controller' => 'Cities', 'action' => 'view', $user->city->id], ['class' => 'text-reset text-decoration-none fw-bold']) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Club') ?></th>
-                    <td><?= $user->hasValue('club') ? $this->Html->link($user->club->name, ['controller' => 'Clubs', 'action' => 'view', $user->club->id]) : '' ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Club') ?></th>
+                    <td><?= $user->hasValue('club') ? $this->Html->link(h($user->club->name), ['controller' => 'Clubs', 'action' => 'view', $user->club->id], ['class' => 'text-reset text-decoration-none fw-bold']) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Username') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Username') ?></th>
                     <td><?= h($user->username) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Email') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Email') ?></th>
                     <td><?= h($user->email) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('First Name') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('First Name') ?></th>
                     <td><?= h($user->first_name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Last Name') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Last Name') ?></th>
                     <td><?= h($user->last_name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Phone') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Phone') ?></th>
                     <td><?= h($user->phone) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Avatar') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Avatar') ?></th>
                     <td><?= h($user->avatar) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Api Token') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Api Token') ?></th>
                     <td><?= h($user->api_token) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Secret') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Secret') ?></th>
                     <td><?= h($user->secret) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Role') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Role') ?></th>
                     <td><?= h($user->role) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Membership Status') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Membership Status') ?></th>
                     <td><?= h($user->membership_status) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Login Token') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Login Token') ?></th>
                     <td><?= h($user->login_token) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Token Expires') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Token Expires') ?></th>
                     <td><?= h($user->token_expires) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Activation Date') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Activation Date') ?></th>
                     <td><?= h($user->activation_date) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Tos Date') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Tos Date') ?></th>
                     <td><?= h($user->tos_date) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Membership Joined Date') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Membership Joined Date') ?></th>
                     <td><?= h($user->membership_joined_date) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Club Membership Fee Date') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Club Membership Fee Date') ?></th>
                     <td><?= h($user->club_membership_fee_date) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('National Membership Fee Date') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('National Membership Fee Date') ?></th>
                     <td><?= h($user->national_membership_fee_date) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Created') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Created') ?></th>
                     <td><?= h($user->created) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Modified') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Modified') ?></th>
                     <td><?= h($user->modified) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Last Login') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Last Login') ?></th>
                     <td><?= h($user->last_login) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Lockout Time') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Lockout Time') ?></th>
                     <td><?= h($user->lockout_time) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Login Token Date') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Login Token Date') ?></th>
                     <td><?= h($user->login_token_date) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Secret Verified') ?></th>
-                    <td><?= $user->secret_verified ? __('Yes') : __('No'); ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Secret Verified') ?></th>
+                    <td><?= $user->secret_verified ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Active') ?></th>
-                    <td><?= $user->active ? __('Yes') : __('No'); ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Active') ?></th>
+                    <td><?= $user->active ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Enabled') ?></th>
-                    <td><?= $user->enabled ? __('Yes') : __('No'); ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Enabled') ?></th>
+                    <td><?= $user->enabled ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Is Superuser') ?></th>
-                    <td><?= $user->is_superuser ? __('Yes') : __('No'); ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Is Superuser') ?></th>
+                    <td><?= $user->is_superuser ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Application Notified') ?></th>
-                    <td><?= $user->application_notified ? __('Yes') : __('No'); ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Application Notified') ?></th>
+                    <td><?= $user->application_notified ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Token Send Requested') ?></th>
-                    <td><?= $user->token_send_requested ? __('Yes') : __('No'); ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Token Send Requested') ?></th>
+                    <td><?= $user->token_send_requested ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
                 </tr>
-            </table>
-            <div class="text">
-                <strong><?= __('Additional Data') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($user->additional_data)); ?>
-                </blockquote>
-            </div>
-            <div class="related">
-                <h4><?= __('Related Competitions') ?></h4>
-                <?php if (!empty($user->competitions)) : ?>
-                <div class="table-responsive">
-                    <table>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <h4 class="m-0 mb-2"><?= __('Additional Data') ?></h4>
+            <div class="text-secondary"><?= $this->Text->autoParagraph(h($user->additional_data)); ?></div>
+        </div>
+    </div>
+</div>
+
+<?php
+$hasRelatedRecords = false;
+?>
+<?php if (!empty($user->competitions)) { $hasRelatedRecords = true; } ?>
+<?php if (!empty($user->failed_password_attempts)) { $hasRelatedRecords = true; } ?>
+<?php if (!empty($user->social_accounts)) { $hasRelatedRecords = true; } ?>
+<?php if (!empty($user->staffs)) { $hasRelatedRecords = true; } ?>
+<?php if ($hasRelatedRecords): ?>
+<div class="card">
+    <div class="card-header">
+        <?php $isFirstRelatedTab = true; ?>
+        <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+            <?php if (!empty($user->competitions)): ?>
+            <li class="nav-item" role="presentation">
+                <button
+                    class="nav-link<?= $isFirstRelatedTab ? ' active' : '' ?>"
+                    data-bs-toggle="tab"
+                    data-bs-target="#related-competitions"
+                    type="button"
+                    role="tab"
+                >
+                    <?= __('Competitions') ?>
+                </button>
+            </li>
+            <?php $isFirstRelatedTab = false; ?>
+            <?php endif; ?>
+            <?php if (!empty($user->failed_password_attempts)): ?>
+            <li class="nav-item" role="presentation">
+                <button
+                    class="nav-link<?= $isFirstRelatedTab ? ' active' : '' ?>"
+                    data-bs-toggle="tab"
+                    data-bs-target="#related-failed_password_attempts"
+                    type="button"
+                    role="tab"
+                >
+                    <?= __('Failed Password Attempts') ?>
+                </button>
+            </li>
+            <?php $isFirstRelatedTab = false; ?>
+            <?php endif; ?>
+            <?php if (!empty($user->social_accounts)): ?>
+            <li class="nav-item" role="presentation">
+                <button
+                    class="nav-link<?= $isFirstRelatedTab ? ' active' : '' ?>"
+                    data-bs-toggle="tab"
+                    data-bs-target="#related-social_accounts"
+                    type="button"
+                    role="tab"
+                >
+                    <?= __('Social Accounts') ?>
+                </button>
+            </li>
+            <?php $isFirstRelatedTab = false; ?>
+            <?php endif; ?>
+            <?php if (!empty($user->staffs)): ?>
+            <li class="nav-item" role="presentation">
+                <button
+                    class="nav-link<?= $isFirstRelatedTab ? ' active' : '' ?>"
+                    data-bs-toggle="tab"
+                    data-bs-target="#related-staffs"
+                    type="button"
+                    role="tab"
+                >
+                    <?= __('Staffs') ?>
+                </button>
+            </li>
+            <?php $isFirstRelatedTab = false; ?>
+            <?php endif; ?>
+        </ul>
+    </div>
+    <div class="card-body tab-content">
+        <?php $isFirstRelatedPane = true; ?>
+        <?php if (!empty($user->competitions)): ?>
+        <div class="tab-pane<?= $isFirstRelatedPane ? ' active show' : '' ?>" id="related-competitions" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table table-vcenter card-table table-hover table-sm table-bordered-vertical">
+                    <thead>
                         <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Organizing Club Id') ?></th>
@@ -204,9 +283,11 @@
                             <th><?= __('Pos') ?></th>
                             <th><?= __('Created') ?></th>
                             <th><?= __('Modified') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th class="actions w-1"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($user->competitions as $competition) : ?>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($user->competitions as $competition): ?>
                         <tr>
                             <td><?= h($competition->id) ?></td>
                             <td><?= h($competition->organizing_club_id) ?></td>
@@ -258,60 +339,58 @@
                             <td><?= h($competition->created) ?></td>
                             <td><?= h($competition->modified) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Competitions', 'action' => 'view', $competition->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Competitions', 'action' => 'edit', $competition->id]) ?>
-                                <?= $this->Form->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'Competitions', 'action' => 'delete', $competition->id],
-                                    [
-                                        'method' => 'delete',
-                                        'confirm' => __('Are you sure you want to delete # {0}?', $competition->id),
-                                    ]
-                                ) ?>
+                                <div class="btn-list flex-nowrap align-items-center">
+                                    <?= $this->KvForm->actionView(['action' => 'view', $user->id], ['title' => __('Parent')]) ?>
+                                    <?= $this->KvForm->actionView(['controller' => 'Competitions', 'action' => 'view', $competition->id], ['title' => __('View')]) ?>
+                                    <?= $this->KvForm->actionEdit(['controller' => 'Competitions', 'action' => 'edit', $competition->id], ['title' => __('Edit')]) ?>
+                                    <?= $this->KvForm->actionDelete(['controller' => 'Competitions', 'action' => 'delete', $competition->id], (string)($competition->id)) ?>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
-            <div class="related">
-                <h4><?= __('Related Failed Password Attempts') ?></h4>
-                <?php if (!empty($user->failed_password_attempts)) : ?>
-                <div class="table-responsive">
-                    <table>
+        </div>
+        <?php $isFirstRelatedPane = false; ?>
+        <?php endif; ?>
+        <?php if (!empty($user->failed_password_attempts)): ?>
+        <div class="tab-pane<?= $isFirstRelatedPane ? ' active show' : '' ?>" id="related-failed_password_attempts" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table table-vcenter card-table table-hover table-sm table-bordered-vertical">
+                    <thead>
                         <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Created') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th class="actions w-1"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($user->failed_password_attempts as $failedPasswordAttempt) : ?>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($user->failed_password_attempts as $failedPasswordAttempt): ?>
                         <tr>
                             <td><?= h($failedPasswordAttempt->id) ?></td>
                             <td><?= h($failedPasswordAttempt->created) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'FailedPasswordAttempts', 'action' => 'view', $failedPasswordAttempt->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'FailedPasswordAttempts', 'action' => 'edit', $failedPasswordAttempt->id]) ?>
-                                <?= $this->Form->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'FailedPasswordAttempts', 'action' => 'delete', $failedPasswordAttempt->id],
-                                    [
-                                        'method' => 'delete',
-                                        'confirm' => __('Are you sure you want to delete # {0}?', $failedPasswordAttempt->id),
-                                    ]
-                                ) ?>
+                                <div class="btn-list flex-nowrap align-items-center">
+                                    <?= $this->KvForm->actionView(['action' => 'view', $user->id], ['title' => __('Parent')]) ?>
+                                    <?= $this->KvForm->actionView(['controller' => 'FailedPasswordAttempts', 'action' => 'view', $failedPasswordAttempt->id], ['title' => __('View')]) ?>
+                                    <?= $this->KvForm->actionEdit(['controller' => 'FailedPasswordAttempts', 'action' => 'edit', $failedPasswordAttempt->id], ['title' => __('Edit')]) ?>
+                                    <?= $this->KvForm->actionDelete(['controller' => 'FailedPasswordAttempts', 'action' => 'delete', $failedPasswordAttempt->id], (string)($failedPasswordAttempt->id)) ?>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
-            <div class="related">
-                <h4><?= __('Related Social Accounts') ?></h4>
-                <?php if (!empty($user->social_accounts)) : ?>
-                <div class="table-responsive">
-                    <table>
+        </div>
+        <?php $isFirstRelatedPane = false; ?>
+        <?php endif; ?>
+        <?php if (!empty($user->social_accounts)): ?>
+        <div class="tab-pane<?= $isFirstRelatedPane ? ' active show' : '' ?>" id="related-social_accounts" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table table-vcenter card-table table-hover table-sm table-bordered-vertical">
+                    <thead>
                         <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Provider') ?></th>
@@ -327,9 +406,11 @@
                             <th><?= __('Data') ?></th>
                             <th><?= __('Created') ?></th>
                             <th><?= __('Modified') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th class="actions w-1"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($user->social_accounts as $socialAccount) : ?>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($user->social_accounts as $socialAccount): ?>
                         <tr>
                             <td><?= h($socialAccount->id) ?></td>
                             <td><?= h($socialAccount->provider) ?></td>
@@ -346,28 +427,26 @@
                             <td><?= h($socialAccount->created) ?></td>
                             <td><?= h($socialAccount->modified) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'SocialAccounts', 'action' => 'view', $socialAccount->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'SocialAccounts', 'action' => 'edit', $socialAccount->id]) ?>
-                                <?= $this->Form->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'SocialAccounts', 'action' => 'delete', $socialAccount->id],
-                                    [
-                                        'method' => 'delete',
-                                        'confirm' => __('Are you sure you want to delete # {0}?', $socialAccount->id),
-                                    ]
-                                ) ?>
+                                <div class="btn-list flex-nowrap align-items-center">
+                                    <?= $this->KvForm->actionView(['action' => 'view', $user->id], ['title' => __('Parent')]) ?>
+                                    <?= $this->KvForm->actionView(['controller' => 'SocialAccounts', 'action' => 'view', $socialAccount->id], ['title' => __('View')]) ?>
+                                    <?= $this->KvForm->actionEdit(['controller' => 'SocialAccounts', 'action' => 'edit', $socialAccount->id], ['title' => __('Edit')]) ?>
+                                    <?= $this->KvForm->actionDelete(['controller' => 'SocialAccounts', 'action' => 'delete', $socialAccount->id], (string)($socialAccount->id)) ?>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
-            <div class="related">
-                <h4><?= __('Related Staffs') ?></h4>
-                <?php if (!empty($user->staffs)) : ?>
-                <div class="table-responsive">
-                    <table>
+        </div>
+        <?php $isFirstRelatedPane = false; ?>
+        <?php endif; ?>
+        <?php if (!empty($user->staffs)): ?>
+        <div class="tab-pane<?= $isFirstRelatedPane ? ' active show' : '' ?>" id="related-staffs" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table table-vcenter card-table table-hover table-sm table-bordered-vertical">
+                    <thead>
                         <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('Competition Id') ?></th>
@@ -376,9 +455,11 @@
                             <th><?= __('Pos') ?></th>
                             <th><?= __('Created') ?></th>
                             <th><?= __('Modified') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th class="actions w-1"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($user->staffs as $staff) : ?>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($user->staffs as $staff): ?>
                         <tr>
                             <td><?= h($staff->id) ?></td>
                             <td><?= h($staff->competition_id) ?></td>
@@ -388,23 +469,23 @@
                             <td><?= h($staff->created) ?></td>
                             <td><?= h($staff->modified) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Staffs', 'action' => 'view', $staff->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Staffs', 'action' => 'edit', $staff->id]) ?>
-                                <?= $this->Form->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'Staffs', 'action' => 'delete', $staff->id],
-                                    [
-                                        'method' => 'delete',
-                                        'confirm' => __('Are you sure you want to delete # {0}?', $staff->id),
-                                    ]
-                                ) ?>
+                                <div class="btn-list flex-nowrap align-items-center">
+                                    <?= $this->KvForm->actionView(['action' => 'view', $user->id], ['title' => __('Parent')]) ?>
+                                    <?= $this->KvForm->actionView(['controller' => 'Staffs', 'action' => 'view', $staff->id], ['title' => __('View')]) ?>
+                                    <?= $this->KvForm->actionEdit(['controller' => 'Staffs', 'action' => 'edit', $staff->id], ['title' => __('Edit')]) ?>
+                                    <?= $this->KvForm->actionDelete(['controller' => 'Staffs', 'action' => 'delete', $staff->id], (string)($staff->id)) ?>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
+        <?php $isFirstRelatedPane = false; ?>
+        <?php endif; ?>
     </div>
 </div>
+<?php endif; ?>
+
+<?= $this->element('KvAdmin.modal-delete') ?>

@@ -4,69 +4,73 @@
  * @var \App\Model\Entity\EmailTemplate $emailTemplate
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Email Template'), ['action' => 'edit', $emailTemplate->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Email Template'), ['action' => 'delete', $emailTemplate->id], ['confirm' => __('Are you sure you want to delete # {0}?', $emailTemplate->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Email Templates'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Email Template'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-80">
-        <div class="emailTemplates view content">
-            <h3><?= h($emailTemplate->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($emailTemplate->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Slug') ?></th>
-                    <td><?= h($emailTemplate->slug) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Subject') ?></th>
-                    <td><?= h($emailTemplate->subject) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($emailTemplate->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Pos') ?></th>
-                    <td><?= $this->Number->format($emailTemplate->pos) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($emailTemplate->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($emailTemplate->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Enabled') ?></th>
-                    <td><?= $emailTemplate->enabled ? __('Yes') : __('No'); ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Visible') ?></th>
-                    <td><?= $emailTemplate->visible ? __('Yes') : __('No'); ?></td>
-                </tr>
-            </table>
-            <div class="text">
-                <strong><?= __('Body Html') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($emailTemplate->body_html)); ?>
-                </blockquote>
+<div class="card mb-3">
+    <div class="card-header pe-3">
+        <div class="row w-full align-items-center gy-2 gy-md-0">
+            <div class="col">
+                <h3 class="card-title mb-0"><?= h($emailTemplate->name) ?></h3>
             </div>
-            <div class="text">
-                <strong><?= __('Body Text') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($emailTemplate->body_text)); ?>
-                </blockquote>
+            <div class="col-12 col-md-auto ms-md-auto">
+                <div class="btn-list">
+                    <?= $this->KvForm->actionEdit(['action' => 'edit', $emailTemplate->id]) ?>
+                    <?= $this->KvForm->actionDelete(['action' => 'delete', $emailTemplate->id], (string)($emailTemplate->name ?? '')) ?>
+                </div>
             </div>
         </div>
     </div>
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table table-sm table-bordered-vertical">
+            <tbody>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Name') ?></th>
+                    <td><?= h($emailTemplate->name) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Slug') ?></th>
+                    <td><?= h($emailTemplate->slug) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Subject') ?></th>
+                    <td><?= h($emailTemplate->subject) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($emailTemplate->id) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Pos') ?></th>
+                    <td><?= $this->Number->format($emailTemplate->pos) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Created') ?></th>
+                    <td><?= h($emailTemplate->created) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Modified') ?></th>
+                    <td><?= h($emailTemplate->modified) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Enabled') ?></th>
+                    <td><?= $emailTemplate->enabled ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Visible') ?></th>
+                    <td><?= $emailTemplate->visible ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <h4 class="m-0 mb-2"><?= __('Body Html') ?></h4>
+            <div class="text-secondary"><?= $this->Text->autoParagraph(h($emailTemplate->body_html)); ?></div>
+        </div>
+        <div class="mb-3">
+            <h4 class="m-0 mb-2"><?= __('Body Text') ?></h4>
+            <div class="text-secondary"><?= $this->Text->autoParagraph(h($emailTemplate->body_text)); ?></div>
+        </div>
+    </div>
 </div>
+
+
+<?= $this->element('KvAdmin.modal-delete') ?>

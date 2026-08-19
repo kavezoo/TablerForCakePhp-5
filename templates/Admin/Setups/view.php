@@ -4,63 +4,69 @@
  * @var \App\Model\Entity\Setup $setup
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Setup'), ['action' => 'edit', $setup->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Setup'), ['action' => 'delete', $setup->id], ['confirm' => __('Are you sure you want to delete # {0}?', $setup->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Setups'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Setup'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-80">
-        <div class="setups view content">
-            <h3><?= h($setup->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($setup->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Slug') ?></th>
-                    <td><?= h($setup->slug) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Type') ?></th>
-                    <td><?= h($setup->type) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Edit By') ?></th>
-                    <td><?= h($setup->edit_by) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($setup->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Pos') ?></th>
-                    <td><?= $this->Number->format($setup->pos) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($setup->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($setup->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Visible') ?></th>
-                    <td><?= $setup->visible ? __('Yes') : __('No'); ?></td>
-                </tr>
-            </table>
-            <div class="text">
-                <strong><?= __('Value') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($setup->value)); ?>
-                </blockquote>
+<div class="card mb-3">
+    <div class="card-header pe-3">
+        <div class="row w-full align-items-center gy-2 gy-md-0">
+            <div class="col">
+                <h3 class="card-title mb-0"><?= h($setup->name) ?></h3>
+            </div>
+            <div class="col-12 col-md-auto ms-md-auto">
+                <div class="btn-list">
+                    <?= $this->KvForm->actionEdit(['action' => 'edit', $setup->id]) ?>
+                    <?= $this->KvForm->actionDelete(['action' => 'delete', $setup->id], (string)($setup->name ?? '')) ?>
+                </div>
             </div>
         </div>
     </div>
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table table-sm table-bordered-vertical">
+            <tbody>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Name') ?></th>
+                    <td><?= h($setup->name) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Slug') ?></th>
+                    <td><?= h($setup->slug) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Type') ?></th>
+                    <td><?= h($setup->type) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Edit By') ?></th>
+                    <td><?= h($setup->edit_by) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($setup->id) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Pos') ?></th>
+                    <td><?= $this->Number->format($setup->pos) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Created') ?></th>
+                    <td><?= h($setup->created) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Modified') ?></th>
+                    <td><?= h($setup->modified) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Visible') ?></th>
+                    <td><?= $setup->visible ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <h4 class="m-0 mb-2"><?= __('Value') ?></h4>
+            <div class="text-secondary"><?= $this->Text->autoParagraph(h($setup->value)); ?></div>
+        </div>
+    </div>
 </div>
+
+
+<?= $this->element('KvAdmin.modal-delete') ?>

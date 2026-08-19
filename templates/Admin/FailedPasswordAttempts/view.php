@@ -4,33 +4,39 @@
  * @var \App\Model\Entity\FailedPasswordAttempt $failedPasswordAttempt
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Failed Password Attempt'), ['action' => 'edit', $failedPasswordAttempt->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Failed Password Attempt'), ['action' => 'delete', $failedPasswordAttempt->id], ['confirm' => __('Are you sure you want to delete # {0}?', $failedPasswordAttempt->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Failed Password Attempts'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Failed Password Attempt'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+<div class="card mb-3">
+    <div class="card-header pe-3">
+        <div class="row w-full align-items-center gy-2 gy-md-0">
+            <div class="col">
+                <h3 class="card-title mb-0"><?= h($failedPasswordAttempt->id) ?></h3>
+            </div>
+            <div class="col-12 col-md-auto ms-md-auto">
+                <div class="btn-list">
+                    <?= $this->KvForm->actionEdit(['action' => 'edit', $failedPasswordAttempt->id]) ?>
+                    <?= $this->KvForm->actionDelete(['action' => 'delete', $failedPasswordAttempt->id], (string)($failedPasswordAttempt->id ?? '')) ?>
+                </div>
+            </div>
         </div>
-    </aside>
-    <div class="column column-80">
-        <div class="failedPasswordAttempts view content">
-            <h3><?= h($failedPasswordAttempt->id) ?></h3>
-            <table>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table table-sm table-bordered-vertical">
+            <tbody>
                 <tr>
-                    <th><?= __('Id') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Id') ?></th>
                     <td><?= h($failedPasswordAttempt->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('User') ?></th>
-                    <td><?= $failedPasswordAttempt->hasValue('user') ? $this->Html->link($failedPasswordAttempt->user->first_name, ['controller' => 'Users', 'action' => 'view', $failedPasswordAttempt->user->id]) : '' ?></td>
+                    <th class="w-1 text-nowrap"><?= __('User') ?></th>
+                    <td><?= $failedPasswordAttempt->hasValue('user') ? $this->Html->link(h($failedPasswordAttempt->user->first_name), ['controller' => 'Users', 'action' => 'view', $failedPasswordAttempt->user->id], ['class' => 'text-reset text-decoration-none fw-bold']) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Created') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Created') ?></th>
                     <td><?= h($failedPasswordAttempt->created) ?></td>
                 </tr>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
 </div>
+
+
+<?= $this->element('KvAdmin.modal-delete') ?>

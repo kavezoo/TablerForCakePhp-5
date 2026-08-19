@@ -4,58 +4,92 @@
  * @var \App\Model\Entity\Subclub $subclub
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Subclub'), ['action' => 'edit', $subclub->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Subclub'), ['action' => 'delete', $subclub->id], ['confirm' => __('Are you sure you want to delete # {0}?', $subclub->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Subclubs'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Subclub'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+<div class="card mb-3">
+    <div class="card-header pe-3">
+        <div class="row w-full align-items-center gy-2 gy-md-0">
+            <div class="col">
+                <h3 class="card-title mb-0"><?= h($subclub->name) ?></h3>
+            </div>
+            <div class="col-12 col-md-auto ms-md-auto">
+                <div class="btn-list">
+                    <?= $this->KvForm->actionEdit(['action' => 'edit', $subclub->id]) ?>
+                    <?= $this->KvForm->actionDelete(['action' => 'delete', $subclub->id], (string)($subclub->name ?? '')) ?>
+                </div>
+            </div>
         </div>
-    </aside>
-    <div class="column column-80">
-        <div class="subclubs view content">
-            <h3><?= h($subclub->name) ?></h3>
-            <table>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table table-sm table-bordered-vertical">
+            <tbody>
                 <tr>
-                    <th><?= __('Club') ?></th>
-                    <td><?= $subclub->hasValue('club') ? $this->Html->link($subclub->club->name, ['controller' => 'Clubs', 'action' => 'view', $subclub->club->id]) : '' ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Club') ?></th>
+                    <td><?= $subclub->hasValue('club') ? $this->Html->link(h($subclub->club->name), ['controller' => 'Clubs', 'action' => 'view', $subclub->club->id], ['class' => 'text-reset text-decoration-none fw-bold']) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Competition') ?></th>
-                    <td><?= $subclub->hasValue('competition') ? $this->Html->link($subclub->competition->title, ['controller' => 'Competitions', 'action' => 'view', $subclub->competition->id]) : '' ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Competition') ?></th>
+                    <td><?= $subclub->hasValue('competition') ? $this->Html->link(h($subclub->competition->title), ['controller' => 'Competitions', 'action' => 'view', $subclub->competition->id], ['class' => 'text-reset text-decoration-none fw-bold']) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Name') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Name') ?></th>
                     <td><?= h($subclub->name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Id') ?></th>
                     <td><?= $this->Number->format($subclub->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Pos') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Pos') ?></th>
                     <td><?= $this->Number->format($subclub->pos) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Created') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Created') ?></th>
                     <td><?= h($subclub->created) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Modified') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Modified') ?></th>
                     <td><?= h($subclub->modified) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Visible') ?></th>
-                    <td><?= $subclub->visible ? __('Yes') : __('No'); ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Visible') ?></th>
+                    <td><?= $subclub->visible ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
                 </tr>
-            </table>
-            <div class="related">
-                <h4><?= __('Related Competitions Users') ?></h4>
-                <?php if (!empty($subclub->competitions_users)) : ?>
-                <div class="table-responsive">
-                    <table>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<?php
+$hasRelatedRecords = false;
+?>
+<?php if (!empty($subclub->competitions_users)) { $hasRelatedRecords = true; } ?>
+<?php if ($hasRelatedRecords): ?>
+<div class="card">
+    <div class="card-header">
+        <?php $isFirstRelatedTab = true; ?>
+        <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+            <?php if (!empty($subclub->competitions_users)): ?>
+            <li class="nav-item" role="presentation">
+                <button
+                    class="nav-link<?= $isFirstRelatedTab ? ' active' : '' ?>"
+                    data-bs-toggle="tab"
+                    data-bs-target="#related-competitions_users"
+                    type="button"
+                    role="tab"
+                >
+                    <?= __('Competitions Users') ?>
+                </button>
+            </li>
+            <?php $isFirstRelatedTab = false; ?>
+            <?php endif; ?>
+        </ul>
+    </div>
+    <div class="card-body tab-content">
+        <?php $isFirstRelatedPane = true; ?>
+        <?php if (!empty($subclub->competitions_users)): ?>
+        <div class="tab-pane<?= $isFirstRelatedPane ? ' active show' : '' ?>" id="related-competitions_users" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table table-vcenter card-table table-hover table-sm table-bordered-vertical">
+                    <thead>
                         <tr>
                             <th><?= __('Id') ?></th>
                             <th><?= __('User Id') ?></th>
@@ -85,9 +119,11 @@
                             <th><?= __('Pos') ?></th>
                             <th><?= __('Created') ?></th>
                             <th><?= __('Modified') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th class="actions w-1"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($subclub->competitions_users as $competitionsUser) : ?>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($subclub->competitions_users as $competitionsUser): ?>
                         <tr>
                             <td><?= h($competitionsUser->id) ?></td>
                             <td><?= h($competitionsUser->user_id) ?></td>
@@ -118,23 +154,23 @@
                             <td><?= h($competitionsUser->created) ?></td>
                             <td><?= h($competitionsUser->modified) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'CompetitionsUsers', 'action' => 'view', $competitionsUser->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'CompetitionsUsers', 'action' => 'edit', $competitionsUser->id]) ?>
-                                <?= $this->Form->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'CompetitionsUsers', 'action' => 'delete', $competitionsUser->id],
-                                    [
-                                        'method' => 'delete',
-                                        'confirm' => __('Are you sure you want to delete # {0}?', $competitionsUser->id),
-                                    ]
-                                ) ?>
+                                <div class="btn-list flex-nowrap align-items-center">
+                                    <?= $this->KvForm->actionView(['action' => 'view', $subclub->id], ['title' => __('Parent')]) ?>
+                                    <?= $this->KvForm->actionView(['controller' => 'CompetitionsUsers', 'action' => 'view', $competitionsUser->id], ['title' => __('View')]) ?>
+                                    <?= $this->KvForm->actionEdit(['controller' => 'CompetitionsUsers', 'action' => 'edit', $competitionsUser->id], ['title' => __('Edit')]) ?>
+                                    <?= $this->KvForm->actionDelete(['controller' => 'CompetitionsUsers', 'action' => 'delete', $competitionsUser->id], (string)($competitionsUser->id)) ?>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
+        <?php $isFirstRelatedPane = false; ?>
+        <?php endif; ?>
     </div>
 </div>
+<?php endif; ?>
+
+<?= $this->element('KvAdmin.modal-delete') ?>

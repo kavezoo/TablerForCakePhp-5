@@ -48,7 +48,7 @@ $highlight = function (?string $text) use ($search): string {
             <!-- Cím és infó blokk -->
             <div class="col">
                 <h3 class="card-title mb-0"><?= __('Users') ?></h3>
-                <p class="text-secondary m-0"><?= __('Double-click on the line') . ' ' . __('edit') ?></p>
+                <p class="text-secondary m-0"><?= __('Edit line double click on the line') ?></p>
             </div>
 
             <!-- Kereső űrlap -->
@@ -215,6 +215,11 @@ $highlight = function (?string $text) use ($search): string {
 <?= $this->element('KvAdmin.modal-delete') ?>
 
 <?php
+/*
+ * A kereső gyorsgombok és a sor-duplakattintás minden index oldalon aktív.
+ * Ha egy generált nézetben valamelyik JS blokkot ideiglenesen ki szeretnéd kapcsolni,
+ * PHP többsoros kommenttel tedd meg a scriptBlock adott részénél.
+ */
 $this->Html->scriptBlock(
     "
     document.addEventListener('DOMContentLoaded', function () {

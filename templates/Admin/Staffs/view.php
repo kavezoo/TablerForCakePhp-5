@@ -4,53 +4,59 @@
  * @var \App\Model\Entity\Staff $staff
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Staff'), ['action' => 'edit', $staff->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Staff'), ['action' => 'delete', $staff->id], ['confirm' => __('Are you sure you want to delete # {0}?', $staff->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Staffs'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Staff'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+<div class="card mb-3">
+    <div class="card-header pe-3">
+        <div class="row w-full align-items-center gy-2 gy-md-0">
+            <div class="col">
+                <h3 class="card-title mb-0"><?= h($staff->role) ?></h3>
+            </div>
+            <div class="col-12 col-md-auto ms-md-auto">
+                <div class="btn-list">
+                    <?= $this->KvForm->actionEdit(['action' => 'edit', $staff->id]) ?>
+                    <?= $this->KvForm->actionDelete(['action' => 'delete', $staff->id], (string)($staff->role ?? '')) ?>
+                </div>
+            </div>
         </div>
-    </aside>
-    <div class="column column-80">
-        <div class="staffs view content">
-            <h3><?= h($staff->role) ?></h3>
-            <table>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table table-sm table-bordered-vertical">
+            <tbody>
                 <tr>
-                    <th><?= __('User') ?></th>
-                    <td><?= $staff->hasValue('user') ? $this->Html->link($staff->user->first_name, ['controller' => 'Users', 'action' => 'view', $staff->user->id]) : '' ?></td>
+                    <th class="w-1 text-nowrap"><?= __('User') ?></th>
+                    <td><?= $staff->hasValue('user') ? $this->Html->link(h($staff->user->first_name), ['controller' => 'Users', 'action' => 'view', $staff->user->id], ['class' => 'text-reset text-decoration-none fw-bold']) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Competition') ?></th>
-                    <td><?= $staff->hasValue('competition') ? $this->Html->link($staff->competition->title, ['controller' => 'Competitions', 'action' => 'view', $staff->competition->id]) : '' ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Competition') ?></th>
+                    <td><?= $staff->hasValue('competition') ? $this->Html->link(h($staff->competition->title), ['controller' => 'Competitions', 'action' => 'view', $staff->competition->id], ['class' => 'text-reset text-decoration-none fw-bold']) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Role') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Role') ?></th>
                     <td><?= h($staff->role) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Id') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Id') ?></th>
                     <td><?= $this->Number->format($staff->id) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Pos') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Pos') ?></th>
                     <td><?= $this->Number->format($staff->pos) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Created') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Created') ?></th>
                     <td><?= h($staff->created) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Modified') ?></th>
+                    <th class="w-1 text-nowrap"><?= __('Modified') ?></th>
                     <td><?= h($staff->modified) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Visible') ?></th>
-                    <td><?= $staff->visible ? __('Yes') : __('No'); ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Visible') ?></th>
+                    <td><?= $staff->visible ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
                 </tr>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
 </div>
+
+
+<?= $this->element('KvAdmin.modal-delete') ?>

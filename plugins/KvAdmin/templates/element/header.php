@@ -14,7 +14,7 @@
                             <?= $this->Html->link(
                                 '<span class="nav-link-icon d-md-none d-lg-inline-block">' . $this->Icon->outline('home') . '</span>' .
                                 '<span class="nav-link-title">' . __('Home') . '</span>',
-                                '/',
+                                '/' . $prefix,
                                 ['escape' => false, 'class' => 'nav-link']
                             ) ?>
                         </li>

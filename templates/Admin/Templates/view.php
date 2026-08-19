@@ -4,51 +4,57 @@
  * @var \App\Model\Entity\Template $template
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Template'), ['action' => 'edit', $template->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Template'), ['action' => 'delete', $template->id], ['confirm' => __('Are you sure you want to delete # {0}?', $template->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Templates'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Template'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-80">
-        <div class="templates view content">
-            <h3><?= h($template->label) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Label') ?></th>
-                    <td><?= h($template->label) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($template->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Pos') ?></th>
-                    <td><?= $this->Number->format($template->pos) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($template->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($template->modified) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Visible') ?></th>
-                    <td><?= $template->visible ? __('Yes') : __('No'); ?></td>
-                </tr>
-            </table>
-            <div class="text">
-                <strong><?= __('Description') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($template->description)); ?>
-                </blockquote>
+<div class="card mb-3">
+    <div class="card-header pe-3">
+        <div class="row w-full align-items-center gy-2 gy-md-0">
+            <div class="col">
+                <h3 class="card-title mb-0"><?= h($template->label) ?></h3>
+            </div>
+            <div class="col-12 col-md-auto ms-md-auto">
+                <div class="btn-list">
+                    <?= $this->KvForm->actionEdit(['action' => 'edit', $template->id]) ?>
+                    <?= $this->KvForm->actionDelete(['action' => 'delete', $template->id], (string)($template->label ?? '')) ?>
+                </div>
             </div>
         </div>
     </div>
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table table-sm table-bordered-vertical">
+            <tbody>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Label') ?></th>
+                    <td><?= h($template->label) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($template->id) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Pos') ?></th>
+                    <td><?= $this->Number->format($template->pos) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Created') ?></th>
+                    <td><?= h($template->created) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Modified') ?></th>
+                    <td><?= h($template->modified) ?></td>
+                </tr>
+                <tr>
+                    <th class="w-1 text-nowrap"><?= __('Visible') ?></th>
+                    <td><?= $template->visible ? '<span class=\"badge bg-green-lt\">' . __('Igen') . '</span>' : '<span class=\"badge bg-secondary-lt\">' . __('Nem') . '</span>' ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <h4 class="m-0 mb-2"><?= __('Description') ?></h4>
+            <div class="text-secondary"><?= $this->Text->autoParagraph(h($template->description)); ?></div>
+        </div>
+    </div>
 </div>
+
+
+<?= $this->element('KvAdmin.modal-delete') ?>
