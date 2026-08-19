@@ -68,27 +68,13 @@ $highlight = function (?string $text) use ($search): string {
 <?php endif; ?>
 					<th class="string city_id"><?= $this->Paginator->sort('city_id') ?></th>					
 					<th class="string club_id"><?= $this->Paginator->sort('club_id') ?></th>					
-					<th class="string username"><?= $this->Paginator->sort('username') ?></th>					
+					<th class="string first_name"><?= $this->Paginator->sort('first_name') ?>&nbsp;<?= $this->Paginator->sort('last_name') ?></th>
 					<th class="string email"><?= $this->Paginator->sort('email') ?></th>					
-					<th class="string first_name"><?= $this->Paginator->sort('first_name') ?></th>					
-					<th class="string last_name"><?= $this->Paginator->sort('last_name') ?></th>					
 					<th class="string phone"><?= $this->Paginator->sort('phone') ?></th>					
-					<th class="string avatar"><?= $this->Paginator->sort('avatar') ?></th>					
-					<th class="datetime token_expires"><?= $this->Paginator->sort('token_expires') ?></th>					
-					<th class="string api_token"><?= $this->Paginator->sort('api_token') ?></th>					
-					<th class="datetime activation_date"><?= $this->Paginator->sort('activation_date') ?></th>					
-					<th class="string secret"><?= $this->Paginator->sort('secret') ?></th>					
-					<th class="boolean secret_verified"><?= $this->Paginator->sort('secret_verified') ?></th>					
-					<th class="datetime tos_date"><?= $this->Paginator->sort('tos_date') ?></th>					
 					<th class="boolean active"><?= $this->Paginator->sort('active') ?></th>					
 					<th class="boolean enabled"><?= $this->Paginator->sort('enabled') ?></th>					
-					<th class="boolean is_superuser"><?= $this->Paginator->sort('is_superuser') ?></th>					
 					<th class="string role"><?= $this->Paginator->sort('role') ?></th>					
-					<th class="string membership_status"><?= $this->Paginator->sort('membership_status') ?></th>					
-					<th class="date membership_joined_date"><?= $this->Paginator->sort('membership_joined_date') ?></th>					
-					<th class="date club_membership_fee_date"><?= $this->Paginator->sort('club_membership_fee_date') ?></th>					
-					<th class="date national_membership_fee_date"><?= $this->Paginator->sort('national_membership_fee_date') ?></th>					
-					<th class="boolean application_notified"><?= $this->Paginator->sort('application_notified') ?></th>					
+
 <?php if ((isset($showCreated) && $showCreated) || (isset($showModified) && $showModified)): ?>
                     <th class="datetime">
 <?php if (isset($showCreated) && $showCreated): ?>
@@ -102,11 +88,6 @@ $highlight = function (?string $text) use ($search): string {
 <?php endif; ?>
                     </th>
 <?php endif; ?>
-					<th class="datetime last_login"><?= $this->Paginator->sort('last_login') ?></th>					
-					<th class="datetime lockout_time"><?= $this->Paginator->sort('lockout_time') ?></th>					
-					<th class="string login_token"><?= $this->Paginator->sort('login_token') ?></th>					
-					<th class="datetime login_token_date"><?= $this->Paginator->sort('login_token_date') ?></th>					
-					<th class="boolean token_send_requested"><?= $this->Paginator->sort('token_send_requested') ?></th>					
                     <th class="actions w-1"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -148,27 +129,12 @@ $highlight = function (?string $text) use ($search): string {
 						) : '' ?>
 						
 					</td>
-                    <td class="string username"><?= $highlight($user->username) ?></td>
+                    <td class="string first_name"><?= $highlight($user->first_name) ?>&nbsp;<?= $highlight($user->last_name) ?></td>
                     <td class="string email"><?= $highlight($user->email) ?></td>
-                    <td class="string first_name"><?= $highlight($user->first_name) ?></td>
-                    <td class="string last_name"><?= $highlight($user->last_name) ?></td>
                     <td class="string phone"><?= $highlight($user->phone) ?></td>
-                    <td class="string avatar"><?= $highlight($user->avatar) ?></td>
-                    <td class="datetime text-nowrap"><?= h($user->token_expires?->format('Y-m-d H:i')) ?></td>
-                    <td class="string api_token"><?= $highlight($user->api_token) ?></td>
-                    <td class="datetime text-nowrap"><?= h($user->activation_date?->format('Y-m-d H:i')) ?></td>
-                    <td class="string secret"><?= $highlight($user->secret) ?></td>
-                    <td class="boolean secret_verified"><?= $user->secret_verified ? '<span class="badge bg-green-lt">' . __('Igen') . '</span>' : '<span class="badge bg-secondary-lt">' . __('Nem') . '</span>' ?></td>
-                    <td class="datetime text-nowrap"><?= h($user->tos_date?->format('Y-m-d H:i')) ?></td>
                     <td class="boolean active"><?= $user->active ? '<span class="badge bg-green-lt">' . __('Igen') . '</span>' : '<span class="badge bg-secondary-lt">' . __('Nem') . '</span>' ?></td>
                     <td class="boolean enabled"><?= $user->enabled ? '<span class="badge bg-green-lt">' . __('Igen') . '</span>' : '<span class="badge bg-secondary-lt">' . __('Nem') . '</span>' ?></td>
-                    <td class="boolean is_superuser"><?= $user->is_superuser ? '<span class="badge bg-green-lt">' . __('Igen') . '</span>' : '<span class="badge bg-secondary-lt">' . __('Nem') . '</span>' ?></td>
                     <td class="string role"><?= $highlight($user->role) ?></td>
-                    <td class="string membership_status"><?= $highlight($user->membership_status) ?></td>
-                    <td class="date text-nowrap"><?= h($user->membership_joined_date?->format('Y-m-d')) ?></td>
-                    <td class="date text-nowrap"><?= h($user->club_membership_fee_date?->format('Y-m-d')) ?></td>
-                    <td class="date text-nowrap"><?= h($user->national_membership_fee_date?->format('Y-m-d')) ?></td>
-                    <td class="boolean application_notified"><?= $user->application_notified ? '<span class="badge bg-green-lt">' . __('Igen') . '</span>' : '<span class="badge bg-secondary-lt">' . __('Nem') . '</span>' ?></td>
 <?php if ((isset($showCreated) && $showCreated) || (isset($showModified) && $showModified)): ?>
                     <td class="datetime text-nowrap">
 <?php if (isset($showCreated) && $showCreated): ?>
@@ -179,11 +145,6 @@ $highlight = function (?string $text) use ($search): string {
 <?php endif; ?>
                     </td>
 <?php endif; ?>
-                    <td class="datetime text-nowrap"><?= h($user->last_login?->format('Y-m-d H:i')) ?></td>
-                    <td class="datetime text-nowrap"><?= h($user->lockout_time?->format('Y-m-d H:i')) ?></td>
-                    <td class="string login_token"><?= $highlight($user->login_token) ?></td>
-                    <td class="datetime text-nowrap"><?= h($user->login_token_date?->format('Y-m-d H:i')) ?></td>
-                    <td class="boolean token_send_requested"><?= $user->token_send_requested ? '<span class="badge bg-green-lt">' . __('Igen') . '</span>' : '<span class="badge bg-secondary-lt">' . __('Nem') . '</span>' ?></td>
                     <td class="actions">
                         <div class="btn-list flex-nowrap align-items-center">
                             <?= $this->KvForm->actionView(['action' => 'view', $user->id]) ?>
