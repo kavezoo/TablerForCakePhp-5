@@ -98,7 +98,7 @@ class CompetitionsController extends AppController
                 $session->write('Paging.Competitions.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
-            $this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+            $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
 
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
@@ -142,14 +142,14 @@ class CompetitionsController extends AppController
             $data = $this->getRequest()->getData();
             $competition = $this->fetchTable('Competitions')->patchEntity($competition, $data);
             if ($this->fetchTable('Competitions')->save($competition)) {
-                $this->Flash->success(__('The competition has been saved.'));
+                $this->Flash->success(__('The {0} has been saved.'), __('competition'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.competition_id', $competition->competition_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $cities = $this->fetchTable('Competitions')->Cities->find('list', limit: 200)->all();
         $users = $this->fetchTable('Competitions')->Users->find('list', limit: 200)->all();
@@ -173,7 +173,7 @@ class CompetitionsController extends AppController
             $data = $this->getRequest()->getData();
             $competition = $this->fetchTable('Competitions')->patchEntity($competition, $data);
             if ($this->fetchTable('Competitions')->save($competition)) {
-                $this->Flash->success(__('A(z) competition adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success(__('The {0} has been saved.', __('competition')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.Competitions.params');
 
@@ -182,7 +182,7 @@ class CompetitionsController extends AppController
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error(__('A(z) competition mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $cities = $this->fetchTable('Competitions')->Cities->find('list', limit: 200)->all();
         $users = $this->fetchTable('Competitions')->Users->find('list', limit: 200)->all();
@@ -201,6 +201,7 @@ class CompetitionsController extends AppController
         
         $table = $this->fetchTable('Competitions');
         $competition = $table->get($id);
+		$competitionName = $competition->name;
 
         $session = $this->getRequest()->getSession();
         $session->delete('LastViewed.competition_id');
@@ -228,9 +229,9 @@ class CompetitionsController extends AppController
         }
 
         if ($table->delete($competition)) {
-            $this->Flash->success(__('A(z) competition sikeresen törölve lett.'));
+            $this->Flash->success(__('The {0} has been successfully deleted.', __('competition')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.Competitions.params');

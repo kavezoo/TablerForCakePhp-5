@@ -99,7 +99,7 @@ class StaffsController extends AppController
                 $session->write('Paging.Staffs.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
-            $this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+            $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
 
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
@@ -143,14 +143,14 @@ class StaffsController extends AppController
             $data = $this->getRequest()->getData();
             $staff = $this->fetchTable('Staffs')->patchEntity($staff, $data);
             if ($this->fetchTable('Staffs')->save($staff)) {
-                $this->Flash->success(__('The staff has been saved.'));
+                $this->Flash->success(__('The {0} has been saved.'), __('staff'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.staff_id', $staff->staff_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $users = $this->fetchTable('Staffs')->Users->find('list', limit: 200)->all();
         $competitions = $this->fetchTable('Staffs')->Competitions->find('list', limit: 200)->all();
@@ -174,7 +174,7 @@ class StaffsController extends AppController
             $data = $this->getRequest()->getData();
             $staff = $this->fetchTable('Staffs')->patchEntity($staff, $data);
             if ($this->fetchTable('Staffs')->save($staff)) {
-                $this->Flash->success(__('A(z) staff adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success(__('The {0} has been saved.', __('staff')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.Staffs.params');
 
@@ -183,7 +183,7 @@ class StaffsController extends AppController
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error(__('A(z) staff mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $users = $this->fetchTable('Staffs')->Users->find('list', limit: 200)->all();
         $competitions = $this->fetchTable('Staffs')->Competitions->find('list', limit: 200)->all();
@@ -202,6 +202,7 @@ class StaffsController extends AppController
         
         $table = $this->fetchTable('Staffs');
         $staff = $table->get($id);
+		$staffName = $staff->name;
 
         $session = $this->getRequest()->getSession();
         $session->delete('LastViewed.staff_id');
@@ -229,9 +230,9 @@ class StaffsController extends AppController
         }
 
         if ($table->delete($staff)) {
-            $this->Flash->success(__('A(z) staff sikeresen törölve lett.'));
+            $this->Flash->success(__('The {0} has been successfully deleted.', __('staff')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.Staffs.params');

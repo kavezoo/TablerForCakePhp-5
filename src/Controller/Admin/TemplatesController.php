@@ -95,7 +95,7 @@ class TemplatesController extends AppController
                 $session->write('Paging.Templates.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
-            $this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+            $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
 
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
@@ -139,14 +139,14 @@ class TemplatesController extends AppController
             $data = $this->getRequest()->getData();
             $template = $this->fetchTable('Templates')->patchEntity($template, $data);
             if ($this->fetchTable('Templates')->save($template)) {
-                $this->Flash->success(__('The template has been saved.'));
+                $this->Flash->success(__('The {0} has been saved.'), __('template'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.template_id', $template->template_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $this->set(compact('template'));
     }
@@ -168,7 +168,7 @@ class TemplatesController extends AppController
             $data = $this->getRequest()->getData();
             $template = $this->fetchTable('Templates')->patchEntity($template, $data);
             if ($this->fetchTable('Templates')->save($template)) {
-                $this->Flash->success(__('A(z) template adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success(__('The {0} has been saved.', __('template')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.Templates.params');
 
@@ -177,7 +177,7 @@ class TemplatesController extends AppController
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error(__('A(z) template mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $this->set(compact('template'));
     }
@@ -194,6 +194,7 @@ class TemplatesController extends AppController
         
         $table = $this->fetchTable('Templates');
         $template = $table->get($id);
+		$templateName = $template->name;
 
         $session = $this->getRequest()->getSession();
         $session->delete('LastViewed.template_id');
@@ -221,9 +222,9 @@ class TemplatesController extends AppController
         }
 
         if ($table->delete($template)) {
-            $this->Flash->success(__('A(z) template sikeresen törölve lett.'));
+            $this->Flash->success(__('The {0} has been successfully deleted.', __('template')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.Templates.params');

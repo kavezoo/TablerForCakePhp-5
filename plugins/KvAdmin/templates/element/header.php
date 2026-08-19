@@ -71,14 +71,14 @@
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <?= $this->Icon->outline('puzzle') ?>
                                 </span>
-                                <span class="nav-link-title"><?= __('Plugins') ?></span>
+                                <span class="nav-link-title"><?= __('President') ?></span>
                             </a>
                             <div class="dropdown-menu">
-                                <?= $this->Html->link(__('Charts'), ['controller' => 'Plugins', 'action' => 'charts'], ['class' => 'dropdown-item']) ?>
-                                <?= $this->Html->link(__('Color picker'), ['controller' => 'Plugins', 'action' => 'colorpicker'], ['class' => 'dropdown-item']) ?>
-                                <?= $this->Html->link(__('Datatables'), ['controller' => 'Plugins', 'action' => 'datatables'], ['class' => 'dropdown-item']) ?>
-                                <?= $this->Html->link(__('Dropzone'), ['controller' => 'Plugins', 'action' => 'dropzone'], ['class' => 'dropdown-item']) ?>
-                                <?= $this->Html->link(__('Fullcalendar'), ['controller' => 'Plugins', 'action' => 'fullcalendar'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Competitons'), ['controller' => 'Competitions', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Competitions Users'), ['controller' => 'CompetitionsUsers', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Clubs'), ['controller' => 'Clubs', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Dropzone'), ['controller' => 'Plugins', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Fullcalendar'), ['controller' => 'Plugins', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                             </div>
                         </li>
                     </ul>
@@ -96,7 +96,7 @@
                                 <span class="nav-link-title"><?= __('Help') ?></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <?= $this->Html->link(__('Documentation'), 'https://tabler.io/docs', ['class' => 'dropdown-item', 'target' => '_blank', 'rel' => 'noopener']) ?>
+                                <?= $this->Html->link(__('Templates'), 'https://tabler.io/docs', ['class' => 'dropdown-item', 'target' => '_blank', 'rel' => 'noopener']) ?>
                                 <?= $this->Html->link(__('Changelog'), ['controller' => 'Pages', 'action' => 'display', 'changelog'], ['class' => 'dropdown-item']) ?>
                                 <?= $this->Html->link(__('Source code'), 'https://github.com/tabler/tabler', ['class' => 'dropdown-item', 'target' => '_blank', 'rel' => 'noopener']) ?>
                                 <?= $this->Html->link(

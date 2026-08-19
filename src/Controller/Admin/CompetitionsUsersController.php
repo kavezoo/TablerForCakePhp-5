@@ -100,7 +100,7 @@ class CompetitionsUsersController extends AppController
                 $session->write('Paging.CompetitionsUsers.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
-            $this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+            $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
 
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
@@ -144,14 +144,14 @@ class CompetitionsUsersController extends AppController
             $data = $this->getRequest()->getData();
             $competitionsUser = $this->fetchTable('CompetitionsUsers')->patchEntity($competitionsUser, $data);
             if ($this->fetchTable('CompetitionsUsers')->save($competitionsUser)) {
-                $this->Flash->success(__('The competitions user has been saved.'));
+                $this->Flash->success(__('The {0} has been saved.'), __('competitions user'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.competitionsUser_id', $competitionsUser->competitionsUser_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $users = $this->fetchTable('CompetitionsUsers')->Users->find('list', limit: 200)->all();
         $competitions = $this->fetchTable('CompetitionsUsers')->Competitions->find('list', limit: 200)->all();
@@ -176,7 +176,7 @@ class CompetitionsUsersController extends AppController
             $data = $this->getRequest()->getData();
             $competitionsUser = $this->fetchTable('CompetitionsUsers')->patchEntity($competitionsUser, $data);
             if ($this->fetchTable('CompetitionsUsers')->save($competitionsUser)) {
-                $this->Flash->success(__('A(z) competitions user adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success(__('The {0} has been saved.', __('competitions user')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.CompetitionsUsers.params');
 
@@ -185,7 +185,7 @@ class CompetitionsUsersController extends AppController
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error(__('A(z) competitions user mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $users = $this->fetchTable('CompetitionsUsers')->Users->find('list', limit: 200)->all();
         $competitions = $this->fetchTable('CompetitionsUsers')->Competitions->find('list', limit: 200)->all();
@@ -205,6 +205,7 @@ class CompetitionsUsersController extends AppController
         
         $table = $this->fetchTable('CompetitionsUsers');
         $competitionsUser = $table->get($id);
+		$competitionsUserName = $competitionsUser->name;
 
         $session = $this->getRequest()->getSession();
         $session->delete('LastViewed.competitionsUser_id');
@@ -232,9 +233,9 @@ class CompetitionsUsersController extends AppController
         }
 
         if ($table->delete($competitionsUser)) {
-            $this->Flash->success(__('A(z) competitions user sikeresen törölve lett.'));
+            $this->Flash->success(__('The {0} has been successfully deleted.', __('competitions user')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.CompetitionsUsers.params');

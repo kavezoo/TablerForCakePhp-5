@@ -98,7 +98,7 @@ class FailedPasswordAttemptsController extends AppController
                 $session->write('Paging.FailedPasswordAttempts.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
-            $this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+            $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
 
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
@@ -142,14 +142,14 @@ class FailedPasswordAttemptsController extends AppController
             $data = $this->getRequest()->getData();
             $failedPasswordAttempt = $this->fetchTable('FailedPasswordAttempts')->patchEntity($failedPasswordAttempt, $data);
             if ($this->fetchTable('FailedPasswordAttempts')->save($failedPasswordAttempt)) {
-                $this->Flash->success(__('The failed password attempt has been saved.'));
+                $this->Flash->success(__('The {0} has been saved.'), __('failed password attempt'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.failedPasswordAttempt_id', $failedPasswordAttempt->failedPasswordAttempt_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $users = $this->fetchTable('FailedPasswordAttempts')->Users->find('list', limit: 200)->all();
         $this->set(compact('failedPasswordAttempt', 'users'));
@@ -172,7 +172,7 @@ class FailedPasswordAttemptsController extends AppController
             $data = $this->getRequest()->getData();
             $failedPasswordAttempt = $this->fetchTable('FailedPasswordAttempts')->patchEntity($failedPasswordAttempt, $data);
             if ($this->fetchTable('FailedPasswordAttempts')->save($failedPasswordAttempt)) {
-                $this->Flash->success(__('A(z) failed password attempt adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success(__('The {0} has been saved.', __('failed password attempt')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.FailedPasswordAttempts.params');
 
@@ -181,7 +181,7 @@ class FailedPasswordAttemptsController extends AppController
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error(__('A(z) failed password attempt mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $users = $this->fetchTable('FailedPasswordAttempts')->Users->find('list', limit: 200)->all();
         $this->set(compact('failedPasswordAttempt', 'users'));
@@ -199,6 +199,7 @@ class FailedPasswordAttemptsController extends AppController
         
         $table = $this->fetchTable('FailedPasswordAttempts');
         $failedPasswordAttempt = $table->get($id);
+		$failedPasswordAttemptName = $failedPasswordAttempt->name;
 
         $session = $this->getRequest()->getSession();
         $session->delete('LastViewed.failedPasswordAttempt_id');
@@ -226,9 +227,9 @@ class FailedPasswordAttemptsController extends AppController
         }
 
         if ($table->delete($failedPasswordAttempt)) {
-            $this->Flash->success(__('A(z) failed password attempt sikeresen törölve lett.'));
+            $this->Flash->success(__('The {0} has been successfully deleted.', __('failed password attempt')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.FailedPasswordAttempts.params');

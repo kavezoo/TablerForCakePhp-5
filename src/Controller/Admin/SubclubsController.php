@@ -99,7 +99,7 @@ class SubclubsController extends AppController
                 $session->write('Paging.Subclubs.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
-            $this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+            $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
 
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
@@ -143,14 +143,14 @@ class SubclubsController extends AppController
             $data = $this->getRequest()->getData();
             $subclub = $this->fetchTable('Subclubs')->patchEntity($subclub, $data);
             if ($this->fetchTable('Subclubs')->save($subclub)) {
-                $this->Flash->success(__('The subclub has been saved.'));
+                $this->Flash->success(__('The {0} has been saved.'), __('subclub'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.subclub_id', $subclub->subclub_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $clubs = $this->fetchTable('Subclubs')->Clubs->find('list', limit: 200)->all();
         $competitions = $this->fetchTable('Subclubs')->Competitions->find('list', limit: 200)->all();
@@ -174,7 +174,7 @@ class SubclubsController extends AppController
             $data = $this->getRequest()->getData();
             $subclub = $this->fetchTable('Subclubs')->patchEntity($subclub, $data);
             if ($this->fetchTable('Subclubs')->save($subclub)) {
-                $this->Flash->success(__('A(z) subclub adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success(__('The {0} has been saved.', __('subclub')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.Subclubs.params');
 
@@ -183,7 +183,7 @@ class SubclubsController extends AppController
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error(__('A(z) subclub mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $clubs = $this->fetchTable('Subclubs')->Clubs->find('list', limit: 200)->all();
         $competitions = $this->fetchTable('Subclubs')->Competitions->find('list', limit: 200)->all();
@@ -202,6 +202,7 @@ class SubclubsController extends AppController
         
         $table = $this->fetchTable('Subclubs');
         $subclub = $table->get($id);
+		$subclubName = $subclub->name;
 
         $session = $this->getRequest()->getSession();
         $session->delete('LastViewed.subclub_id');
@@ -229,9 +230,9 @@ class SubclubsController extends AppController
         }
 
         if ($table->delete($subclub)) {
-            $this->Flash->success(__('A(z) subclub sikeresen törölve lett.'));
+            $this->Flash->success(__('The {0} has been successfully deleted.', __('subclub')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.Subclubs.params');

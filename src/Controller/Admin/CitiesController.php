@@ -95,7 +95,7 @@ class CitiesController extends AppController
                 $session->write('Paging.Cities.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
-            $this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+            $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
 
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
@@ -139,14 +139,14 @@ class CitiesController extends AppController
             $data = $this->getRequest()->getData();
             $city = $this->fetchTable('Cities')->patchEntity($city, $data);
             if ($this->fetchTable('Cities')->save($city)) {
-                $this->Flash->success(__('The city has been saved.'));
+                $this->Flash->success(__('The {0} has been saved.'), __('city'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.city_id', $city->city_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $this->set(compact('city'));
     }
@@ -168,7 +168,7 @@ class CitiesController extends AppController
             $data = $this->getRequest()->getData();
             $city = $this->fetchTable('Cities')->patchEntity($city, $data);
             if ($this->fetchTable('Cities')->save($city)) {
-                $this->Flash->success(__('A(z) city adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success(__('The {0} has been saved.', __('city')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.Cities.params');
 
@@ -177,7 +177,7 @@ class CitiesController extends AppController
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error(__('A(z) city mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $this->set(compact('city'));
     }
@@ -194,6 +194,7 @@ class CitiesController extends AppController
         
         $table = $this->fetchTable('Cities');
         $city = $table->get($id);
+		$cityName = $city->name;
 
         $session = $this->getRequest()->getSession();
         $session->delete('LastViewed.city_id');
@@ -221,9 +222,9 @@ class CitiesController extends AppController
         }
 
         if ($table->delete($city)) {
-            $this->Flash->success(__('A(z) city sikeresen törölve lett.'));
+            $this->Flash->success(__('The {0} has been successfully deleted.', __('city')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.Cities.params');

@@ -37,7 +37,7 @@
             $data = $this->getRequest()->getData();
             ${{ singularName }} = $this->fetchTable('{{ currentModelName }}')->patchEntity(${{ singularName }}, $data);
             if ($this->fetchTable('{{ currentModelName }}')->save(${{ singularName }})) {
-                $this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'A(z) {{ singularHumanName|lower }} adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {0} has been saved.', __('{{ singularHumanName|lower }}')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.{{ currentModelName }}.params');
 
@@ -46,7 +46,7 @@
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'A(z) {{ singularHumanName|lower }} mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
 {% for assoc in belongsTo|merge(belongsToMany) %}
     {%~ set otherName = Bake.getAssociatedTableAlias(modelObj, assoc) %}

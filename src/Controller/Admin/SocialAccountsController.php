@@ -98,7 +98,7 @@ class SocialAccountsController extends AppController
                 $session->write('Paging.SocialAccounts.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
-            $this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+            $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
 
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
@@ -142,14 +142,14 @@ class SocialAccountsController extends AppController
             $data = $this->getRequest()->getData();
             $socialAccount = $this->fetchTable('SocialAccounts')->patchEntity($socialAccount, $data);
             if ($this->fetchTable('SocialAccounts')->save($socialAccount)) {
-                $this->Flash->success(__('The social account has been saved.'));
+                $this->Flash->success(__('The {0} has been saved.'), __('social account'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.socialAccount_id', $socialAccount->socialAccount_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $users = $this->fetchTable('SocialAccounts')->Users->find('list', limit: 200)->all();
         $this->set(compact('socialAccount', 'users'));
@@ -172,7 +172,7 @@ class SocialAccountsController extends AppController
             $data = $this->getRequest()->getData();
             $socialAccount = $this->fetchTable('SocialAccounts')->patchEntity($socialAccount, $data);
             if ($this->fetchTable('SocialAccounts')->save($socialAccount)) {
-                $this->Flash->success(__('A(z) social account adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success(__('The {0} has been saved.', __('social account')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.SocialAccounts.params');
 
@@ -181,7 +181,7 @@ class SocialAccountsController extends AppController
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error(__('A(z) social account mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $users = $this->fetchTable('SocialAccounts')->Users->find('list', limit: 200)->all();
         $this->set(compact('socialAccount', 'users'));
@@ -199,6 +199,7 @@ class SocialAccountsController extends AppController
         
         $table = $this->fetchTable('SocialAccounts');
         $socialAccount = $table->get($id);
+		$socialAccountName = $socialAccount->name;
 
         $session = $this->getRequest()->getSession();
         $session->delete('LastViewed.socialAccount_id');
@@ -226,9 +227,9 @@ class SocialAccountsController extends AppController
         }
 
         if ($table->delete($socialAccount)) {
-            $this->Flash->success(__('A(z) social account sikeresen törölve lett.'));
+            $this->Flash->success(__('The {0} has been successfully deleted.', __('social account')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.SocialAccounts.params');

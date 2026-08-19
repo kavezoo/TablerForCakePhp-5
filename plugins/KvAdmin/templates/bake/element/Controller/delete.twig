@@ -27,6 +27,7 @@
         
         $table = $this->fetchTable('{{ currentModelName }}');
         ${{ singularName }} = $table->get($id);
+		${{ singularName }}Name = ${{ singularName }}->name;
 {% if Bake.hasPlugin('Authorization') %}
         $this->Authorization->authorize(${{ singularName }});
 {% endif %}
@@ -57,9 +58,9 @@
         }
 
         if ($table->delete(${{ singularName }})) {
-            $this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'A(z) {{ singularHumanName|lower }} sikeresen törölve lett.'));
+            $this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {0} has been successfully deleted.', __('{{ singularHumanName|lower }}')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.{{ currentModelName }}.params');

@@ -29,14 +29,14 @@
             $data = $this->getRequest()->getData();
             ${{ singularName }} = $this->fetchTable('{{ currentModelName }}')->patchEntity(${{ singularName }}, $data);
             if ($this->fetchTable('{{ currentModelName }}')->save(${{ singularName }})) {
-                $this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {{ singularHumanName|lower }} has been saved.'));
+                $this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {0} has been saved.'), __('{{ singularHumanName|lower }}'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.{{ singularName }}_id', ${{ singularName }}->{{ singularName }}_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
 {% set associations = Bake.aliasExtractor(modelObj, 'BelongsTo') %}
 {% set associations = associations|merge(Bake.aliasExtractor(modelObj, 'BelongsToMany')) %}

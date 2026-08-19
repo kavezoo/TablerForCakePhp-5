@@ -98,7 +98,7 @@ class ClubsController extends AppController
                 $session->write('Paging.Clubs.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
-            $this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+            $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
 
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
@@ -142,14 +142,14 @@ class ClubsController extends AppController
             $data = $this->getRequest()->getData();
             $club = $this->fetchTable('Clubs')->patchEntity($club, $data);
             if ($this->fetchTable('Clubs')->save($club)) {
-                $this->Flash->success(__('The club has been saved.'));
+                $this->Flash->success(__('The {0} has been saved.'), __('club'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.club_id', $club->club_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $cities = $this->fetchTable('Clubs')->Cities->find('list', limit: 200)->all();
         $this->set(compact('club', 'cities'));
@@ -172,7 +172,7 @@ class ClubsController extends AppController
             $data = $this->getRequest()->getData();
             $club = $this->fetchTable('Clubs')->patchEntity($club, $data);
             if ($this->fetchTable('Clubs')->save($club)) {
-                $this->Flash->success(__('A(z) club adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success(__('The {0} has been saved.', __('club')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.Clubs.params');
 
@@ -181,7 +181,7 @@ class ClubsController extends AppController
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error(__('A(z) club mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $cities = $this->fetchTable('Clubs')->Cities->find('list', limit: 200)->all();
         $this->set(compact('club', 'cities'));
@@ -199,6 +199,7 @@ class ClubsController extends AppController
         
         $table = $this->fetchTable('Clubs');
         $club = $table->get($id);
+		$clubName = $club->name;
 
         $session = $this->getRequest()->getSession();
         $session->delete('LastViewed.club_id');
@@ -226,9 +227,9 @@ class ClubsController extends AppController
         }
 
         if ($table->delete($club)) {
-            $this->Flash->success(__('A(z) club sikeresen törölve lett.'));
+            $this->Flash->success(__('The {0} has been successfully deleted.', __('club')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.Clubs.params');

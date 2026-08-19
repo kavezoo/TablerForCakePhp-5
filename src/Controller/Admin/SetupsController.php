@@ -95,7 +95,7 @@ class SetupsController extends AppController
                 $session->write('Paging.Setups.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
-            $this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+            $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
 
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
@@ -139,14 +139,14 @@ class SetupsController extends AppController
             $data = $this->getRequest()->getData();
             $setup = $this->fetchTable('Setups')->patchEntity($setup, $data);
             if ($this->fetchTable('Setups')->save($setup)) {
-                $this->Flash->success(__('The setup has been saved.'));
+                $this->Flash->success(__('The {0} has been saved.'), __('setup'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.setup_id', $setup->setup_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $this->set(compact('setup'));
     }
@@ -168,7 +168,7 @@ class SetupsController extends AppController
             $data = $this->getRequest()->getData();
             $setup = $this->fetchTable('Setups')->patchEntity($setup, $data);
             if ($this->fetchTable('Setups')->save($setup)) {
-                $this->Flash->success(__('A(z) setup adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success(__('The {0} has been saved.', __('setup')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.Setups.params');
 
@@ -177,7 +177,7 @@ class SetupsController extends AppController
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error(__('A(z) setup mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $this->set(compact('setup'));
     }
@@ -194,6 +194,7 @@ class SetupsController extends AppController
         
         $table = $this->fetchTable('Setups');
         $setup = $table->get($id);
+		$setupName = $setup->name;
 
         $session = $this->getRequest()->getSession();
         $session->delete('LastViewed.setup_id');
@@ -221,9 +222,9 @@ class SetupsController extends AppController
         }
 
         if ($table->delete($setup)) {
-            $this->Flash->success(__('A(z) setup sikeresen törölve lett.'));
+            $this->Flash->success(__('The {0} has been successfully deleted.', __('setup')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.Setups.params');

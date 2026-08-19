@@ -95,7 +95,7 @@ class EmailTemplatesController extends AppController
                 $session->write('Paging.EmailTemplates.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
-            $this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+            $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
 
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
@@ -139,14 +139,14 @@ class EmailTemplatesController extends AppController
             $data = $this->getRequest()->getData();
             $emailTemplate = $this->fetchTable('EmailTemplates')->patchEntity($emailTemplate, $data);
             if ($this->fetchTable('EmailTemplates')->save($emailTemplate)) {
-                $this->Flash->success(__('The email template has been saved.'));
+                $this->Flash->success(__('The {0} has been saved.'), __('email template'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.emailTemplate_id', $emailTemplate->emailTemplate_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $this->set(compact('emailTemplate'));
     }
@@ -168,7 +168,7 @@ class EmailTemplatesController extends AppController
             $data = $this->getRequest()->getData();
             $emailTemplate = $this->fetchTable('EmailTemplates')->patchEntity($emailTemplate, $data);
             if ($this->fetchTable('EmailTemplates')->save($emailTemplate)) {
-                $this->Flash->success(__('A(z) email template adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success(__('The {0} has been saved.', __('email template')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.EmailTemplates.params');
 
@@ -177,7 +177,7 @@ class EmailTemplatesController extends AppController
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error(__('A(z) email template mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $this->set(compact('emailTemplate'));
     }
@@ -194,6 +194,7 @@ class EmailTemplatesController extends AppController
         
         $table = $this->fetchTable('EmailTemplates');
         $emailTemplate = $table->get($id);
+		$emailTemplateName = $emailTemplate->name;
 
         $session = $this->getRequest()->getSession();
         $session->delete('LastViewed.emailTemplate_id');
@@ -221,9 +222,9 @@ class EmailTemplatesController extends AppController
         }
 
         if ($table->delete($emailTemplate)) {
-            $this->Flash->success(__('A(z) email template sikeresen törölve lett.'));
+            $this->Flash->success(__('The {0} has been successfully deleted.', __('email template')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.EmailTemplates.params');

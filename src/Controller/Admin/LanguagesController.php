@@ -95,7 +95,7 @@ class LanguagesController extends AppController
                 $session->write('Paging.Languages.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
-            $this->Flash->warning(__('A kért oldal nem található, ezért átirányítottuk az első oldalra.'));
+            $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
 
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
@@ -139,14 +139,14 @@ class LanguagesController extends AppController
             $data = $this->getRequest()->getData();
             $language = $this->fetchTable('Languages')->patchEntity($language, $data);
             if ($this->fetchTable('Languages')->save($language)) {
-                $this->Flash->success(__('The language has been saved.'));
+                $this->Flash->success(__('The {0} has been saved.'), __('language'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->getRequest()->getSession()->write('ScrollTo.language_id', $language->language_id);
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nem sikerült az adatok mentése. Kérem ellenőrizze és javítsa az adatokat majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $this->set(compact('language'));
     }
@@ -168,7 +168,7 @@ class LanguagesController extends AppController
             $data = $this->getRequest()->getData();
             $language = $this->fetchTable('Languages')->patchEntity($language, $data);
             if ($this->fetchTable('Languages')->save($language)) {
-                $this->Flash->success(__('A(z) language adatai sikeresen mentésre kerültek.'));
+                $this->Flash->success(__('The {0} has been saved.', __('language')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$session->read('Paging.Languages.params');
 
@@ -177,7 +177,7 @@ class LanguagesController extends AppController
                     '?' => $redirectParams,
                 ]);
             }
-            $this->Flash->error(__('A(z) language mentése nem sikerült. Kérem, nézze át és javítsa az adatokat, majd mentsen újra.'));
+            $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
         $this->set(compact('language'));
     }
@@ -194,6 +194,7 @@ class LanguagesController extends AppController
         
         $table = $this->fetchTable('Languages');
         $language = $table->get($id);
+		$languageName = $language->name;
 
         $session = $this->getRequest()->getSession();
         $session->delete('LastViewed.language_id');
@@ -221,9 +222,9 @@ class LanguagesController extends AppController
         }
 
         if ($table->delete($language)) {
-            $this->Flash->success(__('A(z) language sikeresen törölve lett.'));
+            $this->Flash->success(__('The {0} has been successfully deleted.', __('language')), ['plugin' => 'KvAdmin']);
         } else {
-            $this->Flash->error(__('A törlés sikertelen. Kérjük, próbálja újra.'));
+            $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
         $redirectParams = (array)$session->read('Paging.Languages.params');
