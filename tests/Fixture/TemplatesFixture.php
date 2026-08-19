@@ -24,8 +24,8 @@ class TemplatesFixture extends TestFixture
                 'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'visible' => 1,
                 'pos' => 1,
-                'created' => '2026-08-19 12:59:21',
-                'modified' => '2026-08-19 12:59:21',
+                'created' => '2026-08-19 16:52:30',
+                'modified' => '2026-08-19 16:52:30',
             ],
         ];
         parent::init();

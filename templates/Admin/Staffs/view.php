@@ -20,7 +20,7 @@
             <table>
                 <tr>
                     <th><?= __('User') ?></th>
-                    <td><?= $staff->hasValue('user') ? $this->Html->link($staff->user->username, ['controller' => 'Users', 'action' => 'view', $staff->user->id]) : '' ?></td>
+                    <td><?= $staff->hasValue('user') ? $this->Html->link($staff->user->first_name, ['controller' => 'Users', 'action' => 'view', $staff->user->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Competition') ?></th>

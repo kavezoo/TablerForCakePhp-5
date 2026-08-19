@@ -31,8 +31,8 @@ class CompetitionsUsersFixture extends TestFixture
                 'racing_pipe_2_qty' => 1,
                 'racing_pipe_3_qty' => 1,
                 'comment' => 'Lorem ipsum dolor sit amet',
-                'fee_paid_at' => '2026-08-19 12:59:19',
-                'fee_paid_by' => '541963da-82ac-426a-84d9-85ec220030b4',
+                'fee_paid_at' => '2026-08-19 16:52:29',
+                'fee_paid_by' => '58f6c3b5-3405-4909-b997-c84717e3c499',
                 'entry_fee_amount' => 1.5,
                 'racing_pipe_1_fee' => 1.5,
                 'racing_pipe_2_fee' => 1.5,
@@ -46,8 +46,8 @@ class CompetitionsUsersFixture extends TestFixture
                 'result_note' => 'Lorem ipsum dolor sit amet',
                 'visible' => 1,
                 'pos' => 1,
-                'created' => '2026-08-19 12:59:19',
-                'modified' => '2026-08-19 12:59:19',
+                'created' => '2026-08-19 16:52:29',
+                'modified' => '2026-08-19 16:52:29',
             ],
         ];
         parent::init();

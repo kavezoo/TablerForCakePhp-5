@@ -19,9 +19,9 @@ class FailedPasswordAttemptsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 'ce49bde4-8a41-40e3-ad85-677fdcd6641f',
-                'user_id' => '1e97d097-3c01-4b44-82a3-849a51df6ca9',
-                'created' => '2026-08-19 12:59:20',
+                'id' => '7634c282-4e74-4e75-ac8f-23fc2be5507f',
+                'user_id' => '110ddbe6-788f-4d5b-a1c2-d1fb2c8125b0',
+                'created' => '2026-08-19 16:52:30',
             ],
         ];
         parent::init();

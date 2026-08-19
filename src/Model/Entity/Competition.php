@@ -26,7 +26,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime $competition_datetime
  * @property \Cake\I18n\DateTime|null $start_datetime
  * @property \Cake\I18n\DateTime|null $end_datetime
- * @property string $description
+ * @property string|null $description
  * @property int $minimum_team_size
  * @property int $lunch_for_the_attendant
  * @property string $racing_pipe_1_title
@@ -58,11 +58,10 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified
  *
- * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\City $city
  * @property \App\Model\Entity\Staff[] $staffs
  * @property \App\Model\Entity\Subclub[] $subclubs
- * @property \App\Model\Entity\Competition[] $competitions
+ * @property \App\Model\Entity\User[] $users
  */
 class Competition extends Entity
 {
@@ -124,10 +123,9 @@ class Competition extends Entity
         'pos' => true,
         'created' => true,
         'modified' => true,
-        'user' => true,
         'city' => true,
         'staffs' => true,
         'subclubs' => true,
-        'competitions' => true,
+        'users' => true,
     ];
 }

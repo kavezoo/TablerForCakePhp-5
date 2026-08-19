@@ -47,9 +47,10 @@ class UsersController extends AppController
             // --- 1. Saját tábla (Users) mezői ---
             // 'Users.id',
 			'Users.' . $this->Users->getDisplayField(),	// name általában
+			'Users.last_name',	// name általában
             // --- 2. Kapcsolt (BelongsTo) táblák mezői ---
-            // 'Cities.name',
-            // 'Clubs.name',
+             'Cities.name',
+             'Clubs.name',
         ];
 
         // =========================================================================

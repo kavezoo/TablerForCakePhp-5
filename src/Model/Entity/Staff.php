@@ -17,8 +17,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified
  *
- * @property \App\Model\Entity\Competition $competition
  * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\Competition $competition
  */
 class Staff extends Entity
 {
@@ -39,7 +39,7 @@ class Staff extends Entity
         'pos' => true,
         'created' => true,
         'modified' => true,
-        'competition' => true,
         'user' => true,
+        'competition' => true,
     ];
 }

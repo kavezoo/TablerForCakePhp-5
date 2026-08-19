@@ -29,8 +29,8 @@ class CitiesFixture extends TestFixture
                 'user_count' => 1,
                 'visible' => 1,
                 'pos' => 1,
-                'created' => '2026-08-19 12:59:18',
-                'modified' => '2026-08-19 12:59:18',
+                'created' => '2026-08-19 16:52:28',
+                'modified' => '2026-08-19 16:52:28',
             ],
         ];
         parent::init();

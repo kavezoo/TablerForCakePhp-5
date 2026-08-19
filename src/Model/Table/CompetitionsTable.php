@@ -159,8 +159,7 @@ class CompetitionsTable extends Table
 
         $validator
             ->scalar('description')
-            ->requirePresence('description', 'create')
-            ->notEmptyString('description');
+            ->allowEmptyString('description');
 
         $validator
             ->nonNegativeInteger('minimum_team_size')

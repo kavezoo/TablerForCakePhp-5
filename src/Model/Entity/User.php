@@ -112,4 +112,11 @@ class User extends Entity
         'password',
         'token',
     ];
+	
+	// Virtuális getter mező definiálása
+    protected function _getFullName(): string
+    {
+        return trim(($this->last_name ?? '') . ' ' . ($this->first_name ?? ''));
+    }	
+
 }

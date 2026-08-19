@@ -19,14 +19,14 @@ class CompetitionsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => '1249692e-0cde-4ec2-b601-0598bec3e89f',
+                'id' => 'dd5848f8-df8a-4443-9770-facb95dbee80',
                 'organizing_club_id' => 1,
                 'city_id' => 1,
                 'venue_name' => 'Lorem ipsum dolor sit amet',
                 'venue_address' => 'Lorem ipsum dolor sit amet',
                 'google_maps_url' => 'Lorem ipsum dolor sit amet',
                 'competition_text_template_id' => 1,
-                'modified_by' => 'f002be28-1ff9-4cdd-9edf-3f2e1869932a',
+                'modified_by' => '4538d6b3-7206-498b-a36f-a47dc58fe012',
                 'national_competition' => 1,
                 'name' => 'Lorem ipsum dolor sit amet',
                 'title' => 'Lorem ipsum dolor sit amet',
@@ -34,9 +34,9 @@ class CompetitionsFixture extends TestFixture
                 'subtitle2' => 'Lorem ipsum dolor sit amet',
                 'first_date_of_application' => '2026-08-19',
                 'application_deadline' => '2026-08-19',
-                'competition_datetime' => '2026-08-19 12:59:19',
-                'start_datetime' => '2026-08-19 12:59:19',
-                'end_datetime' => '2026-08-19 12:59:19',
+                'competition_datetime' => '2026-08-19 16:52:29',
+                'start_datetime' => '2026-08-19 16:52:29',
+                'end_datetime' => '2026-08-19 16:52:29',
                 'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'minimum_team_size' => 1,
                 'lunch_for_the_attendant' => 1,
@@ -66,8 +66,8 @@ class CompetitionsFixture extends TestFixture
                 'attendant_count' => 1,
                 'visible' => 1,
                 'pos' => 1,
-                'created' => '2026-08-19 12:59:19',
-                'modified' => '2026-08-19 12:59:19',
+                'created' => '2026-08-19 16:52:29',
+                'modified' => '2026-08-19 16:52:29',
             ],
         ];
         parent::init();

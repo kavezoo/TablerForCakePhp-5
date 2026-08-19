@@ -59,7 +59,7 @@ class UsersTable extends Table
 
         $this->belongsTo('Cities', [
             'foreignKey' => 'city_id',
-            //'joinType' => 'INNER',
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Clubs', [
             'foreignKey' => 'club_id',

@@ -94,13 +94,17 @@ $highlight = function (?string $text) use ($search): string {
                 <?php if (!empty($socialAccounts) && count($socialAccounts) > 0): ?>
                 <?php foreach ($socialAccounts as $socialAccount): ?>
                 <?php $isLastViewed = (!empty($lastViewedId) && $lastViewedId == $socialAccount->id); ?>
-                <tr id="row-<?= (int)$socialAccount->id ?>" class="<?= $isLastViewed ? 'last-viewed' : '' ?>">
+                <tr
+                    id="row-<?= (int)$socialAccount->id ?>"
+                    class="<?= $isLastViewed ? 'last-viewed' : '' ?>"
+                    data-edit-url="<?= $this->Url->build(['action' => 'edit', $socialAccount->id]) ?>"
+                >
 <?php if (isset($showId) && $showId): ?>
                     <td class="uuid id"><?= h($socialAccount->id) ?></td>
 <?php endif; ?>
                     <td class="string user_id">
 						<?= $socialAccount->hasValue('user') ? $this->Html->link(
-							h($socialAccount->user->username) . '<span class="icon-link-subtle ms-1">' . $this->Icon->outline('link') . '</span>',
+							h($socialAccount->user->first_name) . '<span class="icon-link-subtle ms-1">' . $this->Icon->outline('link') . '</span>',
 							['controller' => 'Users', 'action' => 'view', $socialAccount->user->id],
 							[
 								'class' => 'text-reset text-decoration-none fw-bold',
@@ -108,7 +112,7 @@ $highlight = function (?string $text) use ($search): string {
 								'data-bs-toggle' => 'tooltip',
 								'data-bs-html' => 'true',
 								'data-bs-placement' => 'top',
-								'title' => '<b>' . h($socialAccount->user->username) . '</b><br>' . __('adatlap megtekintése'),
+								'title' => '<b>' . h($socialAccount->user->first_name) . '</b><br>' . __('adatlap megtekintése'),
 							]
 						) : '' ?>
 						
@@ -199,7 +203,22 @@ $this->Html->scriptBlock(
             });
         }
 
-        // --- 2. AUTOMATIKUS FINOM GÖRGETÉS AZ UTOLSÓ REKORDHOZ ---
+        // --- 2. DUPLA KATTINTÁS SORON: UGRÁS SZERKESZTÉSRE ---
+        document.querySelectorAll('.table tbody tr[data-edit-url]').forEach(function (row) {
+            row.addEventListener('dblclick', function (e) {
+                // Interaktív elemekre dupla kattintva ne navigáljon el.
+                if (e.target.closest('a, button, input, select, textarea, label, .actions')) {
+                    return;
+                }
+
+                const editUrl = row.getAttribute('data-edit-url');
+                if (editUrl) {
+                    window.location.href = editUrl;
+                }
+            });
+        });
+
+        // --- 3. AUTOMATIKUS FINOM GÖRGETÉS AZ UTOLSÓ REKORDHOZ ---
         " . (!empty($scrollToId) ? "
         let targetRow = document.getElementById('row-" . (int)$scrollToId . "');
         if (!targetRow) {

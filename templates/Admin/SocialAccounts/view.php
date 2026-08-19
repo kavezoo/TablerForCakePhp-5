@@ -24,7 +24,7 @@
                 </tr>
                 <tr>
                     <th><?= __('User') ?></th>
-                    <td><?= $socialAccount->hasValue('user') ? $this->Html->link($socialAccount->user->username, ['controller' => 'Users', 'action' => 'view', $socialAccount->user->id]) : '' ?></td>
+                    <td><?= $socialAccount->hasValue('user') ? $this->Html->link($socialAccount->user->first_name, ['controller' => 'Users', 'action' => 'view', $socialAccount->user->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Provider') ?></th>

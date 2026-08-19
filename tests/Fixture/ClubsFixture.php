@@ -34,12 +34,12 @@ class ClubsFixture extends TestFixture
                 'insta' => 'Lorem ipsum dolor sit amet',
                 'user_count' => 1,
                 'competition_count' => 1,
-                'club_president_id' => 'b621ecbe-038d-40de-a9bf-8fb01bbf3cc6',
+                'club_president_id' => '72d8d822-d393-4dbe-9f45-b933b858ebe3',
                 'national_membership_fee_date' => '2026-08-19',
                 'visible' => 1,
                 'pos' => 1,
-                'created' => '2026-08-19 12:59:19',
-                'modified' => '2026-08-19 12:59:19',
+                'created' => '2026-08-19 16:52:29',
+                'modified' => '2026-08-19 16:52:29',
             ],
         ];
         parent::init();

@@ -95,7 +95,11 @@ $highlight = function (?string $text) use ($search): string {
                 <?php if (!empty($languages) && count($languages) > 0): ?>
                 <?php foreach ($languages as $language): ?>
                 <?php $isLastViewed = (!empty($lastViewedId) && $lastViewedId == $language->id); ?>
-                <tr id="row-<?= (int)$language->id ?>" class="<?= $isLastViewed ? 'last-viewed' : '' ?>">
+                <tr
+                    id="row-<?= (int)$language->id ?>"
+                    class="<?= $isLastViewed ? 'last-viewed' : '' ?>"
+                    data-edit-url="<?= $this->Url->build(['action' => 'edit', $language->id]) ?>"
+                >
 <?php if (isset($showId) && $showId): ?>
                     <td class="integer id"><?= h($language->id) ?></td>
 <?php endif; ?>
@@ -187,7 +191,22 @@ $this->Html->scriptBlock(
             });
         }
 
-        // --- 2. AUTOMATIKUS FINOM GÖRGETÉS AZ UTOLSÓ REKORDHOZ ---
+        // --- 2. DUPLA KATTINTÁS SORON: UGRÁS SZERKESZTÉSRE ---
+        document.querySelectorAll('.table tbody tr[data-edit-url]').forEach(function (row) {
+            row.addEventListener('dblclick', function (e) {
+                // Interaktív elemekre dupla kattintva ne navigáljon el.
+                if (e.target.closest('a, button, input, select, textarea, label, .actions')) {
+                    return;
+                }
+
+                const editUrl = row.getAttribute('data-edit-url');
+                if (editUrl) {
+                    window.location.href = editUrl;
+                }
+            });
+        });
+
+        // --- 3. AUTOMATIKUS FINOM GÖRGETÉS AZ UTOLSÓ REKORDHOZ ---
         " . (!empty($scrollToId) ? "
         let targetRow = document.getElementById('row-" . (int)$scrollToId . "');
         if (!targetRow) {

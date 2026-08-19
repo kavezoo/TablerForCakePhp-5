@@ -28,8 +28,8 @@ class EmailTemplatesFixture extends TestFixture
                 'enabled' => 1,
                 'visible' => 1,
                 'pos' => 1,
-                'created' => '2026-08-19 12:59:20',
-                'modified' => '2026-08-19 12:59:20',
+                'created' => '2026-08-19 16:52:30',
+                'modified' => '2026-08-19 16:52:30',
             ],
         ];
         parent::init();

@@ -25,8 +25,8 @@ class StaffsTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.Staffs',
-        'app.Competitions',
         'app.Users',
+        'app.Competitions',
     ];
 
     /**

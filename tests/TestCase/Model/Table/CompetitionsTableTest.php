@@ -25,10 +25,10 @@ class CompetitionsTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.Competitions',
-        'app.Users',
         'app.Cities',
         'app.Staffs',
         'app.Subclubs',
+        'app.Users',
     ];
 
     /**
