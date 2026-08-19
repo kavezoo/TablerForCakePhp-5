@@ -104,4 +104,34 @@ return function (RouteBuilder $routes): void {
 		$builder->fallbacks();
 	});
 
+	$routes->prefix('New', function (RouteBuilder $builder) {
+		$builder->setRouteClass(DashedRoute::class);
+		$builder->connect('/', ['controller' => 'Clubs', 'action' => 'index']);
+		$builder->fallbacks();
+	});
+
+	$routes->prefix('Member', function (RouteBuilder $builder) {
+		$builder->setRouteClass(DashedRoute::class);
+		$builder->connect('/', ['controller' => 'Clubs', 'action' => 'index']);
+		$builder->fallbacks();
+	});
+
+	$routes->prefix('Clubpresident', function (RouteBuilder $builder) {
+		$builder->setRouteClass(DashedRoute::class);
+		$builder->connect('/', ['controller' => 'Clubs', 'action' => 'index']);
+		$builder->fallbacks();
+	});
+
+	$routes->prefix('President', function (RouteBuilder $builder) {
+		$builder->setRouteClass(DashedRoute::class);
+		$builder->connect('/', ['controller' => 'Clubs', 'action' => 'index']);
+		$builder->fallbacks();
+	});
+
+	$routes->prefix('Api', function (RouteBuilder $builder) {
+		$builder->setRouteClass(DashedRoute::class);
+		$builder->connect('/', ['controller' => 'Clubs', 'action' => 'index']);
+		$builder->fallbacks();
+	});
+
 };
