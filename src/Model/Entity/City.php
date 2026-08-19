@@ -19,6 +19,10 @@ use Cake\ORM\Entity;
  * @property string $lat2
  * @property string $lng2
  * @property int $club_count
+ * @property \Cake\I18n\DateTime|null $datumido
+ * @property \Cake\I18n\Date|null $datum
+ * @property string $description
+ * @property \Cake\I18n\Time|null $ido
  *
  * @property \App\Model\Entity\Country $country
  * @property \App\Model\Entity\County $county
@@ -47,16 +51,13 @@ class City extends Entity
         'lat2' => true,
         'lng2' => true,
         'club_count' => true,
+        'datumido' => true,
+        'datum' => true,
+        'description' => true,
+        'ido' => true,
         'country' => true,
         'county' => true,
-        'datum' => true,
-        'ido' => true,
-        'datumido' => true,
         'clubs' => true,
         'competitions' => true,
-        'datumido' => true,
-        'datum' => true,
-        'ido' => true,
-		'description' => true
     ];
 }

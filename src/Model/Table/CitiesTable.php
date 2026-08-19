@@ -51,7 +51,6 @@ class CitiesTable extends Table
         $this->addBehavior('CounterCache', [
             'Counties' => ['city_count'],
         ]);
-        $this->addBehavior('KvAdmin.LocalizedData');
 
         $this->belongsTo('Countries', [
             'foreignKey' => 'country_id',
@@ -129,6 +128,23 @@ class CitiesTable extends Table
         $validator
             ->nonNegativeInteger('club_count')
             ->notEmptyString('club_count');
+
+        $validator
+            ->dateTime('datumido')
+            ->allowEmptyDateTime('datumido');
+
+        $validator
+            ->date('datum')
+            ->allowEmptyDate('datum');
+
+        $validator
+            ->scalar('description')
+            ->requirePresence('description', 'create')
+            ->notEmptyString('description');
+
+        $validator
+            ->time('ido')
+            ->allowEmptyTime('ido');
 
         return $validator;
     }

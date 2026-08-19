@@ -59,7 +59,7 @@ $highlight = function (?string $text) use ($search): string {
 
             <!-- Új {{ singularVar }} gomb -->
             <div class="col-auto">
-                <?= $this->Html->link($this->Icon->outline('plus') . '<span class="d-none d-sm-inline ms-1">' . __('Add new') . ' ' . __('{{ singularVar }}') . '</span>', ['controller' => '{{ pluralName }}', 'action' => 'add'], ['escape' => false, 'class' => 'btn btn-outline-secondary btn-header-new']) ?>
+                <?= $this->Html->link($this->Icon->outline('plus') . '<span class="d-none d-sm-inline ms-1">' . __('Add new') . ' ' . __('{{ singularVar }}') . '</span>', ['controller' => '{{ pluralVar|capitalize }}', 'action' => 'add'], ['escape' => false, 'class' => 'btn btn-outline-secondary btn-header-new']) ?>
             </div>
 
             <!-- Cím és infó blokk -->
@@ -70,7 +70,7 @@ $highlight = function (?string $text) use ($search): string {
 
             <!-- Kereső űrlap -->
             <div class="col-12 col-md-auto ms-md-auto">
-                <?= $this->KvAdmin->search('search', ['controller' => '{{ pluralVar|capitalize }}', 'action' => 'index', '?' => ['clear' => 'search']]) ?>
+                <?= $this->KvForm->search('search', ['controller' => '{{ pluralVar|capitalize }}', 'action' => 'index', '?' => ['clear' => 'search']]) ?>
             </div>
 
         </div>
@@ -117,10 +117,20 @@ $highlight = function (?string $text) use ($search): string {
 <?php endif; ?>
 {% endif %}
 {% else %}
-                    <th class="{{ colData.type }} {{ field }}"><?= $this->Paginator->sort('{{ field }}') ?></th>
+{%~ set isKey = false %}
+{%~ set colType = colData.type %}
+{%~ if associations.BelongsTo is defined %}
+	{%~ for alias, details in associations.BelongsTo %}
+		{%~ if field == details.foreignKey %}
+			{%~ set isKey = true %}
+			{%~ set colType = 'string' %}
+		{%~ endif %}
+	{%~ endfor %}
+{%~ endif %}
+					<th class="{{ colType }} {{ field }}"><?= $this->Paginator->sort('{{ field }}') ?></th>					
 {% endif %}
 {% endfor %}
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th class="actions w-1"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -167,7 +177,21 @@ $highlight = function (?string $text) use ($search): string {
         {%~ for alias, details in associations.BelongsTo %}
             {%~ if field == details.foreignKey %}
                 {%~ set isKey = true %}
-                    <td class="{{ columnData.type }} {{ field }}"><?= ${{ singularVar }}->hasValue('{{ details.property }}') ? $this->Html->link(${{ singularVar }}->{{ details.property }}->{{ details.displayField }}, ['controller' => '{{ details.controller }}', 'action' => 'view', ${{ singularVar }}->{{ details.property }}->{{ details.primaryKey[0] }}]) : '' ?></td>
+                    <td class="string {{ field }}">
+						<?= ${{ singularVar }}->hasValue('{{ details.property }}') ? $this->Html->link(
+							h(${{ singularVar }}->{{ details.property }}->{{ details.displayField }}) . '<span class="icon-link-subtle ms-1">' . $this->Icon->outline('link') . '</span>',
+							['controller' => '{{ details.controller }}', 'action' => 'view', ${{ singularVar }}->{{ details.property }}->{{ details.primaryKey[0] }}],
+							[
+								'class' => 'text-reset text-decoration-none fw-bold',
+								'escape' => false,
+								'data-bs-toggle' => 'tooltip',
+								'data-bs-html' => 'true',
+								'data-bs-placement' => 'top',
+								'title' => '<b>' . h(${{ singularVar }}->{{ details.property }}->{{ details.displayField }}) . '</b><br>' . __('adatlap megtekintése'),
+							]
+						) : '' ?>
+						
+					</td>
             {%~ endif %}
         {%~ endfor %}
     {%~ endif %}
@@ -191,9 +215,9 @@ $highlight = function (?string $text) use ($search): string {
 {% endfor %}
                     <td class="actions">
                         <div class="btn-list flex-nowrap align-items-center">
-                            <?= $this->KvAdmin->actionView(['action' => 'view', {{ pk|raw }}]) ?>
-                            <?= $this->KvAdmin->actionEdit(['action' => 'edit', {{ pk|raw }}]) ?>
-                            <?= $this->KvAdmin->actionDelete(['action' => 'delete', {{ pk|raw }}], (string)(${{ singularVar }}->{{ displayField }} ?? '')) ?>
+                            <?= $this->KvForm->actionView(['action' => 'view', {{ pk|raw }}]) ?>
+                            <?= $this->KvForm->actionEdit(['action' => 'edit', {{ pk|raw }}]) ?>
+                            <?= $this->KvForm->actionDelete(['action' => 'delete', {{ pk|raw }}], (string)(${{ singularVar }}->{{ displayField }} ?? '')) ?>
                         </div>
                     </td>
                 </tr>

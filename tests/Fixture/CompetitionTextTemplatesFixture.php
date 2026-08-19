@@ -6,9 +6,9 @@ namespace App\Test\Fixture;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * CitiesFixture
+ * CompetitionTextTemplatesFixture
  */
-class CitiesFixture extends TestFixture
+class CompetitionTextTemplatesFixture extends TestFixture
 {
     /**
      * Init method
@@ -21,19 +21,13 @@ class CitiesFixture extends TestFixture
             [
                 'id' => 1,
                 'country_id' => 1,
-                'county_id' => 1,
-                'shortname' => 'Lorem ip',
-                'name' => 'Lorem ipsum dolor sit amet',
-                'zip' => 'Lorem ip',
-                'lat' => 'Lorem ipsum dolor ',
-                'lng' => 'Lorem ipsum dolor ',
-                'lat2' => 'Lorem ipsum dolor ',
-                'lng2' => 'Lorem ipsum dolor ',
-                'club_count' => 1,
-                'datumido' => '2026-08-19 10:05:09',
-                'datum' => '2026-08-19',
+                'label' => 'Lorem ipsum dolor sit amet',
                 'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'ido' => '10:05:09',
+                'enabled' => 1,
+                'visible' => 1,
+                'pos' => 1,
+                'created' => '2026-08-19 10:05:11',
+                'modified' => '2026-08-19 10:05:11',
             ],
         ];
         parent::init();

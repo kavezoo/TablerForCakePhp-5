@@ -6,7 +6,7 @@
             <div class="modal-status bg-danger"></div>
             <div class="modal-body text-center py-4">
 
-				<span class="text-danger mb-2 d-inline-block" style="width: 48px; height: 48px;">
+				<span class="text-danger mb-2 d-inline-block icon-lg" style="width: 192px; height: 192px;">
 					<?= $this->SystemIcon->modalIcon('alert') ?>
 				</span>
 				

@@ -42,7 +42,7 @@ $highlight = function (?string $text) use ($search): string {
 
             <!-- Új country gomb -->
             <div class="col-auto">
-                <?= $this->Html->link($this->Icon->outline('plus') . '<span class="d-none d-sm-inline ms-1">' . __('Add new') . ' ' . __('country') . '</span>', ['controller' => '', 'action' => 'add'], ['escape' => false, 'class' => 'btn btn-outline-secondary btn-header-new']) ?>
+                <?= $this->Html->link($this->Icon->outline('plus') . '<span class="d-none d-sm-inline ms-1">' . __('Add new') . ' ' . __('country') . '</span>', ['controller' => 'Countries', 'action' => 'add'], ['escape' => false, 'class' => 'btn btn-outline-secondary btn-header-new']) ?>
             </div>
 
             <!-- Cím és infó blokk -->
@@ -66,15 +66,15 @@ $highlight = function (?string $text) use ($search): string {
 <?php if (isset($showId) && $showId): ?>
                     <th class="integer id"><?= $this->Paginator->sort('id', '#') ?></th>
 <?php endif; ?>
-                    <th class="integer continent_id"><?= $this->Paginator->sort('continent_id') ?></th>
-                    <th class="char iso2"><?= $this->Paginator->sort('iso2') ?></th>
-                    <th class="string name"><?= $this->Paginator->sort('name') ?></th>
-                    <th class="string endonim_name"><?= $this->Paginator->sort('endonim_name') ?></th>
-                    <th class="string locale"><?= $this->Paginator->sort('locale') ?></th>
-                    <th class="string timezone"><?= $this->Paginator->sort('timezone') ?></th>
-                    <th class="string phone_prefix"><?= $this->Paginator->sort('phone_prefix') ?></th>
-                    <th class="string logo"><?= $this->Paginator->sort('logo') ?></th>
-                    <th class="string currency"><?= $this->Paginator->sort('currency') ?></th>
+					<th class="string continent_id"><?= $this->Paginator->sort('continent_id') ?></th>					
+					<th class="char iso2"><?= $this->Paginator->sort('iso2') ?></th>					
+					<th class="string name"><?= $this->Paginator->sort('name') ?></th>					
+					<th class="string endonim_name"><?= $this->Paginator->sort('endonim_name') ?></th>					
+					<th class="string locale"><?= $this->Paginator->sort('locale') ?></th>					
+					<th class="string timezone"><?= $this->Paginator->sort('timezone') ?></th>					
+					<th class="string phone_prefix"><?= $this->Paginator->sort('phone_prefix') ?></th>					
+					<th class="string logo"><?= $this->Paginator->sort('logo') ?></th>					
+					<th class="string currency"><?= $this->Paginator->sort('currency') ?></th>					
 <?php if (isset($showVisible) && $showVisible): ?>
                     <th class="boolean visible"><?= $this->Paginator->sort('visible', __('Visible')) ?></th>
 <?php endif; ?>
@@ -103,7 +103,7 @@ $highlight = function (?string $text) use ($search): string {
 <?php endif; ?>
                     </th>
 <?php endif; ?>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th class="actions w-1"><?= __('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -114,7 +114,21 @@ $highlight = function (?string $text) use ($search): string {
 <?php if (isset($showId) && $showId): ?>
                     <td class="integer id"><?= h($country->id) ?></td>
 <?php endif; ?>
-                    <td class="integer continent_id"><?= $country->hasValue('continent') ? $this->Html->link($country->continent->name, ['controller' => 'Continents', 'action' => 'view', $country->continent->id]) : '' ?></td>
+                    <td class="string continent_id">
+						<?= $country->hasValue('continent') ? $this->Html->link(
+							h($country->continent->name) . '<span class="icon-link-subtle ms-1">' . $this->Icon->outline('link') . '</span>',
+							['controller' => 'Continents', 'action' => 'view', $country->continent->id],
+							[
+								'class' => 'text-reset text-decoration-none fw-bold',
+								'escape' => false,
+								'data-bs-toggle' => 'tooltip',
+								'data-bs-html' => 'true',
+								'data-bs-placement' => 'top',
+								'title' => '<b>' . h($country->continent->name) . '</b><br>' . __('adatlap megtekintése'),
+							]
+						) : '' ?>
+						
+					</td>
                     <td class="char iso2"><?= $highlight($country->iso2) ?></td>
                     <td class="string name"><?= $highlight($country->name) ?></td>
                     <td class="string endonim_name"><?= $highlight($country->endonim_name) ?></td>
@@ -150,9 +164,9 @@ $highlight = function (?string $text) use ($search): string {
 <?php endif; ?>
                     <td class="actions">
                         <div class="btn-list flex-nowrap align-items-center">
-                            <?= $this->KvAdmin->actionView(['action' => 'view', $country->id]) ?>
-                            <?= $this->KvAdmin->actionEdit(['action' => 'edit', $country->id]) ?>
-                            <?= $this->KvAdmin->actionDelete(['action' => 'delete', $country->id], (string)($country->name ?? '')) ?>
+                            <?= $this->KvForm->actionView(['action' => 'view', $country->id]) ?>
+                            <?= $this->KvForm->actionEdit(['action' => 'edit', $country->id]) ?>
+                            <?= $this->KvForm->actionDelete(['action' => 'delete', $country->id], (string)($country->name ?? '')) ?>
                         </div>
                     </td>
                 </tr>

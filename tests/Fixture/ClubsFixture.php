@@ -37,10 +37,10 @@ class ClubsFixture extends TestFixture
                 'pos' => 1,
                 'user_count' => 1,
                 'competition_count' => 1,
-                'club_president_id' => '0fb52c9b-305f-4e37-b30c-a2db179465ed',
-                'national_membership_fee_date' => '2026-08-12',
-                'created' => '2026-08-12 08:46:49',
-                'modified' => '2026-08-12 08:46:49',
+                'club_president_id' => 'd406077b-6b1b-4a56-8880-acf3dc49f976',
+                'national_membership_fee_date' => '2026-08-19',
+                'created' => '2026-08-19 10:05:11',
+                'modified' => '2026-08-19 10:05:11',
             ],
         ];
         parent::init();

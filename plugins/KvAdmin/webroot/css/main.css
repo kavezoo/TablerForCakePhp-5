@@ -1107,3 +1107,15 @@ input[type=number] { -moz-appearance: textfield; }
     border-color: rgba(255, 255, 255, 0.3) !important;
     color: #ffffff !important;
 }
+
+
+
+/* 
+	Keresendő szöveg kiemelése
+*/
+.mark, mark {
+  padding: .05em 0 !important;
+  background-color: rgb(240, 220, 220);
+}
+
+
