@@ -19,14 +19,6 @@
             <h3><?= h($city->name) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Country') ?></th>
-                    <td><?= $city->hasValue('country') ? $this->Html->link($city->country->name, ['controller' => 'Countries', 'action' => 'view', $city->country->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('County') ?></th>
-                    <td><?= $city->hasValue('county') ? $this->Html->link($city->county->name, ['controller' => 'Counties', 'action' => 'view', $city->county->id]) : '' ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Shortname') ?></th>
                     <td><?= h($city->shortname) ?></td>
                 </tr>
@@ -47,20 +39,32 @@
                     <td><?= h($city->lng) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Lat2') ?></th>
-                    <td><?= h($city->lat2) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Lng2') ?></th>
-                    <td><?= h($city->lng2) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Id') ?></th>
                     <td><?= $this->Number->format($city->id) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Club Count') ?></th>
                     <td><?= $this->Number->format($city->club_count) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('User Count') ?></th>
+                    <td><?= $city->user_count === null ? '' : $this->Number->format($city->user_count) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Pos') ?></th>
+                    <td><?= $this->Number->format($city->pos) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Created') ?></th>
+                    <td><?= h($city->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Modified') ?></th>
+                    <td><?= h($city->modified) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Visible') ?></th>
+                    <td><?= $city->visible ? __('Yes') : __('No'); ?></td>
                 </tr>
             </table>
             <div class="related">
@@ -70,7 +74,6 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Country Id') ?></th>
                             <th><?= __('Clubpresident Id') ?></th>
                             <th><?= __('Name') ?></th>
                             <th><?= __('Short Name') ?></th>
@@ -82,12 +85,12 @@
                             <th><?= __('Web') ?></th>
                             <th><?= __('Facebook') ?></th>
                             <th><?= __('Insta') ?></th>
-                            <th><?= __('Visible') ?></th>
-                            <th><?= __('Pos') ?></th>
                             <th><?= __('User Count') ?></th>
                             <th><?= __('Competition Count') ?></th>
                             <th><?= __('Club President Id') ?></th>
                             <th><?= __('National Membership Fee Date') ?></th>
+                            <th><?= __('Visible') ?></th>
+                            <th><?= __('Pos') ?></th>
                             <th><?= __('Created') ?></th>
                             <th><?= __('Modified') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
@@ -95,7 +98,6 @@
                         <?php foreach ($city->clubs as $club) : ?>
                         <tr>
                             <td><?= h($club->id) ?></td>
-                            <td><?= h($club->country_id) ?></td>
                             <td><?= h($club->clubpresident_id) ?></td>
                             <td><?= h($club->name) ?></td>
                             <td><?= h($club->short_name) ?></td>
@@ -107,12 +109,12 @@
                             <td><?= h($club->web) ?></td>
                             <td><?= h($club->facebook) ?></td>
                             <td><?= h($club->insta) ?></td>
-                            <td><?= h($club->visible) ?></td>
-                            <td><?= h($club->pos) ?></td>
                             <td><?= h($club->user_count) ?></td>
                             <td><?= h($club->competition_count) ?></td>
                             <td><?= h($club->club_president_id) ?></td>
                             <td><?= h($club->national_membership_fee_date) ?></td>
+                            <td><?= h($club->visible) ?></td>
+                            <td><?= h($club->pos) ?></td>
                             <td><?= h($club->created) ?></td>
                             <td><?= h($club->modified) ?></td>
                             <td class="actions">
@@ -140,13 +142,11 @@
                     <table>
                         <tr>
                             <th><?= __('Id') ?></th>
-                            <th><?= __('Country Id') ?></th>
-                            <th><?= __('Club Id') ?></th>
+                            <th><?= __('Organizing Club Id') ?></th>
                             <th><?= __('Venue Name') ?></th>
                             <th><?= __('Venue Address') ?></th>
                             <th><?= __('Google Maps Url') ?></th>
                             <th><?= __('Competition Text Template Id') ?></th>
-                            <th><?= __('User Id') ?></th>
                             <th><?= __('Modified By') ?></th>
                             <th><?= __('National Competition') ?></th>
                             <th><?= __('Name') ?></th>
@@ -194,13 +194,11 @@
                         <?php foreach ($city->competitions as $competition) : ?>
                         <tr>
                             <td><?= h($competition->id) ?></td>
-                            <td><?= h($competition->country_id) ?></td>
-                            <td><?= h($competition->club_id) ?></td>
+                            <td><?= h($competition->organizing_club_id) ?></td>
                             <td><?= h($competition->venue_name) ?></td>
                             <td><?= h($competition->venue_address) ?></td>
                             <td><?= h($competition->google_maps_url) ?></td>
                             <td><?= h($competition->competition_text_template_id) ?></td>
-                            <td><?= h($competition->user_id) ?></td>
                             <td><?= h($competition->modified_by) ?></td>
                             <td><?= h($competition->national_competition) ?></td>
                             <td><?= h($competition->name) ?></td>
@@ -252,6 +250,100 @@
                                     [
                                         'method' => 'delete',
                                         'confirm' => __('Are you sure you want to delete # {0}?', $competition->id),
+                                    ]
+                                ) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="related">
+                <h4><?= __('Related Users') ?></h4>
+                <?php if (!empty($city->users)) : ?>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <th><?= __('Club Id') ?></th>
+                            <th><?= __('Username') ?></th>
+                            <th><?= __('Email') ?></th>
+                            <th><?= __('Password') ?></th>
+                            <th><?= __('First Name') ?></th>
+                            <th><?= __('Last Name') ?></th>
+                            <th><?= __('Phone') ?></th>
+                            <th><?= __('Avatar') ?></th>
+                            <th><?= __('Token') ?></th>
+                            <th><?= __('Token Expires') ?></th>
+                            <th><?= __('Api Token') ?></th>
+                            <th><?= __('Activation Date') ?></th>
+                            <th><?= __('Secret') ?></th>
+                            <th><?= __('Secret Verified') ?></th>
+                            <th><?= __('Tos Date') ?></th>
+                            <th><?= __('Active') ?></th>
+                            <th><?= __('Enabled') ?></th>
+                            <th><?= __('Is Superuser') ?></th>
+                            <th><?= __('Role') ?></th>
+                            <th><?= __('Membership Status') ?></th>
+                            <th><?= __('Membership Joined Date') ?></th>
+                            <th><?= __('Club Membership Fee Date') ?></th>
+                            <th><?= __('National Membership Fee Date') ?></th>
+                            <th><?= __('Application Notified') ?></th>
+                            <th><?= __('Created') ?></th>
+                            <th><?= __('Modified') ?></th>
+                            <th><?= __('Additional Data') ?></th>
+                            <th><?= __('Last Login') ?></th>
+                            <th><?= __('Lockout Time') ?></th>
+                            <th><?= __('Login Token') ?></th>
+                            <th><?= __('Login Token Date') ?></th>
+                            <th><?= __('Token Send Requested') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($city->users as $user) : ?>
+                        <tr>
+                            <td><?= h($user->id) ?></td>
+                            <td><?= h($user->club_id) ?></td>
+                            <td><?= h($user->username) ?></td>
+                            <td><?= h($user->email) ?></td>
+                            <td><?= h($user->password) ?></td>
+                            <td><?= h($user->first_name) ?></td>
+                            <td><?= h($user->last_name) ?></td>
+                            <td><?= h($user->phone) ?></td>
+                            <td><?= h($user->avatar) ?></td>
+                            <td><?= h($user->token) ?></td>
+                            <td><?= h($user->token_expires) ?></td>
+                            <td><?= h($user->api_token) ?></td>
+                            <td><?= h($user->activation_date) ?></td>
+                            <td><?= h($user->secret) ?></td>
+                            <td><?= h($user->secret_verified) ?></td>
+                            <td><?= h($user->tos_date) ?></td>
+                            <td><?= h($user->active) ?></td>
+                            <td><?= h($user->enabled) ?></td>
+                            <td><?= h($user->is_superuser) ?></td>
+                            <td><?= h($user->role) ?></td>
+                            <td><?= h($user->membership_status) ?></td>
+                            <td><?= h($user->membership_joined_date) ?></td>
+                            <td><?= h($user->club_membership_fee_date) ?></td>
+                            <td><?= h($user->national_membership_fee_date) ?></td>
+                            <td><?= h($user->application_notified) ?></td>
+                            <td><?= h($user->created) ?></td>
+                            <td><?= h($user->modified) ?></td>
+                            <td><?= h($user->additional_data) ?></td>
+                            <td><?= h($user->last_login) ?></td>
+                            <td><?= h($user->lockout_time) ?></td>
+                            <td><?= h($user->login_token) ?></td>
+                            <td><?= h($user->login_token_date) ?></td>
+                            <td><?= h($user->token_send_requested) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['controller' => 'Users', 'action' => 'view', $user->id]) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Users', 'action' => 'edit', $user->id]) ?>
+                                <?= $this->Form->postLink(
+                                    __('Delete'),
+                                    ['controller' => 'Users', 'action' => 'delete', $user->id],
+                                    [
+                                        'method' => 'delete',
+                                        'confirm' => __('Are you sure you want to delete # {0}?', $user->id),
                                     ]
                                 ) ?>
                             </td>

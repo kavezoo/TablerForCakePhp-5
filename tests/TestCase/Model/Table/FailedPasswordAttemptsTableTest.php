@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\ContinentsTable;
+use App\Model\Table\FailedPasswordAttemptsTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\ContinentsTable Test Case
+ * App\Model\Table\FailedPasswordAttemptsTable Test Case
  */
-class ContinentsTableTest extends TestCase
+class FailedPasswordAttemptsTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\ContinentsTable
+     * @var \App\Model\Table\FailedPasswordAttemptsTable
      */
-    protected $Continents;
+    protected $FailedPasswordAttempts;
 
     /**
      * Fixtures
@@ -24,8 +24,8 @@ class ContinentsTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.Continents',
-        'app.Countries',
+        'app.FailedPasswordAttempts',
+        'app.Users',
     ];
 
     /**
@@ -36,8 +36,8 @@ class ContinentsTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Continents') ? [] : ['className' => ContinentsTable::class];
-        $this->Continents = $this->getTableLocator()->get('Continents', $config);
+        $config = $this->getTableLocator()->exists('FailedPasswordAttempts') ? [] : ['className' => FailedPasswordAttemptsTable::class];
+        $this->FailedPasswordAttempts = $this->getTableLocator()->get('FailedPasswordAttempts', $config);
     }
 
     /**
@@ -47,7 +47,7 @@ class ContinentsTableTest extends TestCase
      */
     protected function tearDown(): void
     {
-        unset($this->Continents);
+        unset($this->FailedPasswordAttempts);
 
         parent::tearDown();
     }
@@ -56,7 +56,7 @@ class ContinentsTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @link \App\Model\Table\ContinentsTable::validationDefault()
+     * @link \App\Model\Table\FailedPasswordAttemptsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -67,7 +67,7 @@ class ContinentsTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @link \App\Model\Table\ContinentsTable::buildRules()
+     * @link \App\Model\Table\FailedPasswordAttemptsTable::buildRules()
      */
     public function testBuildRules(): void
     {

@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\CompetitionStaffTable;
+use App\Model\Table\LanguagesTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\CompetitionStaffTable Test Case
+ * App\Model\Table\LanguagesTable Test Case
  */
-class CompetitionStaffTableTest extends TestCase
+class LanguagesTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\CompetitionStaffTable
+     * @var \App\Model\Table\LanguagesTable
      */
-    protected $CompetitionStaff;
+    protected $Languages;
 
     /**
      * Fixtures
@@ -24,9 +24,7 @@ class CompetitionStaffTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.CompetitionStaff',
-        'app.Competitions',
-        'app.Users',
+        'app.Languages',
     ];
 
     /**
@@ -37,8 +35,8 @@ class CompetitionStaffTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('CompetitionStaff') ? [] : ['className' => CompetitionStaffTable::class];
-        $this->CompetitionStaff = $this->getTableLocator()->get('CompetitionStaff', $config);
+        $config = $this->getTableLocator()->exists('Languages') ? [] : ['className' => LanguagesTable::class];
+        $this->Languages = $this->getTableLocator()->get('Languages', $config);
     }
 
     /**
@@ -48,7 +46,7 @@ class CompetitionStaffTableTest extends TestCase
      */
     protected function tearDown(): void
     {
-        unset($this->CompetitionStaff);
+        unset($this->Languages);
 
         parent::tearDown();
     }
@@ -57,7 +55,7 @@ class CompetitionStaffTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @link \App\Model\Table\CompetitionStaffTable::validationDefault()
+     * @link \App\Model\Table\LanguagesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -68,7 +66,7 @@ class CompetitionStaffTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @link \App\Model\Table\CompetitionStaffTable::buildRules()
+     * @link \App\Model\Table\LanguagesTable::buildRules()
      */
     public function testBuildRules(): void
     {

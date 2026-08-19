@@ -20,7 +20,6 @@ class ClubsFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'country_id' => 1,
                 'city_id' => 1,
                 'clubpresident_id' => 'Lorem ipsum dolor sit amet',
                 'name' => 'Lorem ipsum dolor sit amet',
@@ -33,14 +32,14 @@ class ClubsFixture extends TestFixture
                 'web' => 'Lorem ipsum dolor sit amet',
                 'facebook' => 'Lorem ipsum dolor sit amet',
                 'insta' => 'Lorem ipsum dolor sit amet',
-                'visible' => 1,
-                'pos' => 1,
                 'user_count' => 1,
                 'competition_count' => 1,
-                'club_president_id' => 'd406077b-6b1b-4a56-8880-acf3dc49f976',
+                'club_president_id' => 'b621ecbe-038d-40de-a9bf-8fb01bbf3cc6',
                 'national_membership_fee_date' => '2026-08-19',
-                'created' => '2026-08-19 10:05:11',
-                'modified' => '2026-08-19 10:05:11',
+                'visible' => 1,
+                'pos' => 1,
+                'created' => '2026-08-19 12:59:19',
+                'modified' => '2026-08-19 12:59:19',
             ],
         ];
         parent::init();

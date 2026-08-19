@@ -25,10 +25,9 @@ class CitiesTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.Cities',
-        'app.Countries',
-        'app.Counties',
         'app.Clubs',
         'app.Competitions',
+        'app.Users',
     ];
 
     /**
@@ -62,17 +61,6 @@ class CitiesTableTest extends TestCase
      * @link \App\Model\Table\CitiesTable::validationDefault()
      */
     public function testValidationDefault(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     * @link \App\Model\Table\CitiesTable::buildRules()
-     */
-    public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

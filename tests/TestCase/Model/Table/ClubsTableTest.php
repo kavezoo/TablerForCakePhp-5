@@ -25,9 +25,7 @@ class ClubsTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.Clubs',
-        'app.Countries',
         'app.Cities',
-        'app.Competitions',
         'app.Subclubs',
         'app.Users',
     ];

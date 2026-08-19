@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\CountriesController;
+use App\Controller\Admin\FailedPasswordAttemptsController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\Admin\CountriesController Test Case
+ * App\Controller\Admin\FailedPasswordAttemptsController Test Case
  *
- * @link \App\Controller\Admin\CountriesController
+ * @link \App\Controller\Admin\FailedPasswordAttemptsController
  */
-class CountriesControllerTest extends TestCase
+class FailedPasswordAttemptsControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -22,17 +22,7 @@ class CountriesControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.Countries',
-        'app.Continents',
-        'app.Cities',
-        'app.Clubs',
-        'app.CompetitionTextTemplates',
-        'app.Competitions',
-        'app.Counties',
-        'app.CountryVisibilities',
-        'app.EmailTemplates',
-        'app.EventLogs',
-        'app.Setups',
+        'app.FailedPasswordAttempts',
         'app.Users',
     ];
 
@@ -40,7 +30,7 @@ class CountriesControllerTest extends TestCase
      * Test index method
      *
      * @return void
-     * @link \App\Controller\Admin\CountriesController::index()
+     * @link \App\Controller\Admin\FailedPasswordAttemptsController::index()
      */
     public function testIndex(): void
     {
@@ -51,7 +41,7 @@ class CountriesControllerTest extends TestCase
      * Test view method
      *
      * @return void
-     * @link \App\Controller\Admin\CountriesController::view()
+     * @link \App\Controller\Admin\FailedPasswordAttemptsController::view()
      */
     public function testView(): void
     {
@@ -62,7 +52,7 @@ class CountriesControllerTest extends TestCase
      * Test add method
      *
      * @return void
-     * @link \App\Controller\Admin\CountriesController::add()
+     * @link \App\Controller\Admin\FailedPasswordAttemptsController::add()
      */
     public function testAdd(): void
     {
@@ -73,7 +63,7 @@ class CountriesControllerTest extends TestCase
      * Test edit method
      *
      * @return void
-     * @link \App\Controller\Admin\CountriesController::edit()
+     * @link \App\Controller\Admin\FailedPasswordAttemptsController::edit()
      */
     public function testEdit(): void
     {
@@ -84,7 +74,7 @@ class CountriesControllerTest extends TestCase
      * Test delete method
      *
      * @return void
-     * @link \App\Controller\Admin\CountriesController::delete()
+     * @link \App\Controller\Admin\FailedPasswordAttemptsController::delete()
      */
     public function testDelete(): void
     {

@@ -25,7 +25,6 @@ class CompetitionTextTemplatesTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.CompetitionTextTemplates',
-        'app.Countries',
         'app.Competitions',
     ];
 
@@ -60,17 +59,6 @@ class CompetitionTextTemplatesTableTest extends TestCase
      * @link \App\Model\Table\CompetitionTextTemplatesTable::validationDefault()
      */
     public function testValidationDefault(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     * @link \App\Model\Table\CompetitionTextTemplatesTable::buildRules()
-     */
-    public function testBuildRules(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

@@ -11,10 +11,9 @@ use Cake\Validation\Validator;
 /**
  * Cities Model
  *
- * @property \App\Model\Table\CountriesTable&\Cake\ORM\Association\BelongsTo $Countries
- * @property \App\Model\Table\CountiesTable&\Cake\ORM\Association\BelongsTo $Counties
  * @property \App\Model\Table\ClubsTable&\Cake\ORM\Association\HasMany $Clubs
  * @property \App\Model\Table\CompetitionsTable&\Cake\ORM\Association\HasMany $Competitions
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\HasMany $Users
  *
  * @method \App\Model\Entity\City newEmptyEntity()
  * @method \App\Model\Entity\City newEntity(array $data, array $options = [])
@@ -30,7 +29,7 @@ use Cake\Validation\Validator;
  * @method iterable<\App\Model\Entity\City>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\City>|false deleteMany(iterable $entities, array $options = [])
  * @method iterable<\App\Model\Entity\City>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\City> deleteManyOrFail(iterable $entities, array $options = [])
  *
- * @mixin \Cake\ORM\Behavior\CounterCacheBehavior
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class CitiesTable extends Table
 {
@@ -48,22 +47,15 @@ class CitiesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('CounterCache', [
-            'Counties' => ['city_count'],
-        ]);
+        $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Countries', [
-            'foreignKey' => 'country_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('Counties', [
-            'foreignKey' => 'county_id',
-            'joinType' => 'INNER',
-        ]);
         $this->hasMany('Clubs', [
             'foreignKey' => 'city_id',
         ]);
         $this->hasMany('Competitions', [
+            'foreignKey' => 'city_id',
+        ]);
+        $this->hasMany('Users', [
             'foreignKey' => 'city_id',
         ]);
     }
@@ -76,14 +68,6 @@ class CitiesTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
-        $validator
-            ->integer('country_id')
-            ->notEmptyString('country_id');
-
-        $validator
-            ->nonNegativeInteger('county_id')
-            ->notEmptyString('county_id');
-
         $validator
             ->scalar('shortname')
             ->maxLength('shortname', 10)
@@ -114,53 +98,21 @@ class CitiesTable extends Table
             ->notEmptyString('lng');
 
         $validator
-            ->scalar('lat2')
-            ->maxLength('lat2', 20)
-            ->requirePresence('lat2', 'create')
-            ->notEmptyString('lat2');
-
-        $validator
-            ->scalar('lng2')
-            ->maxLength('lng2', 20)
-            ->requirePresence('lng2', 'create')
-            ->notEmptyString('lng2');
-
-        $validator
             ->nonNegativeInteger('club_count')
             ->notEmptyString('club_count');
 
         $validator
-            ->dateTime('datumido')
-            ->allowEmptyDateTime('datumido');
+            ->nonNegativeInteger('user_count')
+            ->allowEmptyString('user_count');
 
         $validator
-            ->date('datum')
-            ->allowEmptyDate('datum');
+            ->boolean('visible')
+            ->notEmptyString('visible');
 
         $validator
-            ->scalar('description')
-            ->requirePresence('description', 'create')
-            ->notEmptyString('description');
-
-        $validator
-            ->time('ido')
-            ->allowEmptyTime('ido');
+            ->integer('pos')
+            ->notEmptyString('pos');
 
         return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules): RulesChecker
-    {
-        $rules->add($rules->existsIn(['country_id'], 'Countries'), ['errorField' => 'country_id']);
-        $rules->add($rules->existsIn(['county_id'], 'Counties'), ['errorField' => 'county_id']);
-
-        return $rules;
     }
 }

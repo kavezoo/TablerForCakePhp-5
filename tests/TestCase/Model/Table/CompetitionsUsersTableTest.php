@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\CountiesTable;
+use App\Model\Table\CompetitionsUsersTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\CountiesTable Test Case
+ * App\Model\Table\CompetitionsUsersTable Test Case
  */
-class CountiesTableTest extends TestCase
+class CompetitionsUsersTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\CountiesTable
+     * @var \App\Model\Table\CompetitionsUsersTable
      */
-    protected $Counties;
+    protected $CompetitionsUsers;
 
     /**
      * Fixtures
@@ -24,9 +24,10 @@ class CountiesTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.Counties',
-        'app.Countries',
-        'app.Cities',
+        'app.CompetitionsUsers',
+        'app.Users',
+        'app.Competitions',
+        'app.Subclubs',
     ];
 
     /**
@@ -37,8 +38,8 @@ class CountiesTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Counties') ? [] : ['className' => CountiesTable::class];
-        $this->Counties = $this->getTableLocator()->get('Counties', $config);
+        $config = $this->getTableLocator()->exists('CompetitionsUsers') ? [] : ['className' => CompetitionsUsersTable::class];
+        $this->CompetitionsUsers = $this->getTableLocator()->get('CompetitionsUsers', $config);
     }
 
     /**
@@ -48,7 +49,7 @@ class CountiesTableTest extends TestCase
      */
     protected function tearDown(): void
     {
-        unset($this->Counties);
+        unset($this->CompetitionsUsers);
 
         parent::tearDown();
     }
@@ -57,7 +58,7 @@ class CountiesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @link \App\Model\Table\CountiesTable::validationDefault()
+     * @link \App\Model\Table\CompetitionsUsersTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -68,7 +69,7 @@ class CountiesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @link \App\Model\Table\CountiesTable::buildRules()
+     * @link \App\Model\Table\CompetitionsUsersTable::buildRules()
      */
     public function testBuildRules(): void
     {

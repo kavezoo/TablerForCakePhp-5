@@ -23,10 +23,9 @@ class CitiesControllerTest extends TestCase
      */
     protected array $fixtures = [
         'app.Cities',
-        'app.Countries',
-        'app.Counties',
         'app.Clubs',
         'app.Competitions',
+        'app.Users',
     ];
 
     /**

@@ -3,20 +3,20 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\CountriesTable;
+use App\Model\Table\EventLogsTable;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\CountriesTable Test Case
+ * App\Model\Table\EventLogsTable Test Case
  */
-class CountriesTableTest extends TestCase
+class EventLogsTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\CountriesTable
+     * @var \App\Model\Table\EventLogsTable
      */
-    protected $Countries;
+    protected $EventLogs;
 
     /**
      * Fixtures
@@ -24,17 +24,7 @@ class CountriesTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.Countries',
-        'app.Continents',
-        'app.Cities',
-        'app.Clubs',
-        'app.CompetitionTextTemplates',
-        'app.Competitions',
-        'app.Counties',
-        'app.CountryVisibilities',
-        'app.EmailTemplates',
         'app.EventLogs',
-        'app.Setups',
         'app.Users',
     ];
 
@@ -46,8 +36,8 @@ class CountriesTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Countries') ? [] : ['className' => CountriesTable::class];
-        $this->Countries = $this->getTableLocator()->get('Countries', $config);
+        $config = $this->getTableLocator()->exists('EventLogs') ? [] : ['className' => EventLogsTable::class];
+        $this->EventLogs = $this->getTableLocator()->get('EventLogs', $config);
     }
 
     /**
@@ -57,7 +47,7 @@ class CountriesTableTest extends TestCase
      */
     protected function tearDown(): void
     {
-        unset($this->Countries);
+        unset($this->EventLogs);
 
         parent::tearDown();
     }
@@ -66,7 +56,7 @@ class CountriesTableTest extends TestCase
      * Test validationDefault method
      *
      * @return void
-     * @link \App\Model\Table\CountriesTable::validationDefault()
+     * @link \App\Model\Table\EventLogsTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
@@ -77,7 +67,7 @@ class CountriesTableTest extends TestCase
      * Test buildRules method
      *
      * @return void
-     * @link \App\Model\Table\CountriesTable::buildRules()
+     * @link \App\Model\Table\EventLogsTable::buildRules()
      */
     public function testBuildRules(): void
     {

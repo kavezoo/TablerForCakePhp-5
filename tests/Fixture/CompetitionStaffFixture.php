@@ -26,13 +26,13 @@ class CompetitionStaffFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'competition_id' => '14415ecf-d7e8-49be-ad6e-e232b7654a7d',
-                'user_id' => '74225d84-0485-46cd-bb62-a7446f61c7e2',
+                'competition_id' => '5a4967b4-f6ad-4911-a58f-cadcf5a0b609',
+                'user_id' => 'a91944a2-4300-4669-8c3a-df3fe2b7c63e',
                 'staff_role' => 'Lorem ipsum dolor ',
                 'visible' => 1,
                 'pos' => 1,
-                'created' => '2026-08-19 10:05:11',
-                'modified' => '2026-08-19 10:05:11',
+                'created' => '2026-08-19 12:35:17',
+                'modified' => '2026-08-19 12:35:17',
             ],
         ];
         parent::init();

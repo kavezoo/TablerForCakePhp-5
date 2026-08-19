@@ -9,25 +9,21 @@ use Cake\ORM\Entity;
  * City Entity
  *
  * @property int $id
- * @property int $country_id
- * @property int $county_id
  * @property string $shortname
  * @property string $name
  * @property string|null $zip
  * @property string $lat
  * @property string $lng
- * @property string $lat2
- * @property string $lng2
  * @property int $club_count
- * @property \Cake\I18n\DateTime|null $datumido
- * @property \Cake\I18n\Date|null $datum
- * @property string $description
- * @property \Cake\I18n\Time|null $ido
+ * @property int|null $user_count
+ * @property bool $visible
+ * @property int $pos
+ * @property \Cake\I18n\DateTime|null $created
+ * @property \Cake\I18n\DateTime|null $modified
  *
- * @property \App\Model\Entity\Country $country
- * @property \App\Model\Entity\County $county
  * @property \App\Model\Entity\Club[] $clubs
  * @property \App\Model\Entity\Competition[] $competitions
+ * @property \App\Model\Entity\User[] $users
  */
 class City extends Entity
 {
@@ -41,23 +37,19 @@ class City extends Entity
      * @var array<string, bool>
      */
     protected array $_accessible = [
-        'country_id' => true,
-        'county_id' => true,
         'shortname' => true,
         'name' => true,
         'zip' => true,
         'lat' => true,
         'lng' => true,
-        'lat2' => true,
-        'lng2' => true,
         'club_count' => true,
-        'datumido' => true,
-        'datum' => true,
-        'description' => true,
-        'ido' => true,
-        'country' => true,
-        'county' => true,
+        'user_count' => true,
+        'visible' => true,
+        'pos' => true,
+        'created' => true,
+        'modified' => true,
         'clubs' => true,
         'competitions' => true,
+        'users' => true,
     ];
 }
