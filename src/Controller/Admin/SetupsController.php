@@ -46,7 +46,7 @@ class SetupsController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (Setups) mezői ---
             // 'Setups.id',
-            'Setups.',
+			'Setups.' . $this->Setups->getDisplayField(),	// name általában
         ];
 
         // =========================================================================

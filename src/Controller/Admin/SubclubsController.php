@@ -46,7 +46,7 @@ class SubclubsController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (Subclubs) mezői ---
             // 'Subclubs.id',
-            'Subclubs.',
+			'Subclubs.' . $this->Subclubs->getDisplayField(),	// name általában
             // --- 2. Kapcsolt (BelongsTo) táblák mezői ---
             // 'Clubs.name',
             // 'Competitions.name',

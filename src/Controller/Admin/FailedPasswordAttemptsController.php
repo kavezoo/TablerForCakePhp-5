@@ -46,7 +46,7 @@ class FailedPasswordAttemptsController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (FailedPasswordAttempts) mezői ---
             // 'FailedPasswordAttempts.id',
-            'FailedPasswordAttempts.',
+			'FailedPasswordAttempts.' . $this->FailedPasswordAttempts->getDisplayField(),	// name általában
             // --- 2. Kapcsolt (BelongsTo) táblák mezői ---
             // 'Users.name',
         ];

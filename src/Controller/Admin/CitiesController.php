@@ -46,7 +46,7 @@ class CitiesController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (Cities) mezői ---
             // 'Cities.id',
-            'Cities.',
+			'Cities.' . $this->Cities->getDisplayField(),	// name általában
         ];
 
         // =========================================================================

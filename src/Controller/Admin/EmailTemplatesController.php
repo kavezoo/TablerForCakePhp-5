@@ -46,7 +46,7 @@ class EmailTemplatesController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (EmailTemplates) mezői ---
             // 'EmailTemplates.id',
-            'EmailTemplates.',
+			'EmailTemplates.' . $this->EmailTemplates->getDisplayField(),	// name általában
         ];
 
         // =========================================================================

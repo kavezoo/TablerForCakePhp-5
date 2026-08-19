@@ -46,7 +46,7 @@ class StaffsController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (Staffs) mezői ---
             // 'Staffs.id',
-            'Staffs.',
+			'Staffs.' . $this->Staffs->getDisplayField(),	// name általában
             // --- 2. Kapcsolt (BelongsTo) táblák mezői ---
             // 'Users.name',
             // 'Competitions.name',

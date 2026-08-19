@@ -46,7 +46,7 @@ class CompetitionsController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (Competitions) mezői ---
             // 'Competitions.id',
-            'Competitions.',
+			'Competitions.' . $this->Competitions->getDisplayField(),	// name általában
             // --- 2. Kapcsolt (BelongsTo) táblák mezői ---
             // 'Cities.name',
         ];

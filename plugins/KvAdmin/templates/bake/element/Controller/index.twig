@@ -37,7 +37,7 @@
         $searchableFields = [
             // --- 1. Saját tábla ({{ currentModelName }}) mezői ---
             // '{{ currentModelName }}.id',
-            '{{ currentModelName }}.name',	// {{ displayField }}
+			'{{ currentModelName }}.' . $this->{{ currentModelName }}->getDisplayField(),	// name általában
 {% if belongsTo %}
             // --- 2. Kapcsolt (BelongsTo) táblák mezői ---
 {% for alias in belongsTo %}

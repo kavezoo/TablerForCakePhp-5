@@ -46,7 +46,7 @@ class LanguagesController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (Languages) mezői ---
             // 'Languages.id',
-            'Languages.',
+			'Languages.' . $this->Languages->getDisplayField(),	// name általában
         ];
 
         // =========================================================================

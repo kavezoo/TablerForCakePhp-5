@@ -46,7 +46,7 @@ class TemplatesController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (Templates) mezői ---
             // 'Templates.id',
-            'Templates.',
+			'Templates.' . $this->Templates->getDisplayField(),	// name általában
         ];
 
         // =========================================================================

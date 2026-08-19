@@ -46,7 +46,7 @@ class SocialAccountsController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (SocialAccounts) mezői ---
             // 'SocialAccounts.id',
-            'SocialAccounts.',
+			'SocialAccounts.' . $this->SocialAccounts->getDisplayField(),	// name általában
             // --- 2. Kapcsolt (BelongsTo) táblák mezői ---
             // 'Users.name',
         ];
