@@ -8,7 +8,7 @@
 <div class="page-header d-print-none mb-3 failedPasswordAttempts">
     <div class="row align-items-center">
         <div class="col">
-            <h2 class="page-title"><?= __('Add Failed Password Attempt') ?></h2>
+            <h2 class="page-title"><?= __('Új {0} felvitele', __('Failed Password Attempt')) ?></h2>
         </div>
         <div class="col-auto ms-auto">
             <?= $this->Html->link($this->Icon->outline('x'), ['action' => 'index'], ['escape' => false, 'class' => 'btn btn-icon btn-action-default btn-smooth-rotate', 'data-bs-toggle' => 'tooltip', 'title' => __('Vissza a listához')]) ?>

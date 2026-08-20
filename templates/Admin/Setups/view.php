@@ -4,7 +4,18 @@
  * @var \App\Model\Entity\Setup $setup
  */
 ?>
-<div class="card mb-3">
+<div class="page-header d-print-none mb-3 setups">
+    <div class="row align-items-center">
+        <div class="col">
+            <h2 class="page-title"><?= __('{0} megtekintése', __('Setup')) ?></h2>
+        </div>
+        <div class="col-auto ms-auto">
+            <?= $this->Html->link($this->Icon->outline('x'), ['action' => 'index'], ['escape' => false, 'class' => 'btn btn-icon btn-action-default btn-smooth-rotate', 'data-bs-toggle' => 'tooltip', 'title' => __('Vissza a listához')]) ?>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3 setups">
     <div class="card-header pe-3">
         <div class="row w-full align-items-center gy-2 gy-md-0">
             <div class="col">
