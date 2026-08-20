@@ -56,7 +56,7 @@
                             'options' => $cities,
                             'label' => ['text' => __('City Id'), 'class' => 'form-label'],
                             'class' => 'form-select tom-select',
-                            'empty' => __('Please select...'),
+                            'empty' => '',
                             'required' => true
                         ]) ?>
                     </div>

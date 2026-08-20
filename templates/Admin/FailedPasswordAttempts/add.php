@@ -40,7 +40,7 @@
                             'options' => $users,
                             'label' => ['text' => __('User Id'), 'class' => 'form-label'],
                             'class' => 'form-select tom-select',
-                            'empty' => __('Please select...'),
+                            'empty' => '',
                             'required' => true
                         ]) ?>
                     </div>
