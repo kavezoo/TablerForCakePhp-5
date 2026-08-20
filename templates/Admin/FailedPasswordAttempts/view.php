@@ -51,3 +51,24 @@
 
 
 <?= $this->element('KvAdmin.modal-delete') ?>
+<?php
+$this->Html->scriptBlock(
+    "
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.table tbody tr[data-edit-url]').forEach(function (row) {
+            row.addEventListener('dblclick', function (e) {
+                if (e.target.closest('a, button, input, select, textarea, label, .actions')) {
+                    return;
+                }
+
+                const editUrl = row.getAttribute('data-edit-url');
+                if (editUrl) {
+                    window.location.href = editUrl;
+                }
+            });
+        });
+    });
+    ",
+    ['block' => 'footer']
+);
+?>

@@ -193,7 +193,7 @@ $hasRelatedRecords = false;
                     </thead>
                     <tbody>
                         <?php foreach (${{ singularVar }}->{{ details.property }} as ${{ otherSingularVar }}): ?>
-                        <tr>
+                        <tr data-edit-url="<?= $this->Url->build(['controller' => '{{ details.controller }}', 'action' => 'edit', {{ otherPk|raw }}]) ?>">
 {% for field in details.fields %}
 {% if details.foreignKey is defined and field != details.foreignKey %}
                             <td><?= h(${{ otherSingularVar }}->{{ field }}) ?></td>
@@ -203,7 +203,6 @@ $hasRelatedRecords = false;
 {% endfor %}
                             <td class="actions">
                                 <div class="btn-list flex-nowrap align-items-center">
-                                    <?= $this->KvForm->actionView(['action' => 'view', {{ pK|raw }}], ['title' => __('Parent')]) ?>
                                     <?= $this->KvForm->actionView(['controller' => '{{ details.controller }}', 'action' => 'view', {{ otherPk|raw }}], ['title' => __('View')]) ?>
                                     <?= $this->KvForm->actionEdit(['controller' => '{{ details.controller }}', 'action' => 'edit', {{ otherPk|raw }}], ['title' => __('Edit')]) ?>
                                     <?= $this->KvForm->actionDelete(['controller' => '{{ details.controller }}', 'action' => 'delete', {{ otherPk|raw }}], (string)({{ otherPk|raw }})) ?>
@@ -224,3 +223,24 @@ $hasRelatedRecords = false;
 {% endif %}
 
 <?= $this->element('KvAdmin.modal-delete') ?>
+<?php
+$this->Html->scriptBlock(
+    "
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.table tbody tr[data-edit-url]').forEach(function (row) {
+            row.addEventListener('dblclick', function (e) {
+                if (e.target.closest('a, button, input, select, textarea, label, .actions')) {
+                    return;
+                }
+
+                const editUrl = row.getAttribute('data-edit-url');
+                if (editUrl) {
+                    window.location.href = editUrl;
+                }
+            });
+        });
+    });
+    ",
+    ['block' => 'footer']
+);
+?>

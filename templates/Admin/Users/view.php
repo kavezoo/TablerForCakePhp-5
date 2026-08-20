@@ -299,7 +299,7 @@ $hasRelatedRecords = false;
                     </thead>
                     <tbody>
                         <?php foreach ($user->competitions as $competition): ?>
-                        <tr>
+                        <tr data-edit-url="<?= $this->Url->build(['controller' => 'Competitions', 'action' => 'edit', $competition->id]) ?>">
                             <td><?= h($competition->id) ?></td>
                             <td><?= h($competition->organizing_club_id) ?></td>
                             <td><?= h($competition->city_id) ?></td>
@@ -351,7 +351,6 @@ $hasRelatedRecords = false;
                             <td><?= h($competition->modified) ?></td>
                             <td class="actions">
                                 <div class="btn-list flex-nowrap align-items-center">
-                                    <?= $this->KvForm->actionView(['action' => 'view', $user->id], ['title' => __('Parent')]) ?>
                                     <?= $this->KvForm->actionView(['controller' => 'Competitions', 'action' => 'view', $competition->id], ['title' => __('View')]) ?>
                                     <?= $this->KvForm->actionEdit(['controller' => 'Competitions', 'action' => 'edit', $competition->id], ['title' => __('Edit')]) ?>
                                     <?= $this->KvForm->actionDelete(['controller' => 'Competitions', 'action' => 'delete', $competition->id], (string)($competition->id)) ?>
@@ -378,12 +377,11 @@ $hasRelatedRecords = false;
                     </thead>
                     <tbody>
                         <?php foreach ($user->failed_password_attempts as $failedPasswordAttempt): ?>
-                        <tr>
+                        <tr data-edit-url="<?= $this->Url->build(['controller' => 'FailedPasswordAttempts', 'action' => 'edit', $failedPasswordAttempt->id]) ?>">
                             <td><?= h($failedPasswordAttempt->id) ?></td>
                             <td><?= h($failedPasswordAttempt->created) ?></td>
                             <td class="actions">
                                 <div class="btn-list flex-nowrap align-items-center">
-                                    <?= $this->KvForm->actionView(['action' => 'view', $user->id], ['title' => __('Parent')]) ?>
                                     <?= $this->KvForm->actionView(['controller' => 'FailedPasswordAttempts', 'action' => 'view', $failedPasswordAttempt->id], ['title' => __('View')]) ?>
                                     <?= $this->KvForm->actionEdit(['controller' => 'FailedPasswordAttempts', 'action' => 'edit', $failedPasswordAttempt->id], ['title' => __('Edit')]) ?>
                                     <?= $this->KvForm->actionDelete(['controller' => 'FailedPasswordAttempts', 'action' => 'delete', $failedPasswordAttempt->id], (string)($failedPasswordAttempt->id)) ?>
@@ -422,7 +420,7 @@ $hasRelatedRecords = false;
                     </thead>
                     <tbody>
                         <?php foreach ($user->social_accounts as $socialAccount): ?>
-                        <tr>
+                        <tr data-edit-url="<?= $this->Url->build(['controller' => 'SocialAccounts', 'action' => 'edit', $socialAccount->id]) ?>">
                             <td><?= h($socialAccount->id) ?></td>
                             <td><?= h($socialAccount->provider) ?></td>
                             <td><?= h($socialAccount->username) ?></td>
@@ -439,7 +437,6 @@ $hasRelatedRecords = false;
                             <td><?= h($socialAccount->modified) ?></td>
                             <td class="actions">
                                 <div class="btn-list flex-nowrap align-items-center">
-                                    <?= $this->KvForm->actionView(['action' => 'view', $user->id], ['title' => __('Parent')]) ?>
                                     <?= $this->KvForm->actionView(['controller' => 'SocialAccounts', 'action' => 'view', $socialAccount->id], ['title' => __('View')]) ?>
                                     <?= $this->KvForm->actionEdit(['controller' => 'SocialAccounts', 'action' => 'edit', $socialAccount->id], ['title' => __('Edit')]) ?>
                                     <?= $this->KvForm->actionDelete(['controller' => 'SocialAccounts', 'action' => 'delete', $socialAccount->id], (string)($socialAccount->id)) ?>
@@ -471,7 +468,7 @@ $hasRelatedRecords = false;
                     </thead>
                     <tbody>
                         <?php foreach ($user->staffs as $staff): ?>
-                        <tr>
+                        <tr data-edit-url="<?= $this->Url->build(['controller' => 'Staffs', 'action' => 'edit', $staff->id]) ?>">
                             <td><?= h($staff->id) ?></td>
                             <td><?= h($staff->competition_id) ?></td>
                             <td><?= h($staff->role) ?></td>
@@ -481,7 +478,6 @@ $hasRelatedRecords = false;
                             <td><?= h($staff->modified) ?></td>
                             <td class="actions">
                                 <div class="btn-list flex-nowrap align-items-center">
-                                    <?= $this->KvForm->actionView(['action' => 'view', $user->id], ['title' => __('Parent')]) ?>
                                     <?= $this->KvForm->actionView(['controller' => 'Staffs', 'action' => 'view', $staff->id], ['title' => __('View')]) ?>
                                     <?= $this->KvForm->actionEdit(['controller' => 'Staffs', 'action' => 'edit', $staff->id], ['title' => __('Edit')]) ?>
                                     <?= $this->KvForm->actionDelete(['controller' => 'Staffs', 'action' => 'delete', $staff->id], (string)($staff->id)) ?>
@@ -500,3 +496,24 @@ $hasRelatedRecords = false;
 <?php endif; ?>
 
 <?= $this->element('KvAdmin.modal-delete') ?>
+<?php
+$this->Html->scriptBlock(
+    "
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.table tbody tr[data-edit-url]').forEach(function (row) {
+            row.addEventListener('dblclick', function (e) {
+                if (e.target.closest('a, button, input, select, textarea, label, .actions')) {
+                    return;
+                }
+
+                const editUrl = row.getAttribute('data-edit-url');
+                if (editUrl) {
+                    window.location.href = editUrl;
+                }
+            });
+        });
+    });
+    ",
+    ['block' => 'footer']
+);
+?>

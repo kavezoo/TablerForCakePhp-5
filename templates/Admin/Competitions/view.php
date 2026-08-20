@@ -337,7 +337,7 @@ $hasRelatedRecords = false;
                     </thead>
                     <tbody>
                         <?php foreach ($competition->users as $user): ?>
-                        <tr>
+                        <tr data-edit-url="<?= $this->Url->build(['controller' => 'Users', 'action' => 'edit', $user->id]) ?>">
                             <td><?= h($user->id) ?></td>
                             <td><?= h($user->city_id) ?></td>
                             <td><?= h($user->club_id) ?></td>
@@ -374,7 +374,6 @@ $hasRelatedRecords = false;
                             <td><?= h($user->token_send_requested) ?></td>
                             <td class="actions">
                                 <div class="btn-list flex-nowrap align-items-center">
-                                    <?= $this->KvForm->actionView(['action' => 'view', $competition->id], ['title' => __('Parent')]) ?>
                                     <?= $this->KvForm->actionView(['controller' => 'Users', 'action' => 'view', $user->id], ['title' => __('View')]) ?>
                                     <?= $this->KvForm->actionEdit(['controller' => 'Users', 'action' => 'edit', $user->id], ['title' => __('Edit')]) ?>
                                     <?= $this->KvForm->actionDelete(['controller' => 'Users', 'action' => 'delete', $user->id], (string)($user->id)) ?>
@@ -406,7 +405,7 @@ $hasRelatedRecords = false;
                     </thead>
                     <tbody>
                         <?php foreach ($competition->staffs as $staff): ?>
-                        <tr>
+                        <tr data-edit-url="<?= $this->Url->build(['controller' => 'Staffs', 'action' => 'edit', $staff->id]) ?>">
                             <td><?= h($staff->id) ?></td>
                             <td><?= h($staff->user_id) ?></td>
                             <td><?= h($staff->role) ?></td>
@@ -416,7 +415,6 @@ $hasRelatedRecords = false;
                             <td><?= h($staff->modified) ?></td>
                             <td class="actions">
                                 <div class="btn-list flex-nowrap align-items-center">
-                                    <?= $this->KvForm->actionView(['action' => 'view', $competition->id], ['title' => __('Parent')]) ?>
                                     <?= $this->KvForm->actionView(['controller' => 'Staffs', 'action' => 'view', $staff->id], ['title' => __('View')]) ?>
                                     <?= $this->KvForm->actionEdit(['controller' => 'Staffs', 'action' => 'edit', $staff->id], ['title' => __('Edit')]) ?>
                                     <?= $this->KvForm->actionDelete(['controller' => 'Staffs', 'action' => 'delete', $staff->id], (string)($staff->id)) ?>
@@ -448,7 +446,7 @@ $hasRelatedRecords = false;
                     </thead>
                     <tbody>
                         <?php foreach ($competition->subclubs as $subclub): ?>
-                        <tr>
+                        <tr data-edit-url="<?= $this->Url->build(['controller' => 'Subclubs', 'action' => 'edit', $subclub->id]) ?>">
                             <td><?= h($subclub->id) ?></td>
                             <td><?= h($subclub->club_id) ?></td>
                             <td><?= h($subclub->name) ?></td>
@@ -458,7 +456,6 @@ $hasRelatedRecords = false;
                             <td><?= h($subclub->modified) ?></td>
                             <td class="actions">
                                 <div class="btn-list flex-nowrap align-items-center">
-                                    <?= $this->KvForm->actionView(['action' => 'view', $competition->id], ['title' => __('Parent')]) ?>
                                     <?= $this->KvForm->actionView(['controller' => 'Subclubs', 'action' => 'view', $subclub->id], ['title' => __('View')]) ?>
                                     <?= $this->KvForm->actionEdit(['controller' => 'Subclubs', 'action' => 'edit', $subclub->id], ['title' => __('Edit')]) ?>
                                     <?= $this->KvForm->actionDelete(['controller' => 'Subclubs', 'action' => 'delete', $subclub->id], (string)($subclub->id)) ?>
@@ -477,3 +474,24 @@ $hasRelatedRecords = false;
 <?php endif; ?>
 
 <?= $this->element('KvAdmin.modal-delete') ?>
+<?php
+$this->Html->scriptBlock(
+    "
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.table tbody tr[data-edit-url]').forEach(function (row) {
+            row.addEventListener('dblclick', function (e) {
+                if (e.target.closest('a, button, input, select, textarea, label, .actions')) {
+                    return;
+                }
+
+                const editUrl = row.getAttribute('data-edit-url');
+                if (editUrl) {
+                    window.location.href = editUrl;
+                }
+            });
+        });
+    });
+    ",
+    ['block' => 'footer']
+);
+?>

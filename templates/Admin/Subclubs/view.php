@@ -135,7 +135,7 @@ $hasRelatedRecords = false;
                     </thead>
                     <tbody>
                         <?php foreach ($subclub->competitions_users as $competitionsUser): ?>
-                        <tr>
+                        <tr data-edit-url="<?= $this->Url->build(['controller' => 'CompetitionsUsers', 'action' => 'edit', $competitionsUser->id]) ?>">
                             <td><?= h($competitionsUser->id) ?></td>
                             <td><?= h($competitionsUser->user_id) ?></td>
                             <td><?= h($competitionsUser->competition_id) ?></td>
@@ -166,7 +166,6 @@ $hasRelatedRecords = false;
                             <td><?= h($competitionsUser->modified) ?></td>
                             <td class="actions">
                                 <div class="btn-list flex-nowrap align-items-center">
-                                    <?= $this->KvForm->actionView(['action' => 'view', $subclub->id], ['title' => __('Parent')]) ?>
                                     <?= $this->KvForm->actionView(['controller' => 'CompetitionsUsers', 'action' => 'view', $competitionsUser->id], ['title' => __('View')]) ?>
                                     <?= $this->KvForm->actionEdit(['controller' => 'CompetitionsUsers', 'action' => 'edit', $competitionsUser->id], ['title' => __('Edit')]) ?>
                                     <?= $this->KvForm->actionDelete(['controller' => 'CompetitionsUsers', 'action' => 'delete', $competitionsUser->id], (string)($competitionsUser->id)) ?>
@@ -185,3 +184,24 @@ $hasRelatedRecords = false;
 <?php endif; ?>
 
 <?= $this->element('KvAdmin.modal-delete') ?>
+<?php
+$this->Html->scriptBlock(
+    "
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.table tbody tr[data-edit-url]').forEach(function (row) {
+            row.addEventListener('dblclick', function (e) {
+                if (e.target.closest('a, button, input, select, textarea, label, .actions')) {
+                    return;
+                }
+
+                const editUrl = row.getAttribute('data-edit-url');
+                if (editUrl) {
+                    window.location.href = editUrl;
+                }
+            });
+        });
+    });
+    ",
+    ['block' => 'footer']
+);
+?>

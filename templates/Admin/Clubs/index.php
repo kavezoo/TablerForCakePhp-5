@@ -84,7 +84,6 @@ $highlight = function (?string $text) use ($search): string {
 <?php if (isset($showCounterFields) && $showCounterFields): ?>
                     <th class="integer competition_count"><?= $this->Paginator->sort('competition_count') ?></th>
 <?php endif; ?>
-					<th class="uuid club_president_id"><?= $this->Paginator->sort('club_president_id') ?></th>					
 					<th class="date national_membership_fee_date"><?= $this->Paginator->sort('national_membership_fee_date') ?></th>					
 <?php if (isset($showVisible) && $showVisible): ?>
                     <th class="boolean visible"><?= $this->Paginator->sort('visible', __('Visible')) ?></th>
@@ -152,7 +151,6 @@ $highlight = function (?string $text) use ($search): string {
 <?php if (isset($showCounterFields) && $showCounterFields): ?>
                     <td class="integer competition_count text-end"><?= $this->Number->format($club->competition_count) ?></td>
 <?php endif; ?>
-                    <td class="uuid club_president_id"><?= $highlight($club->club_president_id) ?></td>
                     <td class="date text-nowrap"><?= h($club->national_membership_fee_date?->format('Y-m-d')) ?></td>
 <?php if (isset($showVisible) && $showVisible): ?>
                     <td class="boolean visible"><?= $club->visible ? '<span class="badge bg-green-lt">' . __('Igen') . '</span>' : '<span class="badge bg-secondary-lt">' . __('Nem') . '</span>' ?></td>

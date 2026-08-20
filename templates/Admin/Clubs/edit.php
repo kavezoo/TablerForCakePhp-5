@@ -99,9 +99,6 @@
                             'value' => '0'
                         ]) ?>
                     </div>
-                    <div class="col-md-6">
-                        <?= $this->Form->control('club_president_id', ['label' => ['text' => __('Club President Id'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>
                     <div class="col-md-4">
                         <?= $this->KvForm->datePicker('national_membership_fee_date', ['label' => ['text' => __('National Membership Fee Date')]]) ?>
                     </div>
