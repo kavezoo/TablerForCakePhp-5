@@ -18,8 +18,8 @@ $showPos           = false;
 $this->assign('title', __('Cities'));
 $this->element('KvAdmin.pagination_templates');
 
-$lastViewedId = $lastViewedId ?? $this->getRequest()->getSession()->read('LastViewed.city_id');
-$scrollToId = $scrollToId ?? $this->getRequest()->getSession()->read('ScrollTo.city_id') ?? $lastViewedId;
+$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . 'city_id');
+$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . 'city_id') ?? $lastViewedId;
 
 // 🔍 Keresési kiemelő segédfüggvény
 $highlight = function (?string $text) use ($search): string {

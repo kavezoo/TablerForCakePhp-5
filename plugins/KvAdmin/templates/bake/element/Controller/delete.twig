@@ -32,8 +32,7 @@
         $this->Authorization->authorize(${{ singularName }});
 {% endif %}
 
-        $session = $this->getRequest()->getSession();
-        $session->delete('LastViewed.{{ singularName }}_id');
+        $this->session->delete('LastViewed.{{ singularName }}_id');
 
         // Törlés utáni visszagörgetés: megkeressük a közvetlenül előtte lévő rekordot
         $neighbor = $table->find()
@@ -52,9 +51,9 @@
         }
 
         if ($neighbor) {
-            $session->write('ScrollTo.{{ singularName }}_id', (int)$neighbor->{{ pkField }});
+            $this->session->write('ScrollTo.{{ singularName }}_id', (int)$neighbor->{{ pkField }});
         } else {
-            $session->delete('ScrollTo.{{ singularName }}_id');
+            $this->session->delete('ScrollTo.{{ singularName }}_id');
         }
 
         if ($table->delete(${{ singularName }})) {
@@ -63,7 +62,7 @@
             $this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
-        $redirectParams = (array)$session->read('Paging.{{ currentModelName }}.params');
+        $redirectParams = (array)$this->session->read('Paging.{{ currentModelName }}.params');
         return $this->redirect([
             'action' => 'index',
             '?' => $redirectParams,

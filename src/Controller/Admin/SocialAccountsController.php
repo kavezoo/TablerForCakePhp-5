@@ -30,12 +30,11 @@ class SocialAccountsController extends AppController
      */
     public function index()
     {
-        $session = $this->getRequest()->getSession();
         $queryParams = $this->getRequest()->getQueryParams();
 
         // Keresés és szűrők törlése gomb kezelése (?clear=search)
         if (isset($queryParams['clear']) && $queryParams['clear'] === 'search') {
-            $session->delete('Paging.SocialAccounts.params');
+            $this->session->delete('Paging.SocialAccounts.params');
 
             return $this->redirect(['action' => 'index']);
         }
@@ -46,7 +45,7 @@ class SocialAccountsController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (SocialAccounts) mezői ---
             // 'SocialAccounts.id',
-			'SocialAccounts.' . $this->SocialAccounts->getDisplayField(),	// name általában
+			'SocialAccounts.name',	// . $this->SocialAccounts->getDisplayField(),	// name általában
             // --- 2. Kapcsolt (BelongsTo) táblák mezői ---
             // 'Users.name',
         ];
@@ -60,8 +59,8 @@ class SocialAccountsController extends AppController
         ];
 
         // Ha üres az URL, de a Sessionben van érvényes mentett állapot, oda irányítunk vissza
-        if (empty($queryParams) && $session->check('Paging.SocialAccounts.params')) {
-            $savedParams = (array)$session->read('Paging.SocialAccounts.params');
+        if (empty($queryParams) && $this->session->check('Paging.SocialAccounts.params')) {
+            $savedParams = (array)$this->session->read('Paging.SocialAccounts.params');
             if (!empty($savedParams)) {
                 return $this->redirect([
                     'action' => 'index',
@@ -95,7 +94,7 @@ class SocialAccountsController extends AppController
             $socialAccounts = $this->paginate($query);
 
             if (!empty($queryParams)) {
-                $session->write('Paging.SocialAccounts.params', $queryParams);
+                $this->session->write('Paging.SocialAccounts.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
             $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
@@ -103,7 +102,7 @@ class SocialAccountsController extends AppController
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
 
-            $session->write('Paging.SocialAccounts.params', $fallbackParams);
+            $this->session->write('Paging.SocialAccounts.params', $fallbackParams);
 
             return $this->redirect([
                 'action' => 'index',
@@ -112,8 +111,8 @@ class SocialAccountsController extends AppController
         }
 
         // Utoljára megtekintett / szerkesztett rekord visszagörgetésének támogatása
-        $lastViewedId = $session->read('LastViewed._id');
-        $scrollToId = $session->read('ScrollTo._id') ?? $lastViewedId;
+        $lastViewedId = $this->session->read('LastViewed._id');
+        $scrollToId = $this->session->read('ScrollTo._id') ?? $lastViewedId;
 
         $this->set(compact('socialAccounts', 'lastViewedId', 'scrollToId', 'search'));
     }
@@ -127,6 +126,8 @@ class SocialAccountsController extends AppController
     public function view($id = null)
     {
         $socialAccount = $this->SocialAccounts->get($id, contain: ['Users']);
+		$this->session->write('LastViewed.' . $this->prefix . 'socialAccount_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'socialAccount_id', (int)$id);
         $this->set(compact('socialAccount'));
     }
 
@@ -145,8 +146,7 @@ class SocialAccountsController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('social account'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->getRequest()->getSession()->write('ScrollTo.socialAccount_id', $socialAccount->socialAccount_id);
-
+                $this->session->write('ScrollTo.' . $this->prefix . 'socialAccount_id', $socialAccount->id ?? 'id');
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -164,9 +164,8 @@ class SocialAccountsController extends AppController
     public function edit($id = null)
     {
         $socialAccount = $this->fetchTable('SocialAccounts')->get($id, contain: []);
-        $session = $this->getRequest()->getSession();
-        $session->write('LastViewed.socialAccount_id', (int)$id);
-        $session->write('ScrollTo.socialAccount_id', (int)$id);
+		$this->session->write('LastViewed.' . $this->prefix . 'socialAccount_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'socialAccount_id', (int)$id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -174,8 +173,7 @@ class SocialAccountsController extends AppController
             if ($this->fetchTable('SocialAccounts')->save($socialAccount)) {
                 $this->Flash->success(__('The {0} has been saved.', __('social account')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$session->read('Paging.SocialAccounts.params');
-
+                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'SocialAccounts.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,
@@ -201,8 +199,7 @@ class SocialAccountsController extends AppController
         $socialAccount = $table->get($id);
 		$socialAccountName = $socialAccount->name;
 
-        $session = $this->getRequest()->getSession();
-        $session->delete('LastViewed.socialAccount_id');
+        $this->session->delete('LastViewed.socialAccount_id');
 
         // Törlés utáni visszagörgetés: megkeressük a közvetlenül előtte lévő rekordot
         $neighbor = $table->find()
@@ -221,9 +218,9 @@ class SocialAccountsController extends AppController
         }
 
         if ($neighbor) {
-            $session->write('ScrollTo.socialAccount_id', (int)$neighbor->id);
+            $this->session->write('ScrollTo.socialAccount_id', (int)$neighbor->id);
         } else {
-            $session->delete('ScrollTo.socialAccount_id');
+            $this->session->delete('ScrollTo.socialAccount_id');
         }
 
         if ($table->delete($socialAccount)) {
@@ -232,8 +229,7 @@ class SocialAccountsController extends AppController
             $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
-        $redirectParams = (array)$session->read('Paging.SocialAccounts.params');
-
+        $redirectParams = (array)$this->session->read('Paging.SocialAccounts.params');
         return $this->redirect([
             'action' => 'index',
             '?' => $redirectParams,

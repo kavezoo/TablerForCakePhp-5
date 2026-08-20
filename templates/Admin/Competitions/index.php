@@ -18,8 +18,8 @@ $showPos           = false;
 $this->assign('title', __('Competitions'));
 $this->element('KvAdmin.pagination_templates');
 
-$lastViewedId = $lastViewedId ?? $this->getRequest()->getSession()->read('LastViewed.competition_id');
-$scrollToId = $scrollToId ?? $this->getRequest()->getSession()->read('ScrollTo.competition_id') ?? $lastViewedId;
+$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . 'competition_id');
+$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . 'competition_id') ?? $lastViewedId;
 
 // 🔍 Keresési kiemelő segédfüggvény
 $highlight = function (?string $text) use ($search): string {

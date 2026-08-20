@@ -30,12 +30,11 @@ class LanguagesController extends AppController
      */
     public function index()
     {
-        $session = $this->getRequest()->getSession();
         $queryParams = $this->getRequest()->getQueryParams();
 
         // Keresés és szűrők törlése gomb kezelése (?clear=search)
         if (isset($queryParams['clear']) && $queryParams['clear'] === 'search') {
-            $session->delete('Paging.Languages.params');
+            $this->session->delete('Paging.Languages.params');
 
             return $this->redirect(['action' => 'index']);
         }
@@ -46,7 +45,7 @@ class LanguagesController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (Languages) mezői ---
             // 'Languages.id',
-			'Languages.' . $this->Languages->getDisplayField(),	// name általában
+			'Languages.name',	// . $this->Languages->getDisplayField(),	// name általában
         ];
 
         // =========================================================================
@@ -58,8 +57,8 @@ class LanguagesController extends AppController
         ];
 
         // Ha üres az URL, de a Sessionben van érvényes mentett állapot, oda irányítunk vissza
-        if (empty($queryParams) && $session->check('Paging.Languages.params')) {
-            $savedParams = (array)$session->read('Paging.Languages.params');
+        if (empty($queryParams) && $this->session->check('Paging.Languages.params')) {
+            $savedParams = (array)$this->session->read('Paging.Languages.params');
             if (!empty($savedParams)) {
                 return $this->redirect([
                     'action' => 'index',
@@ -92,7 +91,7 @@ class LanguagesController extends AppController
             $languages = $this->paginate($query);
 
             if (!empty($queryParams)) {
-                $session->write('Paging.Languages.params', $queryParams);
+                $this->session->write('Paging.Languages.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
             $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
@@ -100,7 +99,7 @@ class LanguagesController extends AppController
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
 
-            $session->write('Paging.Languages.params', $fallbackParams);
+            $this->session->write('Paging.Languages.params', $fallbackParams);
 
             return $this->redirect([
                 'action' => 'index',
@@ -109,8 +108,8 @@ class LanguagesController extends AppController
         }
 
         // Utoljára megtekintett / szerkesztett rekord visszagörgetésének támogatása
-        $lastViewedId = $session->read('LastViewed._id');
-        $scrollToId = $session->read('ScrollTo._id') ?? $lastViewedId;
+        $lastViewedId = $this->session->read('LastViewed._id');
+        $scrollToId = $this->session->read('ScrollTo._id') ?? $lastViewedId;
 
         $this->set(compact('languages', 'lastViewedId', 'scrollToId', 'search'));
     }
@@ -124,6 +123,8 @@ class LanguagesController extends AppController
     public function view($id = null)
     {
         $language = $this->Languages->get($id, contain: []);
+		$this->session->write('LastViewed.' . $this->prefix . 'language_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'language_id', (int)$id);
         $this->set(compact('language'));
     }
 
@@ -142,8 +143,7 @@ class LanguagesController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('language'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->getRequest()->getSession()->write('ScrollTo.language_id', $language->language_id);
-
+                $this->session->write('ScrollTo.' . $this->prefix . 'language_id', $language->id ?? 'id');
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -160,9 +160,8 @@ class LanguagesController extends AppController
     public function edit($id = null)
     {
         $language = $this->fetchTable('Languages')->get($id, contain: []);
-        $session = $this->getRequest()->getSession();
-        $session->write('LastViewed.language_id', (int)$id);
-        $session->write('ScrollTo.language_id', (int)$id);
+		$this->session->write('LastViewed.' . $this->prefix . 'language_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'language_id', (int)$id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -170,8 +169,7 @@ class LanguagesController extends AppController
             if ($this->fetchTable('Languages')->save($language)) {
                 $this->Flash->success(__('The {0} has been saved.', __('language')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$session->read('Paging.Languages.params');
-
+                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'Languages.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,
@@ -196,8 +194,7 @@ class LanguagesController extends AppController
         $language = $table->get($id);
 		$languageName = $language->name;
 
-        $session = $this->getRequest()->getSession();
-        $session->delete('LastViewed.language_id');
+        $this->session->delete('LastViewed.language_id');
 
         // Törlés utáni visszagörgetés: megkeressük a közvetlenül előtte lévő rekordot
         $neighbor = $table->find()
@@ -216,9 +213,9 @@ class LanguagesController extends AppController
         }
 
         if ($neighbor) {
-            $session->write('ScrollTo.language_id', (int)$neighbor->id);
+            $this->session->write('ScrollTo.language_id', (int)$neighbor->id);
         } else {
-            $session->delete('ScrollTo.language_id');
+            $this->session->delete('ScrollTo.language_id');
         }
 
         if ($table->delete($language)) {
@@ -227,8 +224,7 @@ class LanguagesController extends AppController
             $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
-        $redirectParams = (array)$session->read('Paging.Languages.params');
-
+        $redirectParams = (array)$this->session->read('Paging.Languages.params');
         return $this->redirect([
             'action' => 'index',
             '?' => $redirectParams,

@@ -30,12 +30,11 @@ class SetupsController extends AppController
      */
     public function index()
     {
-        $session = $this->getRequest()->getSession();
         $queryParams = $this->getRequest()->getQueryParams();
 
         // Keresés és szűrők törlése gomb kezelése (?clear=search)
         if (isset($queryParams['clear']) && $queryParams['clear'] === 'search') {
-            $session->delete('Paging.Setups.params');
+            $this->session->delete('Paging.Setups.params');
 
             return $this->redirect(['action' => 'index']);
         }
@@ -46,7 +45,7 @@ class SetupsController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (Setups) mezői ---
             // 'Setups.id',
-			'Setups.' . $this->Setups->getDisplayField(),	// name általában
+			'Setups.name',	// . $this->Setups->getDisplayField(),	// name általában
         ];
 
         // =========================================================================
@@ -58,8 +57,8 @@ class SetupsController extends AppController
         ];
 
         // Ha üres az URL, de a Sessionben van érvényes mentett állapot, oda irányítunk vissza
-        if (empty($queryParams) && $session->check('Paging.Setups.params')) {
-            $savedParams = (array)$session->read('Paging.Setups.params');
+        if (empty($queryParams) && $this->session->check('Paging.Setups.params')) {
+            $savedParams = (array)$this->session->read('Paging.Setups.params');
             if (!empty($savedParams)) {
                 return $this->redirect([
                     'action' => 'index',
@@ -92,7 +91,7 @@ class SetupsController extends AppController
             $setups = $this->paginate($query);
 
             if (!empty($queryParams)) {
-                $session->write('Paging.Setups.params', $queryParams);
+                $this->session->write('Paging.Setups.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
             $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
@@ -100,7 +99,7 @@ class SetupsController extends AppController
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
 
-            $session->write('Paging.Setups.params', $fallbackParams);
+            $this->session->write('Paging.Setups.params', $fallbackParams);
 
             return $this->redirect([
                 'action' => 'index',
@@ -109,8 +108,8 @@ class SetupsController extends AppController
         }
 
         // Utoljára megtekintett / szerkesztett rekord visszagörgetésének támogatása
-        $lastViewedId = $session->read('LastViewed._id');
-        $scrollToId = $session->read('ScrollTo._id') ?? $lastViewedId;
+        $lastViewedId = $this->session->read('LastViewed._id');
+        $scrollToId = $this->session->read('ScrollTo._id') ?? $lastViewedId;
 
         $this->set(compact('setups', 'lastViewedId', 'scrollToId', 'search'));
     }
@@ -124,6 +123,8 @@ class SetupsController extends AppController
     public function view($id = null)
     {
         $setup = $this->Setups->get($id, contain: []);
+		$this->session->write('LastViewed.' . $this->prefix . 'setup_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'setup_id', (int)$id);
         $this->set(compact('setup'));
     }
 
@@ -142,8 +143,7 @@ class SetupsController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('setup'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->getRequest()->getSession()->write('ScrollTo.setup_id', $setup->setup_id);
-
+                $this->session->write('ScrollTo.' . $this->prefix . 'setup_id', $setup->id ?? 'id');
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -160,9 +160,8 @@ class SetupsController extends AppController
     public function edit($id = null)
     {
         $setup = $this->fetchTable('Setups')->get($id, contain: []);
-        $session = $this->getRequest()->getSession();
-        $session->write('LastViewed.setup_id', (int)$id);
-        $session->write('ScrollTo.setup_id', (int)$id);
+		$this->session->write('LastViewed.' . $this->prefix . 'setup_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'setup_id', (int)$id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -170,8 +169,7 @@ class SetupsController extends AppController
             if ($this->fetchTable('Setups')->save($setup)) {
                 $this->Flash->success(__('The {0} has been saved.', __('setup')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$session->read('Paging.Setups.params');
-
+                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'Setups.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,
@@ -196,8 +194,7 @@ class SetupsController extends AppController
         $setup = $table->get($id);
 		$setupName = $setup->name;
 
-        $session = $this->getRequest()->getSession();
-        $session->delete('LastViewed.setup_id');
+        $this->session->delete('LastViewed.setup_id');
 
         // Törlés utáni visszagörgetés: megkeressük a közvetlenül előtte lévő rekordot
         $neighbor = $table->find()
@@ -216,9 +213,9 @@ class SetupsController extends AppController
         }
 
         if ($neighbor) {
-            $session->write('ScrollTo.setup_id', (int)$neighbor->id);
+            $this->session->write('ScrollTo.setup_id', (int)$neighbor->id);
         } else {
-            $session->delete('ScrollTo.setup_id');
+            $this->session->delete('ScrollTo.setup_id');
         }
 
         if ($table->delete($setup)) {
@@ -227,8 +224,7 @@ class SetupsController extends AppController
             $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
-        $redirectParams = (array)$session->read('Paging.Setups.params');
-
+        $redirectParams = (array)$this->session->read('Paging.Setups.params');
         return $this->redirect([
             'action' => 'index',
             '?' => $redirectParams,

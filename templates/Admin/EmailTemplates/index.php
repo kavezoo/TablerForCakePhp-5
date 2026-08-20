@@ -18,8 +18,8 @@ $showPos           = false;
 $this->assign('title', __('Emailtemplates'));
 $this->element('KvAdmin.pagination_templates');
 
-$lastViewedId = $lastViewedId ?? $this->getRequest()->getSession()->read('LastViewed.emailTemplate_id');
-$scrollToId = $scrollToId ?? $this->getRequest()->getSession()->read('ScrollTo.emailTemplate_id') ?? $lastViewedId;
+$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . 'emailTemplate_id');
+$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . 'emailTemplate_id') ?? $lastViewedId;
 
 // 🔍 Keresési kiemelő segédfüggvény
 $highlight = function (?string $text) use ($search): string {

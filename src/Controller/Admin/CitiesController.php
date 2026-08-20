@@ -12,9 +12,6 @@ use App\Controller\Admin\AppController;
  */
 class CitiesController extends AppController
 {
-	public $session = null;
-	public $prefix = '';
-
     /**
      * Initialize controller
      *
@@ -23,11 +20,6 @@ class CitiesController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-
-		$this->session = $this->getRequest()->getSession() ?? null;
-		$this->prefix = $this->getRequest()->getParam('prefix') ?? '';
-		$this->set('session', $this->session);
-		$this->set('prefix', $this->prefix);		
 
     }
 
@@ -38,12 +30,11 @@ class CitiesController extends AppController
      */
     public function index()
     {
-        $session = $this->getRequest()->getSession();
         $queryParams = $this->getRequest()->getQueryParams();
 
         // Keresés és szűrők törlése gomb kezelése (?clear=search)
         if (isset($queryParams['clear']) && $queryParams['clear'] === 'search') {
-            $session->delete('Paging.Cities.params');
+            $this->session->delete('Paging.Cities.params');
 
             return $this->redirect(['action' => 'index']);
         }
@@ -54,7 +45,7 @@ class CitiesController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (Cities) mezői ---
             // 'Cities.id',
-			'Cities.' . $this->Cities->getDisplayField(),	// name általában
+			'Cities.name',	// . $this->Cities->getDisplayField(),	// name általában
         ];
 
         // =========================================================================
@@ -66,8 +57,8 @@ class CitiesController extends AppController
         ];
 
         // Ha üres az URL, de a Sessionben van érvényes mentett állapot, oda irányítunk vissza
-        if (empty($queryParams) && $session->check('Paging.Cities.params')) {
-            $savedParams = (array)$session->read('Paging.Cities.params');
+        if (empty($queryParams) && $this->session->check('Paging.Cities.params')) {
+            $savedParams = (array)$this->session->read('Paging.Cities.params');
             if (!empty($savedParams)) {
                 return $this->redirect([
                     'action' => 'index',
@@ -100,7 +91,7 @@ class CitiesController extends AppController
             $cities = $this->paginate($query);
 
             if (!empty($queryParams)) {
-                $session->write('Paging.Cities.params', $queryParams);
+                $this->session->write('Paging.Cities.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
             $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
@@ -108,7 +99,7 @@ class CitiesController extends AppController
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
 
-            $session->write('Paging.Cities.params', $fallbackParams);
+            $this->session->write('Paging.Cities.params', $fallbackParams);
 
             return $this->redirect([
                 'action' => 'index',
@@ -117,8 +108,8 @@ class CitiesController extends AppController
         }
 
         // Utoljára megtekintett / szerkesztett rekord visszagörgetésének támogatása
-        $lastViewedId = $session->read('LastViewed._id');
-        $scrollToId = $session->read('ScrollTo._id') ?? $lastViewedId;
+        $lastViewedId = $this->session->read('LastViewed._id');
+        $scrollToId = $this->session->read('ScrollTo._id') ?? $lastViewedId;
 
         $this->set(compact('cities', 'lastViewedId', 'scrollToId', 'search'));
     }
@@ -203,8 +194,7 @@ class CitiesController extends AppController
         $city = $table->get($id);
 		$cityName = $city->name;
 
-        $session = $this->getRequest()->getSession();
-        $session->delete('LastViewed.city_id');
+        $this->session->delete('LastViewed.city_id');
 
         // Törlés utáni visszagörgetés: megkeressük a közvetlenül előtte lévő rekordot
         $neighbor = $table->find()
@@ -223,9 +213,9 @@ class CitiesController extends AppController
         }
 
         if ($neighbor) {
-            $session->write('ScrollTo.city_id', (int)$neighbor->id);
+            $this->session->write('ScrollTo.city_id', (int)$neighbor->id);
         } else {
-            $session->delete('ScrollTo.city_id');
+            $this->session->delete('ScrollTo.city_id');
         }
 
         if ($table->delete($city)) {
@@ -234,7 +224,7 @@ class CitiesController extends AppController
             $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
-        $redirectParams = (array)$session->read('Paging.Cities.params');
+        $redirectParams = (array)$this->session->read('Paging.Cities.params');
         return $this->redirect([
             'action' => 'index',
             '?' => $redirectParams,

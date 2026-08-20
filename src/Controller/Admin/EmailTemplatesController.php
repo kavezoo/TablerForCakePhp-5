@@ -30,12 +30,11 @@ class EmailTemplatesController extends AppController
      */
     public function index()
     {
-        $session = $this->getRequest()->getSession();
         $queryParams = $this->getRequest()->getQueryParams();
 
         // Keresés és szűrők törlése gomb kezelése (?clear=search)
         if (isset($queryParams['clear']) && $queryParams['clear'] === 'search') {
-            $session->delete('Paging.EmailTemplates.params');
+            $this->session->delete('Paging.EmailTemplates.params');
 
             return $this->redirect(['action' => 'index']);
         }
@@ -46,7 +45,7 @@ class EmailTemplatesController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (EmailTemplates) mezői ---
             // 'EmailTemplates.id',
-			'EmailTemplates.' . $this->fetchTable()->getDisplayField(),	// name általában
+			'EmailTemplates.name',	// . $this->EmailTemplates->getDisplayField(),	// name általában
         ];
 
         // =========================================================================
@@ -58,8 +57,8 @@ class EmailTemplatesController extends AppController
         ];
 
         // Ha üres az URL, de a Sessionben van érvényes mentett állapot, oda irányítunk vissza
-        if (empty($queryParams) && $session->check('Paging.EmailTemplates.params')) {
-            $savedParams = (array)$session->read('Paging.EmailTemplates.params');
+        if (empty($queryParams) && $this->session->check('Paging.EmailTemplates.params')) {
+            $savedParams = (array)$this->session->read('Paging.EmailTemplates.params');
             if (!empty($savedParams)) {
                 return $this->redirect([
                     'action' => 'index',
@@ -92,7 +91,7 @@ class EmailTemplatesController extends AppController
             $emailTemplates = $this->paginate($query);
 
             if (!empty($queryParams)) {
-                $session->write('Paging.EmailTemplates.params', $queryParams);
+                $this->session->write('Paging.EmailTemplates.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
             $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
@@ -100,7 +99,7 @@ class EmailTemplatesController extends AppController
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
 
-            $session->write('Paging.EmailTemplates.params', $fallbackParams);
+            $this->session->write('Paging.EmailTemplates.params', $fallbackParams);
 
             return $this->redirect([
                 'action' => 'index',
@@ -109,8 +108,8 @@ class EmailTemplatesController extends AppController
         }
 
         // Utoljára megtekintett / szerkesztett rekord visszagörgetésének támogatása
-        $lastViewedId = $session->read('LastViewed._id');
-        $scrollToId = $session->read('ScrollTo._id') ?? $lastViewedId;
+        $lastViewedId = $this->session->read('LastViewed._id');
+        $scrollToId = $this->session->read('ScrollTo._id') ?? $lastViewedId;
 
         $this->set(compact('emailTemplates', 'lastViewedId', 'scrollToId', 'search'));
     }
@@ -124,6 +123,8 @@ class EmailTemplatesController extends AppController
     public function view($id = null)
     {
         $emailTemplate = $this->EmailTemplates->get($id, contain: []);
+		$this->session->write('LastViewed.' . $this->prefix . 'emailTemplate_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'emailTemplate_id', (int)$id);
         $this->set(compact('emailTemplate'));
     }
 
@@ -142,8 +143,7 @@ class EmailTemplatesController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('email template'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->getRequest()->getSession()->write('ScrollTo.emailTemplate_id', $emailTemplate->emailTemplate_id);
-
+                $this->session->write('ScrollTo.' . $this->prefix . 'emailTemplate_id', $emailTemplate->id ?? 'id');
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -160,9 +160,8 @@ class EmailTemplatesController extends AppController
     public function edit($id = null)
     {
         $emailTemplate = $this->fetchTable('EmailTemplates')->get($id, contain: []);
-        $session = $this->getRequest()->getSession();
-        $session->write('LastViewed.emailTemplate_id', (int)$id);
-        $session->write('ScrollTo.emailTemplate_id', (int)$id);
+		$this->session->write('LastViewed.' . $this->prefix . 'emailTemplate_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'emailTemplate_id', (int)$id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -170,8 +169,7 @@ class EmailTemplatesController extends AppController
             if ($this->fetchTable('EmailTemplates')->save($emailTemplate)) {
                 $this->Flash->success(__('The {0} has been saved.', __('email template')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$session->read('Paging.EmailTemplates.params');
-
+                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'EmailTemplates.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,
@@ -196,8 +194,7 @@ class EmailTemplatesController extends AppController
         $emailTemplate = $table->get($id);
 		$emailTemplateName = $emailTemplate->name;
 
-        $session = $this->getRequest()->getSession();
-        $session->delete('LastViewed.emailTemplate_id');
+        $this->session->delete('LastViewed.emailTemplate_id');
 
         // Törlés utáni visszagörgetés: megkeressük a közvetlenül előtte lévő rekordot
         $neighbor = $table->find()
@@ -216,9 +213,9 @@ class EmailTemplatesController extends AppController
         }
 
         if ($neighbor) {
-            $session->write('ScrollTo.emailTemplate_id', (int)$neighbor->id);
+            $this->session->write('ScrollTo.emailTemplate_id', (int)$neighbor->id);
         } else {
-            $session->delete('ScrollTo.emailTemplate_id');
+            $this->session->delete('ScrollTo.emailTemplate_id');
         }
 
         if ($table->delete($emailTemplate)) {
@@ -227,8 +224,7 @@ class EmailTemplatesController extends AppController
             $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
-        $redirectParams = (array)$session->read('Paging.EmailTemplates.params');
-
+        $redirectParams = (array)$this->session->read('Paging.EmailTemplates.params');
         return $this->redirect([
             'action' => 'index',
             '?' => $redirectParams,

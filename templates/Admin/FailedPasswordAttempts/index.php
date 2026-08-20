@@ -18,8 +18,8 @@ $showPos           = false;
 $this->assign('title', __('Failedpasswordattempts'));
 $this->element('KvAdmin.pagination_templates');
 
-$lastViewedId = $lastViewedId ?? $this->getRequest()->getSession()->read('LastViewed.failedPasswordAttempt_id');
-$scrollToId = $scrollToId ?? $this->getRequest()->getSession()->read('ScrollTo.failedPasswordAttempt_id') ?? $lastViewedId;
+$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . 'failedPasswordAttempt_id');
+$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . 'failedPasswordAttempt_id') ?? $lastViewedId;
 
 // 🔍 Keresési kiemelő segédfüggvény
 $highlight = function (?string $text) use ($search): string {

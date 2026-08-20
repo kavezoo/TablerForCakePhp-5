@@ -7,6 +7,7 @@ use App\Controller\AppController as BaseController;
 
 class AppController extends BaseController
 {
+	public $session = '';
 	public $prefix = '';
 	public $controller = '';
 	public $action = '';
@@ -19,14 +20,16 @@ class AppController extends BaseController
     {
         parent::initialize();
 
-        $this->prefix = $this->request->getParam('prefix');
-		$this->controller = $this->request->getParam('controller');
-		$this->action = $this->request->getParam('action');
+        $this->session = $this->getRequest()->getSession() ?? null;
+        $this->prefix = $this->request->getParam('prefix') ?? '';
+		$this->controller = $this->request->getParam('controller') ?? '';
+		$this->action = $this->request->getParam('action') ?? '';
 		//$this->plugin = $this->request->getParam('plugin');
 		//$this->namespace = $this->request->getParam('namespace');
 		//$this->controllerClass = $this->request->getParam('controllerClass');
 		//$this->controllerPath = $this->request->getParam('controllerPath');
 
+        $this->set('session', $this->session);
         $this->set('prefix', strtolower($this->prefix));
 		$this->set('controller', strtolower($this->controller));
 		$this->set('action', strtolower($this->action));

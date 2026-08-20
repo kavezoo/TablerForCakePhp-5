@@ -18,8 +18,8 @@ $showPos           = false;
 $this->assign('title', __('Users'));
 $this->element('KvAdmin.pagination_templates');
 
-$lastViewedId = $lastViewedId ?? $this->getRequest()->getSession()->read('LastViewed.user_id');
-$scrollToId = $scrollToId ?? $this->getRequest()->getSession()->read('ScrollTo.user_id') ?? $lastViewedId;
+$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . 'user_id');
+$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . 'user_id') ?? $lastViewedId;
 
 // 🔍 Keresési kiemelő segédfüggvény
 $highlight = function (?string $text) use ($search): string {

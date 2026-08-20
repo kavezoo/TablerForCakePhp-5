@@ -39,9 +39,6 @@
  */
 class {{ name }}Controller extends AppController
 {
-	public $session = null;
-	public $prefix = '';
-
 {% if include_initialize %}
     /**
      * Initialize controller
@@ -51,11 +48,6 @@ class {{ name }}Controller extends AppController
     public function initialize(): void
     {
         parent::initialize();
-
-		$this->session = $this->getRequest()->getSession() ?? null;
-		$this->prefix = $this->getRequest()->getParam('prefix') ?? '';
-		$this->set('session', $this->session);
-		$this->set('prefix', $this->prefix);		
 
     {%~ for component in components %}
         $this->loadComponent('{{ component }}');

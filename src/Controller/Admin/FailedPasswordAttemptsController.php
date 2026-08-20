@@ -30,12 +30,11 @@ class FailedPasswordAttemptsController extends AppController
      */
     public function index()
     {
-        $session = $this->getRequest()->getSession();
         $queryParams = $this->getRequest()->getQueryParams();
 
         // Keresés és szűrők törlése gomb kezelése (?clear=search)
         if (isset($queryParams['clear']) && $queryParams['clear'] === 'search') {
-            $session->delete('Paging.FailedPasswordAttempts.params');
+            $this->session->delete('Paging.FailedPasswordAttempts.params');
 
             return $this->redirect(['action' => 'index']);
         }
@@ -46,7 +45,7 @@ class FailedPasswordAttemptsController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (FailedPasswordAttempts) mezői ---
             // 'FailedPasswordAttempts.id',
-			'FailedPasswordAttempts.' . $this->FailedPasswordAttempts->getDisplayField(),	// name általában
+			'FailedPasswordAttempts.name',	// . $this->FailedPasswordAttempts->getDisplayField(),	// name általában
             // --- 2. Kapcsolt (BelongsTo) táblák mezői ---
             // 'Users.name',
         ];
@@ -60,8 +59,8 @@ class FailedPasswordAttemptsController extends AppController
         ];
 
         // Ha üres az URL, de a Sessionben van érvényes mentett állapot, oda irányítunk vissza
-        if (empty($queryParams) && $session->check('Paging.FailedPasswordAttempts.params')) {
-            $savedParams = (array)$session->read('Paging.FailedPasswordAttempts.params');
+        if (empty($queryParams) && $this->session->check('Paging.FailedPasswordAttempts.params')) {
+            $savedParams = (array)$this->session->read('Paging.FailedPasswordAttempts.params');
             if (!empty($savedParams)) {
                 return $this->redirect([
                     'action' => 'index',
@@ -95,7 +94,7 @@ class FailedPasswordAttemptsController extends AppController
             $failedPasswordAttempts = $this->paginate($query);
 
             if (!empty($queryParams)) {
-                $session->write('Paging.FailedPasswordAttempts.params', $queryParams);
+                $this->session->write('Paging.FailedPasswordAttempts.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
             $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
@@ -103,7 +102,7 @@ class FailedPasswordAttemptsController extends AppController
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
 
-            $session->write('Paging.FailedPasswordAttempts.params', $fallbackParams);
+            $this->session->write('Paging.FailedPasswordAttempts.params', $fallbackParams);
 
             return $this->redirect([
                 'action' => 'index',
@@ -112,8 +111,8 @@ class FailedPasswordAttemptsController extends AppController
         }
 
         // Utoljára megtekintett / szerkesztett rekord visszagörgetésének támogatása
-        $lastViewedId = $session->read('LastViewed._id');
-        $scrollToId = $session->read('ScrollTo._id') ?? $lastViewedId;
+        $lastViewedId = $this->session->read('LastViewed._id');
+        $scrollToId = $this->session->read('ScrollTo._id') ?? $lastViewedId;
 
         $this->set(compact('failedPasswordAttempts', 'lastViewedId', 'scrollToId', 'search'));
     }
@@ -127,6 +126,8 @@ class FailedPasswordAttemptsController extends AppController
     public function view($id = null)
     {
         $failedPasswordAttempt = $this->FailedPasswordAttempts->get($id, contain: ['Users']);
+		$this->session->write('LastViewed.' . $this->prefix . 'failedPasswordAttempt_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'failedPasswordAttempt_id', (int)$id);
         $this->set(compact('failedPasswordAttempt'));
     }
 
@@ -145,8 +146,7 @@ class FailedPasswordAttemptsController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('failed password attempt'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->getRequest()->getSession()->write('ScrollTo.failedPasswordAttempt_id', $failedPasswordAttempt->failedPasswordAttempt_id);
-
+                $this->session->write('ScrollTo.' . $this->prefix . 'failedPasswordAttempt_id', $failedPasswordAttempt->id ?? 'id');
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -164,9 +164,8 @@ class FailedPasswordAttemptsController extends AppController
     public function edit($id = null)
     {
         $failedPasswordAttempt = $this->fetchTable('FailedPasswordAttempts')->get($id, contain: []);
-        $session = $this->getRequest()->getSession();
-        $session->write('LastViewed.failedPasswordAttempt_id', (int)$id);
-        $session->write('ScrollTo.failedPasswordAttempt_id', (int)$id);
+		$this->session->write('LastViewed.' . $this->prefix . 'failedPasswordAttempt_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'failedPasswordAttempt_id', (int)$id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -174,8 +173,7 @@ class FailedPasswordAttemptsController extends AppController
             if ($this->fetchTable('FailedPasswordAttempts')->save($failedPasswordAttempt)) {
                 $this->Flash->success(__('The {0} has been saved.', __('failed password attempt')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$session->read('Paging.FailedPasswordAttempts.params');
-
+                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'FailedPasswordAttempts.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,
@@ -201,8 +199,7 @@ class FailedPasswordAttemptsController extends AppController
         $failedPasswordAttempt = $table->get($id);
 		$failedPasswordAttemptName = $failedPasswordAttempt->name;
 
-        $session = $this->getRequest()->getSession();
-        $session->delete('LastViewed.failedPasswordAttempt_id');
+        $this->session->delete('LastViewed.failedPasswordAttempt_id');
 
         // Törlés utáni visszagörgetés: megkeressük a közvetlenül előtte lévő rekordot
         $neighbor = $table->find()
@@ -221,9 +218,9 @@ class FailedPasswordAttemptsController extends AppController
         }
 
         if ($neighbor) {
-            $session->write('ScrollTo.failedPasswordAttempt_id', (int)$neighbor->id);
+            $this->session->write('ScrollTo.failedPasswordAttempt_id', (int)$neighbor->id);
         } else {
-            $session->delete('ScrollTo.failedPasswordAttempt_id');
+            $this->session->delete('ScrollTo.failedPasswordAttempt_id');
         }
 
         if ($table->delete($failedPasswordAttempt)) {
@@ -232,8 +229,7 @@ class FailedPasswordAttemptsController extends AppController
             $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
-        $redirectParams = (array)$session->read('Paging.FailedPasswordAttempts.params');
-
+        $redirectParams = (array)$this->session->read('Paging.FailedPasswordAttempts.params');
         return $this->redirect([
             'action' => 'index',
             '?' => $redirectParams,

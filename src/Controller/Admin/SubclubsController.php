@@ -30,12 +30,11 @@ class SubclubsController extends AppController
      */
     public function index()
     {
-        $session = $this->getRequest()->getSession();
         $queryParams = $this->getRequest()->getQueryParams();
 
         // Keresés és szűrők törlése gomb kezelése (?clear=search)
         if (isset($queryParams['clear']) && $queryParams['clear'] === 'search') {
-            $session->delete('Paging.Subclubs.params');
+            $this->session->delete('Paging.Subclubs.params');
 
             return $this->redirect(['action' => 'index']);
         }
@@ -46,7 +45,7 @@ class SubclubsController extends AppController
         $searchableFields = [
             // --- 1. Saját tábla (Subclubs) mezői ---
             // 'Subclubs.id',
-			'Subclubs.' . $this->Subclubs->getDisplayField(),	// name általában
+			'Subclubs.name',	// . $this->Subclubs->getDisplayField(),	// name általában
             // --- 2. Kapcsolt (BelongsTo) táblák mezői ---
             // 'Clubs.name',
             // 'Competitions.name',
@@ -61,8 +60,8 @@ class SubclubsController extends AppController
         ];
 
         // Ha üres az URL, de a Sessionben van érvényes mentett állapot, oda irányítunk vissza
-        if (empty($queryParams) && $session->check('Paging.Subclubs.params')) {
-            $savedParams = (array)$session->read('Paging.Subclubs.params');
+        if (empty($queryParams) && $this->session->check('Paging.Subclubs.params')) {
+            $savedParams = (array)$this->session->read('Paging.Subclubs.params');
             if (!empty($savedParams)) {
                 return $this->redirect([
                     'action' => 'index',
@@ -96,7 +95,7 @@ class SubclubsController extends AppController
             $subclubs = $this->paginate($query);
 
             if (!empty($queryParams)) {
-                $session->write('Paging.Subclubs.params', $queryParams);
+                $this->session->write('Paging.Subclubs.params', $queryParams);
             }
         } catch (\Cake\Http\Exception\NotFoundException $e) {
             $this->Flash->warning(__('Page not found. Redirecting to the first page.'), ['plugin' => 'KvAdmin']);
@@ -104,7 +103,7 @@ class SubclubsController extends AppController
             $fallbackParams = $queryParams;
             unset($fallbackParams['page']);
 
-            $session->write('Paging.Subclubs.params', $fallbackParams);
+            $this->session->write('Paging.Subclubs.params', $fallbackParams);
 
             return $this->redirect([
                 'action' => 'index',
@@ -113,8 +112,8 @@ class SubclubsController extends AppController
         }
 
         // Utoljára megtekintett / szerkesztett rekord visszagörgetésének támogatása
-        $lastViewedId = $session->read('LastViewed._id');
-        $scrollToId = $session->read('ScrollTo._id') ?? $lastViewedId;
+        $lastViewedId = $this->session->read('LastViewed._id');
+        $scrollToId = $this->session->read('ScrollTo._id') ?? $lastViewedId;
 
         $this->set(compact('subclubs', 'lastViewedId', 'scrollToId', 'search'));
     }
@@ -128,6 +127,8 @@ class SubclubsController extends AppController
     public function view($id = null)
     {
         $subclub = $this->Subclubs->get($id, contain: ['Clubs', 'Competitions', 'CompetitionsUsers']);
+		$this->session->write('LastViewed.' . $this->prefix . 'subclub_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'subclub_id', (int)$id);
         $this->set(compact('subclub'));
     }
 
@@ -146,8 +147,7 @@ class SubclubsController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('subclub'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->getRequest()->getSession()->write('ScrollTo.subclub_id', $subclub->subclub_id);
-
+                $this->session->write('ScrollTo.' . $this->prefix . 'subclub_id', $subclub->id ?? 'id');
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -166,9 +166,8 @@ class SubclubsController extends AppController
     public function edit($id = null)
     {
         $subclub = $this->fetchTable('Subclubs')->get($id, contain: []);
-        $session = $this->getRequest()->getSession();
-        $session->write('LastViewed.subclub_id', (int)$id);
-        $session->write('ScrollTo.subclub_id', (int)$id);
+		$this->session->write('LastViewed.' . $this->prefix . 'subclub_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'subclub_id', (int)$id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -176,8 +175,7 @@ class SubclubsController extends AppController
             if ($this->fetchTable('Subclubs')->save($subclub)) {
                 $this->Flash->success(__('The {0} has been saved.', __('subclub')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$session->read('Paging.Subclubs.params');
-
+                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'Subclubs.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,
@@ -204,8 +202,7 @@ class SubclubsController extends AppController
         $subclub = $table->get($id);
 		$subclubName = $subclub->name;
 
-        $session = $this->getRequest()->getSession();
-        $session->delete('LastViewed.subclub_id');
+        $this->session->delete('LastViewed.subclub_id');
 
         // Törlés utáni visszagörgetés: megkeressük a közvetlenül előtte lévő rekordot
         $neighbor = $table->find()
@@ -224,9 +221,9 @@ class SubclubsController extends AppController
         }
 
         if ($neighbor) {
-            $session->write('ScrollTo.subclub_id', (int)$neighbor->id);
+            $this->session->write('ScrollTo.subclub_id', (int)$neighbor->id);
         } else {
-            $session->delete('ScrollTo.subclub_id');
+            $this->session->delete('ScrollTo.subclub_id');
         }
 
         if ($table->delete($subclub)) {
@@ -235,8 +232,7 @@ class SubclubsController extends AppController
             $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);
         }
 
-        $redirectParams = (array)$session->read('Paging.Subclubs.params');
-
+        $redirectParams = (array)$this->session->read('Paging.Subclubs.params');
         return $this->redirect([
             'action' => 'index',
             '?' => $redirectParams,
