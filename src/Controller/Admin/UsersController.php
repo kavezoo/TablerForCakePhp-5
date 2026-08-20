@@ -127,8 +127,8 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, contain: ['Cities', 'Clubs', 'Competitions', 'FailedPasswordAttempts', 'SocialAccounts', 'Staffs']);
-		$this->session->write('LastViewed.' . $this->prefix . 'user_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'user_id', (int)$id);
+		$this->session->write('LastViewed.Admin.user_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.user_id', (int)$id ?? 0);
         $this->set(compact('user'));
     }
 
@@ -147,7 +147,7 @@ class UsersController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('user'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->session->write('ScrollTo.' . $this->prefix . 'user_id', $user->id ?? 'id');
+                $this->session->write('ScrollTo.Admin.user.id', $user->id ?? 0);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -167,8 +167,8 @@ class UsersController extends AppController
     public function edit($id = null)
     {
         $user = $this->fetchTable('Users')->get($id, contain: ['Competitions']);
-		$this->session->write('LastViewed.' . $this->prefix . 'user_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'user_id', (int)$id);
+		$this->session->write('LastViewed.Admin.user_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.user_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -176,7 +176,7 @@ class UsersController extends AppController
             if ($this->fetchTable('Users')->save($user)) {
                 $this->Flash->success(__('The {0} has been saved.', __('user')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'Users.params');
+                $redirectParams = (array)$this->session->read('Paging.Admin.Users.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,

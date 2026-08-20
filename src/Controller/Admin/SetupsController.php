@@ -123,8 +123,8 @@ class SetupsController extends AppController
     public function view($id = null)
     {
         $setup = $this->Setups->get($id, contain: []);
-		$this->session->write('LastViewed.' . $this->prefix . 'setup_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'setup_id', (int)$id);
+		$this->session->write('LastViewed.Admin.setup_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.setup_id', (int)$id ?? 0);
         $this->set(compact('setup'));
     }
 
@@ -143,7 +143,7 @@ class SetupsController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('setup'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->session->write('ScrollTo.' . $this->prefix . 'setup_id', $setup->id ?? 'id');
+                $this->session->write('ScrollTo.Admin.setup.id', $setup->id ?? 0);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -160,8 +160,8 @@ class SetupsController extends AppController
     public function edit($id = null)
     {
         $setup = $this->fetchTable('Setups')->get($id, contain: []);
-		$this->session->write('LastViewed.' . $this->prefix . 'setup_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'setup_id', (int)$id);
+		$this->session->write('LastViewed.Admin.setup_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.setup_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -169,7 +169,7 @@ class SetupsController extends AppController
             if ($this->fetchTable('Setups')->save($setup)) {
                 $this->Flash->success(__('The {0} has been saved.', __('setup')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'Setups.params');
+                $redirectParams = (array)$this->session->read('Paging.Admin.Setups.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,

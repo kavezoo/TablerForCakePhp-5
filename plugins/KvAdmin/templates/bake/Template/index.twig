@@ -33,8 +33,8 @@ $showPos           = false;
 $this->assign('title', __('{{ pluralVar|capitalize }}'));
 $this->element('KvAdmin.pagination_templates');
 
-$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . '{{ singularVar }}_id');
-$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . '{{ singularVar }}_id') ?? $lastViewedId;
+$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . '.{{ singularVar }}_id');
+$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . '.{{ singularVar }}_id') ?? $lastViewedId;
 
 // 🔍 Keresési kiemelő segédfüggvény
 $highlight = function (?string $text) use ($search): string {

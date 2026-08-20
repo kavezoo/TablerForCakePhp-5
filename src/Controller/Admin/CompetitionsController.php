@@ -126,8 +126,8 @@ class CompetitionsController extends AppController
     public function view($id = null)
     {
         $competition = $this->Competitions->get($id, contain: ['Cities', 'Users', 'Staffs', 'Subclubs']);
-		$this->session->write('LastViewed.' . $this->prefix . 'competition_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'competition_id', (int)$id);
+		$this->session->write('LastViewed.Admin.competition_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.competition_id', (int)$id ?? 0);
         $this->set(compact('competition'));
     }
 
@@ -146,7 +146,7 @@ class CompetitionsController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('competition'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->session->write('ScrollTo.' . $this->prefix . 'competition_id', $competition->id ?? 'id');
+                $this->session->write('ScrollTo.Admin.competition.id', $competition->id ?? 0);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -165,8 +165,8 @@ class CompetitionsController extends AppController
     public function edit($id = null)
     {
         $competition = $this->fetchTable('Competitions')->get($id, contain: ['Users']);
-		$this->session->write('LastViewed.' . $this->prefix . 'competition_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'competition_id', (int)$id);
+		$this->session->write('LastViewed.Admin.competition_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.competition_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -174,7 +174,7 @@ class CompetitionsController extends AppController
             if ($this->fetchTable('Competitions')->save($competition)) {
                 $this->Flash->success(__('The {0} has been saved.', __('competition')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'Competitions.params');
+                $redirectParams = (array)$this->session->read('Paging.Admin.Competitions.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,

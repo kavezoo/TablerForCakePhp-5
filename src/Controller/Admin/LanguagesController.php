@@ -123,8 +123,8 @@ class LanguagesController extends AppController
     public function view($id = null)
     {
         $language = $this->Languages->get($id, contain: []);
-		$this->session->write('LastViewed.' . $this->prefix . 'language_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'language_id', (int)$id);
+		$this->session->write('LastViewed.Admin.language_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.language_id', (int)$id ?? 0);
         $this->set(compact('language'));
     }
 
@@ -143,7 +143,7 @@ class LanguagesController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('language'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->session->write('ScrollTo.' . $this->prefix . 'language_id', $language->id ?? 'id');
+                $this->session->write('ScrollTo.Admin.language.id', $language->id ?? 0);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -160,8 +160,8 @@ class LanguagesController extends AppController
     public function edit($id = null)
     {
         $language = $this->fetchTable('Languages')->get($id, contain: []);
-		$this->session->write('LastViewed.' . $this->prefix . 'language_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'language_id', (int)$id);
+		$this->session->write('LastViewed.Admin.language_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.language_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -169,7 +169,7 @@ class LanguagesController extends AppController
             if ($this->fetchTable('Languages')->save($language)) {
                 $this->Flash->success(__('The {0} has been saved.', __('language')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'Languages.params');
+                $redirectParams = (array)$this->session->read('Paging.Admin.Languages.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,

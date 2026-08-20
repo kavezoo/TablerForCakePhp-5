@@ -123,8 +123,8 @@ class CitiesController extends AppController
     public function view($id = null)
     {
         $city = $this->Cities->get($id, contain: ['Clubs', 'Competitions', 'Users']);
-		$this->session->write('LastViewed.' . $this->prefix . 'city_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'city_id', (int)$id);
+		$this->session->write('LastViewed.Admin.city_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.city_id', (int)$id ?? 0);
         $this->set(compact('city'));
     }
 
@@ -143,7 +143,7 @@ class CitiesController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('city'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->session->write('ScrollTo.' . $this->prefix . 'city_id', $city->id ?? 'id');
+                $this->session->write('ScrollTo.Admin.city.id', $city->id ?? 0);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -160,8 +160,8 @@ class CitiesController extends AppController
     public function edit($id = null)
     {
         $city = $this->fetchTable('Cities')->get($id, contain: []);
-		$this->session->write('LastViewed.' . $this->prefix . 'city_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'city_id', (int)$id);
+		$this->session->write('LastViewed.Admin.city_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.city_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -169,7 +169,7 @@ class CitiesController extends AppController
             if ($this->fetchTable('Cities')->save($city)) {
                 $this->Flash->success(__('The {0} has been saved.', __('city')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'Cities.params');
+                $redirectParams = (array)$this->session->read('Paging.Admin.Cities.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,

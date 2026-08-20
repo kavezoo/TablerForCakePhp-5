@@ -126,8 +126,8 @@ class SocialAccountsController extends AppController
     public function view($id = null)
     {
         $socialAccount = $this->SocialAccounts->get($id, contain: ['Users']);
-		$this->session->write('LastViewed.' . $this->prefix . 'socialAccount_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'socialAccount_id', (int)$id);
+		$this->session->write('LastViewed.Admin.socialAccount_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.socialAccount_id', (int)$id ?? 0);
         $this->set(compact('socialAccount'));
     }
 
@@ -146,7 +146,7 @@ class SocialAccountsController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('social account'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->session->write('ScrollTo.' . $this->prefix . 'socialAccount_id', $socialAccount->id ?? 'id');
+                $this->session->write('ScrollTo.Admin.socialAccount.id', $socialAccount->id ?? 0);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -164,8 +164,8 @@ class SocialAccountsController extends AppController
     public function edit($id = null)
     {
         $socialAccount = $this->fetchTable('SocialAccounts')->get($id, contain: []);
-		$this->session->write('LastViewed.' . $this->prefix . 'socialAccount_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'socialAccount_id', (int)$id);
+		$this->session->write('LastViewed.Admin.socialAccount_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.socialAccount_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -173,7 +173,7 @@ class SocialAccountsController extends AppController
             if ($this->fetchTable('SocialAccounts')->save($socialAccount)) {
                 $this->Flash->success(__('The {0} has been saved.', __('social account')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'SocialAccounts.params');
+                $redirectParams = (array)$this->session->read('Paging.Admin.SocialAccounts.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,

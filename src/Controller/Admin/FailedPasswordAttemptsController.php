@@ -126,8 +126,8 @@ class FailedPasswordAttemptsController extends AppController
     public function view($id = null)
     {
         $failedPasswordAttempt = $this->FailedPasswordAttempts->get($id, contain: ['Users']);
-		$this->session->write('LastViewed.' . $this->prefix . 'failedPasswordAttempt_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'failedPasswordAttempt_id', (int)$id);
+		$this->session->write('LastViewed.Admin.failedPasswordAttempt_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.failedPasswordAttempt_id', (int)$id ?? 0);
         $this->set(compact('failedPasswordAttempt'));
     }
 
@@ -146,7 +146,7 @@ class FailedPasswordAttemptsController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('failed password attempt'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->session->write('ScrollTo.' . $this->prefix . 'failedPasswordAttempt_id', $failedPasswordAttempt->id ?? 'id');
+                $this->session->write('ScrollTo.Admin.failedPasswordAttempt.id', $failedPasswordAttempt->id ?? 0);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -164,8 +164,8 @@ class FailedPasswordAttemptsController extends AppController
     public function edit($id = null)
     {
         $failedPasswordAttempt = $this->fetchTable('FailedPasswordAttempts')->get($id, contain: []);
-		$this->session->write('LastViewed.' . $this->prefix . 'failedPasswordAttempt_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'failedPasswordAttempt_id', (int)$id);
+		$this->session->write('LastViewed.Admin.failedPasswordAttempt_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.failedPasswordAttempt_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -173,7 +173,7 @@ class FailedPasswordAttemptsController extends AppController
             if ($this->fetchTable('FailedPasswordAttempts')->save($failedPasswordAttempt)) {
                 $this->Flash->success(__('The {0} has been saved.', __('failed password attempt')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'FailedPasswordAttempts.params');
+                $redirectParams = (array)$this->session->read('Paging.Admin.FailedPasswordAttempts.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,

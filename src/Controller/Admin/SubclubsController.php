@@ -127,8 +127,8 @@ class SubclubsController extends AppController
     public function view($id = null)
     {
         $subclub = $this->Subclubs->get($id, contain: ['Clubs', 'Competitions', 'CompetitionsUsers']);
-		$this->session->write('LastViewed.' . $this->prefix . 'subclub_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'subclub_id', (int)$id);
+		$this->session->write('LastViewed.Admin.subclub_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.subclub_id', (int)$id ?? 0);
         $this->set(compact('subclub'));
     }
 
@@ -147,7 +147,7 @@ class SubclubsController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('subclub'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->session->write('ScrollTo.' . $this->prefix . 'subclub_id', $subclub->id ?? 'id');
+                $this->session->write('ScrollTo.Admin.subclub.id', $subclub->id ?? 0);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -166,8 +166,8 @@ class SubclubsController extends AppController
     public function edit($id = null)
     {
         $subclub = $this->fetchTable('Subclubs')->get($id, contain: []);
-		$this->session->write('LastViewed.' . $this->prefix . 'subclub_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'subclub_id', (int)$id);
+		$this->session->write('LastViewed.Admin.subclub_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.subclub_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -175,7 +175,7 @@ class SubclubsController extends AppController
             if ($this->fetchTable('Subclubs')->save($subclub)) {
                 $this->Flash->success(__('The {0} has been saved.', __('subclub')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'Subclubs.params');
+                $redirectParams = (array)$this->session->read('Paging.Admin.Subclubs.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,

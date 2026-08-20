@@ -33,7 +33,7 @@
                 $this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {0} has been saved.'), __('{{ singularHumanName|lower }}'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->session->write('ScrollTo.' . $this->prefix . '{{ singularName }}_id', ${{ singularName }}->{{ pkField }} ?? 'id');
+                $this->session->write('ScrollTo.{{ prefix|replace({'\\': ''}) }}.{{ singularName }}.id', ${{ singularName }}->{{ pkField }} ?? 0);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);

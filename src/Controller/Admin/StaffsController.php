@@ -127,8 +127,8 @@ class StaffsController extends AppController
     public function view($id = null)
     {
         $staff = $this->Staffs->get($id, contain: ['Users', 'Competitions']);
-		$this->session->write('LastViewed.' . $this->prefix . 'staff_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'staff_id', (int)$id);
+		$this->session->write('LastViewed.Admin.staff_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.staff_id', (int)$id ?? 0);
         $this->set(compact('staff'));
     }
 
@@ -147,7 +147,7 @@ class StaffsController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('staff'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->session->write('ScrollTo.' . $this->prefix . 'staff_id', $staff->id ?? 'id');
+                $this->session->write('ScrollTo.Admin.staff.id', $staff->id ?? 0);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -166,8 +166,8 @@ class StaffsController extends AppController
     public function edit($id = null)
     {
         $staff = $this->fetchTable('Staffs')->get($id, contain: []);
-		$this->session->write('LastViewed.' . $this->prefix . 'staff_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'staff_id', (int)$id);
+		$this->session->write('LastViewed.Admin.staff_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.staff_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -175,7 +175,7 @@ class StaffsController extends AppController
             if ($this->fetchTable('Staffs')->save($staff)) {
                 $this->Flash->success(__('The {0} has been saved.', __('staff')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'Staffs.params');
+                $redirectParams = (array)$this->session->read('Paging.Admin.Staffs.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,

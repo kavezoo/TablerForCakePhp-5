@@ -18,8 +18,8 @@ $showPos           = false;
 $this->assign('title', __('Subclubs'));
 $this->element('KvAdmin.pagination_templates');
 
-$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . 'subclub_id');
-$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . 'subclub_id') ?? $lastViewedId;
+$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . '.subclub_id');
+$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . '.subclub_id') ?? $lastViewedId;
 
 // 🔍 Keresési kiemelő segédfüggvény
 $highlight = function (?string $text) use ($search): string {

@@ -18,8 +18,8 @@ $showPos           = false;
 $this->assign('title', __('Socialaccounts'));
 $this->element('KvAdmin.pagination_templates');
 
-$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . 'socialAccount_id');
-$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . 'socialAccount_id') ?? $lastViewedId;
+$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . '.socialAccount_id');
+$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . '.socialAccount_id') ?? $lastViewedId;
 
 // 🔍 Keresési kiemelő segédfüggvény
 $highlight = function (?string $text) use ($search): string {

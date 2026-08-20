@@ -30,8 +30,8 @@
 {% if Bake.hasPlugin('Authorization') %}
         $this->Authorization->authorize(${{ singularName }});
 {% endif %}
-		$this->session->write('LastViewed.' . $this->prefix . '{{ singularName }}_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . '{{ singularName }}_id', (int)$id);
+		$this->session->write('LastViewed.{{ prefix|replace({'\\': ''}) }}.{{ singularName }}_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.{{ prefix|replace({'\\': ''}) }}.{{ singularName }}_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -39,7 +39,7 @@
             if ($this->fetchTable('{{ currentModelName }}')->save(${{ singularName }})) {
                 $this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {0} has been saved.', __('{{ singularHumanName|lower }}')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . '{{ currentModelName }}.params');
+                $redirectParams = (array)$this->session->read('Paging.{{ prefix|replace({'\\': ''}) }}.{{ currentModelName }}.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,

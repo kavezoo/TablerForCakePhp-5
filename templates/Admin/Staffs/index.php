@@ -18,8 +18,8 @@ $showPos           = false;
 $this->assign('title', __('Staffs'));
 $this->element('KvAdmin.pagination_templates');
 
-$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . 'staff_id');
-$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . 'staff_id') ?? $lastViewedId;
+$lastViewedId = $lastViewedId ?? $session->read('LastViewed.' . $prefix . '.staff_id');
+$scrollToId = $scrollToId ?? $session->read('ScrollTo.' . $prefix . '.staff_id') ?? $lastViewedId;
 
 // 🔍 Keresési kiemelő segédfüggvény
 $highlight = function (?string $text) use ($search): string {

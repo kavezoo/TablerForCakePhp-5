@@ -128,8 +128,8 @@ class CompetitionsUsersController extends AppController
     public function view($id = null)
     {
         $competitionsUser = $this->CompetitionsUsers->get($id, contain: ['Users', 'Competitions', 'Subclubs']);
-		$this->session->write('LastViewed.' . $this->prefix . 'competitionsUser_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'competitionsUser_id', (int)$id);
+		$this->session->write('LastViewed.Admin.competitionsUser_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.competitionsUser_id', (int)$id ?? 0);
         $this->set(compact('competitionsUser'));
     }
 
@@ -148,7 +148,7 @@ class CompetitionsUsersController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('competitions user'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->session->write('ScrollTo.' . $this->prefix . 'competitionsUser_id', $competitionsUser->id ?? 'id');
+                $this->session->write('ScrollTo.Admin.competitionsUser.id', $competitionsUser->id ?? 0);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -168,8 +168,8 @@ class CompetitionsUsersController extends AppController
     public function edit($id = null)
     {
         $competitionsUser = $this->fetchTable('CompetitionsUsers')->get($id, contain: []);
-		$this->session->write('LastViewed.' . $this->prefix . 'competitionsUser_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'competitionsUser_id', (int)$id);
+		$this->session->write('LastViewed.Admin.competitionsUser_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.competitionsUser_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -177,7 +177,7 @@ class CompetitionsUsersController extends AppController
             if ($this->fetchTable('CompetitionsUsers')->save($competitionsUser)) {
                 $this->Flash->success(__('The {0} has been saved.', __('competitions user')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'CompetitionsUsers.params');
+                $redirectParams = (array)$this->session->read('Paging.Admin.CompetitionsUsers.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,

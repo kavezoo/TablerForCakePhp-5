@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace KvAdmin\Controller;
 
-//use App\Controller\AppController as BaseController;
-use Cake\Controller\Controller as BaseController;
+use App\Controller\AppController as BaseController;
 
 class AppController extends BaseController
 {
@@ -31,9 +30,9 @@ class AppController extends BaseController
 		//$this->controllerPath = $this->request->getParam('controllerPath');
 
         $this->set('session', $this->session);
-        $this->set('prefix', strtolower($this->prefix));
-		$this->set('controller', strtolower($this->controller));
-		$this->set('action', strtolower($this->action));
+        $this->set('prefix', $this->prefix);
+		$this->set('controller', $this->controller);
+		$this->set('action', $this->action);
 		//$this->set('plugin', $this->plugin);
 		//$this->set('namespace', $this->namespace);
 		//$this->set('controllerClass', $this->controllerClass);

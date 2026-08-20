@@ -126,8 +126,8 @@ class ClubsController extends AppController
     public function view($id = null)
     {
         $club = $this->Clubs->get($id, contain: ['Cities', 'Subclubs', 'Users']);
-		$this->session->write('LastViewed.' . $this->prefix . 'club_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'club_id', (int)$id);
+		$this->session->write('LastViewed.Admin.club_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.club_id', (int)$id ?? 0);
         $this->set(compact('club'));
     }
 
@@ -146,7 +146,7 @@ class ClubsController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('club'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->session->write('ScrollTo.' . $this->prefix . 'club_id', $club->id ?? 'id');
+                $this->session->write('ScrollTo.Admin.club.id', $club->id ?? 0);
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -164,8 +164,8 @@ class ClubsController extends AppController
     public function edit($id = null)
     {
         $club = $this->fetchTable('Clubs')->get($id, contain: []);
-		$this->session->write('LastViewed.' . $this->prefix . 'club_id', (int)$id);
-		$this->session->write('ScrollTo.' . $this->prefix . 'club_id', (int)$id);
+		$this->session->write('LastViewed.Admin.club_id', (int)$id ?? 0);
+		$this->session->write('ScrollTo.Admin.club_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -173,7 +173,7 @@ class ClubsController extends AppController
             if ($this->fetchTable('Clubs')->save($club)) {
                 $this->Flash->success(__('The {0} has been saved.', __('club')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'Clubs.params');
+                $redirectParams = (array)$this->session->read('Paging.Admin.Clubs.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,
