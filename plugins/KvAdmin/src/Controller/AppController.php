@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace KvAdmin\Controller;
 
-use App\Controller\AppController as BaseController;
+//use App\Controller\AppController as BaseController;
+use Cake\Controller\Controller as BaseController;
 
 class AppController extends BaseController
 {

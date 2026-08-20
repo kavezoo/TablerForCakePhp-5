@@ -128,21 +128,31 @@ class KvFormHelper extends Helper
 
     /**
      * Tabler Kapcsoló (Switch)
+     *
+     * Ha nincs explicit `checked` opció, a FormHelper az entity / context
+     * értékéből dönt (editnél a mentett érték, addnél az entity default).
      */
     public function switch(string $fieldName, array $options = []): string
     {
         $label = $options['label'] ?? '';
         $size = isset($options['size']) ? ' form-switch-' . $options['size'] : '';
-        $checked = $options['checked'] ?? false;
+        $hasChecked = array_key_exists('checked', $options);
+        $checked = $hasChecked ? (bool)$options['checked'] : null;
         unset($options['label'], $options['size'], $options['checked']);
 
-        $checkboxHtml = $this->Form->checkbox($fieldName, array_merge([
+        $checkboxOptions = array_merge([
             'class' => 'form-check-input',
-            'checked' => $checked,
             'templates' => [
                 'checkbox' => '<input type="checkbox" name="{{name}}" value="{{value}}"{{attrs}}>',
             ],
-        ], $options));
+        ], $options);
+
+        // Explicit checked csak akkor, ha a hívó kérte — különben entity érték
+        if ($hasChecked) {
+            $checkboxOptions['checked'] = $checked;
+        }
+
+        $checkboxHtml = $this->Form->checkbox($fieldName, $checkboxOptions);
 
         return sprintf(
             '<label class="form-check form-switch%s mb-0">%s<span class="form-check-label">%s</span></label>',

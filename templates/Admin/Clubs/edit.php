@@ -123,14 +123,14 @@
                         <div class="col-sm-6 col-md-4">
                             <label class="form-label"><?= __('Visible') ?></label>
                             <div class="pt-2">
-                                <?= $this->KvForm->switch('visible', ['label' => __('Active / Visible'), 'size' => '3', 'checked' => true]) ?>
+                                <?= $this->KvForm->switch('visible', ['label' => __('Active / Visible'), 'size' => '3']) ?>
                             </div>
                         </div>
                     </div>
                     <!-- Pozíció Spinner -->
                     <div class="col-12">
                         <div class="col-sm-6 col-md-4">
-                            <?= $this->KvForm->numberSpinner('pos', ['label' => ['text' => __('Position')], 'min' => -10000, 'max' => 10000, 'step' => '1', 'value' => '1000']) ?>
+                            <?= $this->KvForm->numberSpinner('pos', ['label' => ['text' => __('Position')], 'min' => -10000, 'max' => 10000, 'step' => '1']) ?>
                         </div>
                     </div>
                 </div>
