@@ -31,14 +31,9 @@
                                 <?= $this->Html->link(__('Competitons'), ['controller' => 'Competitions', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                                 <?= $this->Html->link(__('Competitions Users'), ['controller' => 'CompetitionsUsers', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                                 <?= $this->Html->link(__('Clubs'), ['controller' => 'Clubs', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
-                                <?= $this->Html->link(__('Email Templates'), ['controller' => 'EmailTemplates', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
-                                <?= $this->Html->link(__('Languages'), ['controller' => 'Languages', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
-                                <?= $this->Html->link(__('Setups'), ['controller' => 'Setups', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                                 <?= $this->Html->link(__('Staffs'), ['controller' => 'Staffs', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                                 <?= $this->Html->link(__('Subclubs'), ['controller' => 'Subclubs', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                                 <?= $this->Html->link(__('Email Templates'), ['controller' => 'EmailTemplates', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
-                                <?= $this->Html->link(__('Templates'), ['controller' => 'Templates', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
-                                <?= $this->Html->link(__('Users'), ['controller' => 'Users', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                             </div>
                         </li>
                     </ul>
@@ -53,29 +48,14 @@
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <?= $this->Icon->outline('lifebuoy') ?>
                                 </span>
-                                <span class="nav-link-title"><?= __('Help') ?></span>
+                                <span class="nav-link-title"><?= __('Admin') ?></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <?= $this->Html->link(__('Templates'), 'https://tabler.io/docs', ['class' => 'dropdown-item', 'target' => '_blank', 'rel' => 'noopener']) ?>
-                                <?= $this->Html->link(__('Changelog'), ['controller' => 'Pages', 'action' => 'display', 'changelog'], ['class' => 'dropdown-item']) ?>
-                                <?= $this->Html->link(__('Source code'), 'https://github.com/tabler/tabler', ['class' => 'dropdown-item', 'target' => '_blank', 'rel' => 'noopener']) ?>
-                                <?= $this->Html->link(
-                                    $this->Icon->outline('heart', ['class' => 'icon icon-inline me-1']) . __('Sponsor project!'),
-                                    'https://github.com/sponsors/codecalm',
-                                    ['escape' => false, 'class' => 'dropdown-item text-pink', 'target' => '_blank', 'rel' => 'noopener']
-                                ) ?>
+                                <?= $this->Html->link(__('Languages'), ['controller' => 'Languages', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Setups'), ['controller' => 'Setups', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Templates'), ['controller' => 'Templates', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
+                                <?= $this->Html->link(__('Users'), ['controller' => 'Users', 'action' => 'index'], ['class' => 'dropdown-item']) ?>
                             </div>
-                        </li>
-
-                        <!-- Theme Settings -->
-                        <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <?= $this->Icon->outline('settings') ?>
-                                </span>
-                                <span class="nav-link-title"><?= __('Theme Settings') ?></span>
-                                <span class="badge badge-sm bg-red text-red-fg ms-2"><?= __('New') ?></span>
-                            </a>
                         </li>
                     </ul>
 
