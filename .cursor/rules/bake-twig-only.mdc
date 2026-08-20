@@ -1,0 +1,12 @@
+---
+description: Bake változások csak Twig sablonokra vonatkoznak
+alwaysApply: true
+---
+
+# Bake: csak Twig
+
+Ha a felhasználó bake, form, select, template vagy UI viselkedésről beszél, **csak a KvAdmin bake Twig sablonokat** módosítsd (`plugins/KvAdmin/templates/bake/**/*.twig`).
+
+- Ne nézd és ne szerkeszd a már kisütött PHP fájlokat (`templates/**/*.php`, `src/Controller/**/*.php`). Azokat a felhasználó újragenerálja.
+- Ne keresgélj a meglévő add/edit/index/view PHP sablonokban, hacsak a felhasználó kifejezetten nem kéri.
+- A forrásigazság a Twig bake template.
