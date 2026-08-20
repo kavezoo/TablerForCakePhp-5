@@ -142,16 +142,91 @@ $this->Html->scriptBlock(
         }
 
         // 2. Sima (egyszeres) Select: valódi natív select hatás
+        const requiredSelectMessage = " . json_encode(__('This field cannot be left empty')) . ";
         document.querySelectorAll('.tom-select:not(.multi-select)').forEach(function (element) {
             if (!element.tomselect && typeof TomSelect !== 'undefined') {
-                new TomSelect(element, {
+                const selectedOption = element.querySelector('option[selected]');
+                const selectedValue = selectedOption && selectedOption.value !== '' ? selectedOption.value : '';
+                const tomSelect = new TomSelect(element, {
                     copyClassesToDropdown: false,
                     create: false,
                     allowEmptyOption: true,
                     maxOptions: null,
                     openOnFocus: true,
+                    placeholder: '',
+                    items: selectedValue ? [selectedValue] : [],
                     wrapperClass: 'ts-wrapper form-select single'
                 });
+
+                const setEmptyNativeValue = function () {
+                    Array.from(element.options).forEach(function (option) {
+                        option.selected = option.value === '';
+                    });
+                    element.value = '';
+                };
+
+                const toggleRequiredState = function (value) {
+                    if (!element.required) {
+                        return;
+                    }
+                    const isEmpty = !value;
+                    tomSelect.wrapper.classList.toggle('is-invalid', isEmpty);
+                    let feedback = tomSelect.wrapper.parentElement.querySelector('.invalid-feedback.tom-select-required');
+                    if (isEmpty) {
+                        if (!feedback) {
+                            feedback = document.createElement('div');
+                            feedback.className = 'invalid-feedback tom-select-required d-block';
+                            feedback.textContent = requiredSelectMessage;
+                            tomSelect.wrapper.after(feedback);
+                        }
+                    } else if (feedback) {
+                        feedback.remove();
+                    }
+                };
+
+                tomSelect.on('change', function (value) {
+                    if (!value) {
+                        setEmptyNativeValue();
+                    }
+                    toggleRequiredState(value);
+                });
+
+                if (!selectedValue) {
+                    tomSelect.clear(true);
+                    setEmptyNativeValue();
+                }
+
+                const form = element.closest('form');
+                if (form && !form.dataset.tomSelectRequired) {
+                    form.dataset.tomSelectRequired = '1';
+                    form.addEventListener('submit', function (event) {
+                        let firstInvalid = null;
+                        form.querySelectorAll('select.tom-select[required]:not(.multi-select)').forEach(function (select) {
+                            const ts = select.tomselect;
+                            const value = ts ? ts.getValue() : select.value;
+                            if (!value) {
+                                event.preventDefault();
+                                if (ts) {
+                                    ts.wrapper.classList.add('is-invalid');
+                                    let feedback = ts.wrapper.parentElement.querySelector('.invalid-feedback.tom-select-required');
+                                    if (!feedback) {
+                                        feedback = document.createElement('div');
+                                        feedback.className = 'invalid-feedback tom-select-required d-block';
+                                        feedback.textContent = requiredSelectMessage;
+                                        ts.wrapper.after(feedback);
+                                    }
+                                    if (!firstInvalid) {
+                                        firstInvalid = ts;
+                                    }
+                                }
+                            }
+                        });
+                        if (firstInvalid) {
+                            firstInvalid.focus();
+                            firstInvalid.open();
+                        }
+                    });
+                }
             }
         });
 
