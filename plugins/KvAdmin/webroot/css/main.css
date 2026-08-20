@@ -414,14 +414,56 @@ th.desc .sort-arrows svg, th.desc .sort-arrows .icon {
     margin-top: -11px !important;
     margin-left: -2px !important;
 }
-/* Beállítások (fogaskerék) tab: enyhén feljebb */
-.card-header-tabs .nav-item.ms-auto > .nav-link {
-    margin-top: -0.1rem;
-}
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:hover svg,
 .nav-tabs .nav-link.active, .nav-tabs .nav-link.active svg {
     color: #000 !important;
     stroke: #000 !important;
+}
+
+/* Tab fülek: inaktív = szürke háttér, aktív = kártya háttér (fehér) */
+.card-header:has(.card-header-tabs) {
+    border-bottom: none !important;
+    background: transparent !important;
+}
+.card-header-tabs.nav-tabs {
+    border-bottom: 0 !important;
+    gap: 0.25rem;
+}
+.card-header-tabs .nav-link {
+    background-color: var(--tblr-bg-surface-tertiary, #f1f5f9) !important;
+    border: 1px solid var(--tblr-border-color, #e2e8f0) !important;
+    border-bottom-color: transparent !important;
+    color: var(--tblr-secondary, #64748b) !important;
+}
+.card-header-tabs .nav-link:hover {
+    background-color: #e2e8f0 !important;
+    color: #000 !important;
+}
+.card-header-tabs .nav-link.active {
+    background-color: var(--tblr-card-bg, #fff) !important;
+    border-color: var(--tblr-border-color, #e2e8f0) !important;
+    border-bottom-color: var(--tblr-card-bg, #fff) !important;
+    color: #000 !important;
+    margin-bottom: -1px;
+}
+.card-header-tabs .nav-link.active svg {
+    stroke: #000 !important;
+}
+[data-bs-theme="dark"] .card-header-tabs .nav-link {
+    background-color: var(--tblr-bg-surface-tertiary, #243044) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    border-bottom-color: transparent !important;
+    color: rgba(255, 255, 255, 0.65) !important;
+}
+[data-bs-theme="dark"] .card-header-tabs .nav-link:hover {
+    background-color: #2c3a52 !important;
+    color: #fff !important;
+}
+[data-bs-theme="dark"] .card-header-tabs .nav-link.active {
+    background-color: var(--tblr-card-bg, #1b2431) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    border-bottom-color: var(--tblr-card-bg, #1b2431) !important;
+    color: #fff !important;
 }
 
 /* ==========================================================================
