@@ -411,8 +411,12 @@ th.desc .sort-arrows svg, th.desc .sort-arrows .icon {
 }
 .nav-tabs .nav-link svg {
     vertical-align: middle !important;
-    margin-top: -10px !important;
+    margin-top: -11px !important;
     margin-left: -2px !important;
+}
+/* Beállítások (fogaskerék) tab: enyhén feljebb */
+.card-header-tabs .nav-item.ms-auto > .nav-link {
+    margin-top: -0.1rem;
 }
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:hover svg,
 .nav-tabs .nav-link.active, .nav-tabs .nav-link.active svg {
