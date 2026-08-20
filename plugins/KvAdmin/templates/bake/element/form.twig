@@ -79,26 +79,20 @@
     {%~ if field not in primaryKey and field not in ['pos', 'visible'] %}
         {%~ if keyFields[field] is defined %}
             {%~ set fieldData = Bake.columnData(field, schema) %}
-            {%~ if fieldData.null %}
-                    <div class="col-md-6">
-                        <?= $this->Form->control('{{ field }}', [
-                            'options' => ${{ keyFields[field] }},
-                            'label' => ['text' => __('{{ field|humanize }}'), 'class' => 'form-label'],
-                            'class' => 'form-select tom-select',
-                            'empty' => true
-                        ]) ?>
-                    </div>
-            {%~ else %}
                     <div class="col-md-6">
                         <?= $this->Form->control('{{ field }}', [
                             'options' => ${{ keyFields[field] }},
                             'label' => ['text' => __('{{ field|humanize }}'), 'class' => 'form-label'],
                             'class' => 'form-select tom-select',
                             'empty' => '',
-                            'required' => true
+{%~ if action == 'add' %}
+                            'value' => '',
+{%~ endif %}
+{%~ if not fieldData.null %}
+                            'required' => true,
+{%~ endif %}
                         ]) ?>
                     </div>
-            {%~ endif %}
         {%~ elseif field not in ['created', 'modified', 'updated'] %}
             {%~ set fieldData = Bake.columnData(field, schema) %}
             {%~ set isRequired = (not fieldData.null and fieldData.default is null and field not in primaryKey) %}
@@ -282,14 +276,21 @@ $this->Html->scriptBlock(
         // 2. Sima (egyszeres) Select: valódi natív select hatás
         document.querySelectorAll('.tom-select:not(.multi-select)').forEach(function (element) {
             if (!element.tomselect && typeof TomSelect !== 'undefined') {
-                new TomSelect(element, {
+                const selectedOption = element.querySelector('option[selected]');
+                const selectedValue = selectedOption && selectedOption.value !== '' ? selectedOption.value : '';
+                const tomSelect = new TomSelect(element, {
                     copyClassesToDropdown: false,
                     create: false,
                     allowEmptyOption: true,
                     maxOptions: null,
                     openOnFocus: true,
+                    placeholder: '',
+                    items: selectedValue ? [selectedValue] : [],
                     wrapperClass: 'ts-wrapper form-select single'
                 });
+                if (!selectedValue) {
+                    tomSelect.clear(true);
+                }
             }
         });
 
