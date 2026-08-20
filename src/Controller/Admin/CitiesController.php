@@ -12,6 +12,9 @@ use App\Controller\Admin\AppController;
  */
 class CitiesController extends AppController
 {
+	public $session = null;
+	public $prefix = '';
+
     /**
      * Initialize controller
      *
@@ -20,6 +23,11 @@ class CitiesController extends AppController
     public function initialize(): void
     {
         parent::initialize();
+
+		$this->session = $this->getRequest()->getSession() ?? null;
+		$this->prefix = $this->getRequest()->getParam('prefix') ?? '';
+		$this->set('session', $this->session);
+		$this->set('prefix', $this->prefix);		
 
     }
 
@@ -124,6 +132,8 @@ class CitiesController extends AppController
     public function view($id = null)
     {
         $city = $this->Cities->get($id, contain: ['Clubs', 'Competitions', 'Users']);
+		$this->session->write('LastViewed.' . $this->prefix . 'city_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'city_id', (int)$id);
         $this->set(compact('city'));
     }
 
@@ -142,8 +152,7 @@ class CitiesController extends AppController
                 $this->Flash->success(__('The {0} has been saved.'), __('city'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
-                $this->getRequest()->getSession()->write('ScrollTo.city_id', $city->city_id);
-
+                $this->session->write('ScrollTo.' . $this->prefix . 'city_id', $city->id ?? 'id');
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
@@ -160,9 +169,8 @@ class CitiesController extends AppController
     public function edit($id = null)
     {
         $city = $this->fetchTable('Cities')->get($id, contain: []);
-        $session = $this->getRequest()->getSession();
-        $session->write('LastViewed.city_id', (int)$id);
-        $session->write('ScrollTo.city_id', (int)$id);
+		$this->session->write('LastViewed.' . $this->prefix . 'city_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . 'city_id', (int)$id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -170,8 +178,7 @@ class CitiesController extends AppController
             if ($this->fetchTable('Cities')->save($city)) {
                 $this->Flash->success(__('The {0} has been saved.', __('city')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$session->read('Paging.Cities.params');
-
+                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . 'Cities.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,
@@ -228,7 +235,6 @@ class CitiesController extends AppController
         }
 
         $redirectParams = (array)$session->read('Paging.Cities.params');
-
         return $this->redirect([
             'action' => 'index',
             '?' => $redirectParams,

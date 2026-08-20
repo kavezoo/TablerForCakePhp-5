@@ -16,6 +16,7 @@
 {% set belongsTo = Bake.aliasExtractor(modelObj, 'BelongsTo') %}
 {% set belongsToMany = Bake.aliasExtractor(modelObj, 'belongsToMany') %}
 {% set compact = ["'#{singularName}'"] %}
+{% set pkField = primaryKey[0] ?? 'id' %}
     /**
      * Edit method
      *
@@ -29,9 +30,8 @@
 {% if Bake.hasPlugin('Authorization') %}
         $this->Authorization->authorize(${{ singularName }});
 {% endif %}
-        $session = $this->getRequest()->getSession();
-        $session->write('LastViewed.{{ singularName }}_id', (int)$id);
-        $session->write('ScrollTo.{{ singularName }}_id', (int)$id);
+		$this->session->write('LastViewed.' . $this->prefix . '{{ singularName }}_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . '{{ singularName }}_id', (int)$id);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
@@ -39,8 +39,7 @@
             if ($this->fetchTable('{{ currentModelName }}')->save(${{ singularName }})) {
                 $this->Flash->success({% if plugin %}__d('{{ plugin }}', {% else %}__({% endif %}'The {0} has been saved.', __('{{ singularHumanName|lower }}')), ['plugin' => 'KvAdmin']);
 
-                $redirectParams = (array)$session->read('Paging.{{ currentModelName }}.params');
-
+                $redirectParams = (array)$this->session->read('Paging.' . $this->prefix . '{{ currentModelName }}.params');
                 return $this->redirect([
                     'action' => 'index',
                     '?' => $redirectParams,

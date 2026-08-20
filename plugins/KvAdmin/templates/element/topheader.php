@@ -1,22 +1,16 @@
 <?php
-use Cake\Core\Plugin;
+// Mindig az URL prefixből – a controller $prefix változója lehet üres/felülírva.
+$prefixKey = strtolower((string)$this->getRequest()->getParam('prefix', ''));
+$targetUrl = $prefixKey !== '' ? '/' . $prefixKey : '/';
 
-/*
-$appLogoPath = WWW_ROOT . 'img' . DS . 'logo_5.svg';
-$pluginLogoPath = Plugin::path('KvAdmin') . 'webroot' . DS . 'img' . DS . 'logo.svg';
-
-if (file_exists($appLogoPath)) {
-    // A fő alkalmazás webrootjából tölti: /img/logo_5.svg
-    $logoSrc = 'logo_5.svg';
-} elseif (file_exists($pluginLogoPath)) {
-    // A KvAdmin pluginból tölti: /kv_admin/img/logo.svg
-    $logoSrc = 'KvAdmin.logo.svg';
-} else {
-    $logoSrc = null;
-}
-*/
-$prefix = $this->getRequest()->getParam('prefix');
-$targetUrl = $prefix ? '/' . strtolower($prefix) : '/';
+$roleLabels = [
+    'admin' => __('Admin'),
+    'new' => __('New user'),
+    'member' => __('Member'),
+    'clubpresident' => __('Clubpresident'),
+    'president' => __('President'),
+];
+$roleLabel = $roleLabels[$prefixKey] ?? '';
 ?>
 <header class="navbar navbar-expand-md d-print-none">
     <div class="container-xl">
@@ -26,22 +20,20 @@ $targetUrl = $prefix ? '/' . strtolower($prefix) : '/';
         </button>
         <!-- END NAVBAR TOGGLER -->
 
-        <!-- BEGIN NAVBAR LOGO -->
+        <!-- BEGIN NAVBAR LOGO + ROLE -->
         <div class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-			
-<?php
-?>
-			<?= $this->Html->link(
-                $this->Icon->outline('logo', ['class' => 'logo']),
+            <?= $this->Html->link(
+                $this->Icon->outline('logo', ['class' => 'logo'])
+                . ($roleLabel !== '' ? '<span class="navbar-role-label">' . h($roleLabel) . '</span>' : ''),
                 $targetUrl,
                 [
                     'escape' => false,
-                    'aria-label' => 'Tabler'
+                    'class' => 'navbar-brand-role d-flex align-items-center text-reset text-decoration-none',
+                    'aria-label' => $roleLabel !== '' ? $roleLabel : __('Home'),
                 ]
             ) ?>
-			
         </div>
-        <!-- END NAVBAR LOGO -->
+        <!-- END NAVBAR LOGO + ROLE -->
 
         <div class="navbar-nav flex-row order-md-last">
 
@@ -234,57 +226,9 @@ $targetUrl = $prefix ? '/' . strtolower($prefix) : '/';
 */ ?>
             </div>
 
-            <!-- Felhasználói fiók / Menü -->
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="<?= __('Open user menu') ?>" aria-expanded="false">
-                    <span class="avatar avatar-sm" style="background-image: url('<?= $this->Url->assetUrl('KvAdmin./static/avatars/000m.jpg') ?>')"></span>
-                    <div class="d-none d-xl-block ps-2">
-                        <div><?= h($currentUser->name ?? 'Jeff Shoemaker') ?></div>
-                        <div class="mt-1 small text-secondary"><?= h($currentUser->role_title ?? __('Admin')) ?></div>
-                    </div>
-                </a>
-
-				<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-					<a href="#" class="dropdown-item d-flex align-items-center justify-content-between">
-						<span><?= __('Status') ?></span>
-						<?= $this->Icon->outline('activity', ['class' => 'icon text-muted ms-auto']) ?>
-					</a>
-
-					<?= $this->Html->link(
-						'<span>' . __('Profile') . '</span>' . $this->Icon->outline('user', ['class' => 'icon text-muted ms-auto']),
-						['controller' => 'Users', 'action' => 'login'],
-						['escape' => false, 'class' => 'dropdown-item d-flex align-items-center justify-content-between']
-					) ?>
-
-					<a href="#" class="dropdown-item d-flex align-items-center justify-content-between">
-						<span><?= __('Feedback') ?></span>
-						<?= $this->Icon->outline('message-dots', ['class' => 'icon text-muted ms-auto']) ?>
-					</a>
-
-					<div class="dropdown-divider"></div>
-
-					<?= $this->Html->link(
-						'<span>' . __('Settings') . '</span>' . $this->Icon->outline('settings', ['class' => 'icon text-muted ms-auto']),
-						['controller' => 'Users', 'action' => 'register'],
-						['escape' => false, 'class' => 'dropdown-item d-flex align-items-center justify-content-between']
-					) ?>
-
-					<?= $this->Html->link(
-						'<span>' . __('Change Password') . '</span>' . $this->Icon->outline('key', ['class' => 'icon text-muted ms-auto']),
-						['controller' => 'Users', 'action' => 'change-password'],
-						['escape' => false, 'class' => 'dropdown-item d-flex align-items-center justify-content-between']
-					) ?>
-
-					<?= $this->Html->link(
-						'<span>' . __('Logout') . '</span>' . $this->Icon->outline('logout', ['class' => 'icon text-muted ms-auto']),
-						['controller' => 'Users', 'action' => 'logout'],
-						['escape' => false, 'class' => 'dropdown-item d-flex align-items-center justify-content-between']
-					) ?>
-				</div>
-
-
-            </div>
-			
+            <?php if ($this->elementExists('topheader_user_menu')) : ?>
+                <?= $this->element('topheader_user_menu') ?>
+            <?php endif; ?>
 
         </div>
     </div>

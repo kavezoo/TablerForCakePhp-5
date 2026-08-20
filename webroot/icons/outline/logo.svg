@@ -1,79 +1,292 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="133.78px" height="32px" viewBox="0 0 2454.000000 587.000000" preserveAspectRatio="xMidYMid meet">
-<g transform="translate(0.000000,587.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
-
-    <!-- S betű -->
-    <path fill="#00529F" d="M2466 4934 c-415 -75 -873 -429 -1075 -832 -146 -291 -171 -610 -67 -852 60 -141 170 -278 305 -381 87 -66 475 -257 901 -444 184 -81 371 -167 415 -192 210 -121 315 -243 315 -370 0 -180 -203 -436 -431 -542 -136 -64 -77 -61 -1275 -61 l-1092 0 -7 -84 c-9 -102 8 -266 37 -364 l21 -72 859 0 858 0 103 51 c365 183 786 463 1162 773 356 294 785 723 1073 1072 l42 52 -67 62 c-93 88 -176 138 -407 250 -203 98 -293 139 -666 302 -245 107 -351 162 -446 233 -167 125 -219 250 -165 399 33 95 80 165 171 256 98 99 201 167 315 207 l80 28 1089 5 1090 5 8 30 c24 83 58 282 64 378 l7 107 -1569 -1 c-1313 -1 -1582 -3 -1648 -15z">
-    </path>
-
-    <!-- S térde -->
-    <path fill="#00529F" d="M4728 1983 c-159 -177 -561 -569 -739 -721 -187 -159 -413 -338 -564 -446 l-110 -78 160 5 c117 3 180 10 236 25 252 68 488 211 709 432 184 182 283 338 356 555 33 98 68 286 62 328 -2 14 -29 -10 -110 -100z">
-    </path>
-
-    <!-- Saturnus gyűrű (Egyedüli animált elem) -->
-    <path fill="url(#scanGradient)" d="M5015 5860 c-535 -43 -1215 -328 -1889 -792 -62 -43 -66 -48 -42 -48 18 0 76 30 160 84 532 338 1045 551 1474 611 162 23 411 16 522 -14 264 -72 435 -247 502 -516 32 -128 32 -389 0 -555 -100 -531 -390 -1118 -862 -1745 -1013 -1347 -2417 -2348 -3575 -2551 -222 -38 -441 -17 -593 57 -78 38 -185 137 -231 213 -83 139 -114 277 -114 506 0 183 11 278 57 473 108 453 385 1028 735 1520 112 157 127 220 18 72 -620 -841 -966 -1715 -917 -2316 22 -271 110 -474 269 -621 173 -159 381 -229 686 -230 181 -1 333 20 540 72 680 172 1517 665 2275 1340 152 135 493 473 636 632 792 872 1322 1832 1429 2585 24 169 17 452 -14 568 -61 231 -169 392 -337 504 -176 118 -443 173 -729 151z">
-    </path>
-
-    <linearGradient id="scanGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#0095DA" />
-      <stop offset="50%" stop-color="#ffffff" />
-      <stop offset="100%" stop-color="#0095DA" />
-      <animateTransform attributeName="gradientTransform" 
-        type="translate" 
-        from="-1 0" 
-        to="1 0" 
-        dur="5.0s" 
-        repeatCount="indefinite" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <!-- 1. GRADIENT: Füst szálak elhalványulása felfelé (Erősebb alfa, gyorsabb fading) -->
+    <linearGradient id="smokeStrokeGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="currentColor" stop-opacity="0.9"/>
+      <stop offset="30%" stop-color="currentColor" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="currentColor" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="currentColor" stop-opacity="0"/> <!-- Teljesen eltűnik -->
     </linearGradient>
 
-    <!-- Sághy "S" -->
-    <path fill="#0095DA" d="M6723 3285 c-101 -31 -208 -128 -260 -233 -26 -52 -28 -67 -28 -168 0 -107 1 -112 38 -186 77 -157 190 -229 609 -388 244 -92 328 -136 371 -195 26 -36 28 -46 24 -94 -7 -65 -41 -120 -99 -158 l-42 -28 -453 -3 -453 -3 0 -100 0 -100 683 3 682 3 60 29 c78 38 173 133 211 211 27 55 29 69 29 170 0 103 -2 114 -32 178 -18 37 -55 92 -84 122 -92 98 -170 138 -543 280 -109 41 -221 87 -248 102 -72 39 -126 95 -134 138 -15 79 39 175 119 214 42 20 57 21 485 21 l442 0 0 100 0 100 -667 -1 c-526 0 -677 -3 -710 -14z">
-    </path>
+    <!-- 2. GRADIENT: Gomolygó füsttest elhalványulása felfelé -->
+    <linearGradient id="smokePuffGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="currentColor" stop-opacity="0.25"/>
+      <stop offset="40%" stop-color="currentColor" stop-opacity="0.15"/>
+      <stop offset="70%" stop-color="currentColor" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="currentColor" stop-opacity="0"/> <!-- Teljesen eltűnik -->
+    </linearGradient>
 
-    <!-- SÁGHY: A -->
-    <path fill="#0095DA" d="M8677 3276 c-89 -37 -174 -110 -222 -193 -54 -91 -55 -104 -55 -805 l0 -648 315 0 315 0 0 365 0 365 320 0 320 0 0 -365 0 -365 310 0 310 0 0 835 0 835 -777 0 -778 0 -58 -24z m993 -441 l0 -265 -320 0 -320 0 0 185 c0 204 6 229 67 287 56 53 78 57 336 58 l237 0 0 -265z">
-    </path>
+    <!-- 3. GRADIENT: Maszk elhalványulása (Fading Mask) -->
+    <!-- Ez a maszk FEKETE felül és FEHÉR alul, így a fekete résznél lévő füstöt elhalványítja. -->
+    <linearGradient id="maskFadingGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="1"/>   <!-- FELÜL: Teljesen elrejti -->
+      <stop offset="15%" stop-color="#000000" stop-opacity="0.5"/>
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="1"/>  <!-- ALUL: Teljesen mutatja -->
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="1"/>
+    </linearGradient>
 
-    <!-- ############ ÉKEZET ############ -->
-    <path fill="#0095DA" d="M9443 3587 c-281 -105 -353 -135 -353 -149 0 -10 2 -18 4 -18 1 0 205 23 451 50 246 28 455 50 464 50 9 0 -28 44 -84 100 -55 55 -106 100 -115 99 -8 0 -174 -60 -367 -132z">
-    </path>
-    
-    <!-- SÁGHY: G -->
-    <path fill="#0095DA" d="M10883 3285 c-100 -31 -204 -125 -259 -234 l-29 -56 -3 -509 c-2 -454 -1 -514 14 -560 36 -109 125 -210 234 -264 l55 -27 793 -3 792 -2 0 415 0 415 -315 0 -315 0 0 -315 0 -315 -235 0 c-262 0 -276 3 -342 72 -64 66 -63 61 -63 565 0 510 -1 501 70 570 67 65 42 63 649 63 l551 0 0 100 0 100 -777 -1 c-617 0 -787 -3 -820 -14z">
-    </path>
-    
-    <!-- SÁGHY: H -->
-    <path fill="#0095DA" d="M12770 2465 l0 -835 315 0 315 0 0 365 0 365 320 0 320 0 0 -365 0 -365 310 0 310 0 0 835 0 835 -310 0 -310 0 0 -365 0 -365 -320 0 -320 0 0 365 0 365 -315 0 -315 0 0 -835z">
-    </path>
-    
-    <!-- SÁGHY: Y -->
-    <path fill="#0095DA" d="M14962 2887 l3 -413 38 -76 c26 -54 54 -91 93 -128 103 -93 185 -120 371 -120 l123 0 0 -260 0 -260 310 0 310 0 0 260 0 260 119 0 c65 0 143 5 172 10 161 30 308 179 339 341 6 29 10 220 10 425 l0 374 -315 0 -315 0 0 -390 c0 -426 1 -419 -59 -483 -57 -62 -85 -69 -270 -65 -167 3 -168 3 -210 32 -23 16 -54 50 -69 75 l-27 46 -3 393 -3 392 -310 0 -310 0 3 -413z">
-    </path>
-    
-    <!-- 1. ( -->
-    <path fill="#00529F" d="M17416 2655 c-51 -66 -71 -124 -71 -205 0 -62 5 -85 27 -131 15 -30 40 -66 55 -80 18 -15 22 -17 11 -4 -29 35 -67 127 -74 181 -8 70 10 151 51 218 39 64 39 71 1 21z">
-    </path>
+    <!-- MASZK LÉTREHOZÁSA: A maszk alapja fehér (mindent mutat), -->
+    <!-- és egy téglalap használja a gradienst a tetején, hogy elhalványítson. -->
+    <mask id="smokeFadingMaskTop">
+      <rect x="0" y="0" width="100" height="100" fill="#ffffff" /> <!-- Mindent mutat -->
+      <rect x="0" y="0" width="100" height="50" fill="url(#maskFadingGrad)" /> <!-- Fading rész -->
+    </mask>
 
-    <!-- 2. ( -->
-    <path fill="#00529F" d="M17627 2712 c-68 -90 -82 -133 -82 -257 0 -102 2 -114 31 -175 17 -36 50 -85 73 -110 l42 -45 -41 60 c-61 88 -83 174 -78 293 4 104 29 177 84 249 14 18 21 33 17 33 -5 0 -25 -22 -46 -48z">
-    </path>
+    <style>
+      .pipe-stroke {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 4.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
 
-    <!-- 3. ( -->
-    <path fill="#00529F" d="M17892 2807 c-133 -142 -175 -350 -107 -533 25 -69 117 -204 143 -212 8 -2 -3 18 -24 44 -155 203 -150 511 13 712 47 58 36 53 -25 -11z">
-    </path>
-    
-    <!-- SAT: S -->
-    <path fill="#0095DA" d="M18783 3285 c-101 -31 -208 -128 -260 -233 -26 -52 -28 -67 -28 -168 0 -107 1 -112 38 -186 28 -58 54 -92 104 -138 85 -77 176 -123 490 -244 268 -103 341 -141 385 -201 27 -36 29 -46 25 -94 -7 -65 -41 -120 -99 -158 l-42 -28 -453 -3 -453 -3 0 -100 0 -100 683 3 682 3 60 29 c78 38 173 133 210 210 24 50 30 76 33 152 6 136 -24 217 -118 318 -91 98 -167 137 -545 281 -109 42 -221 88 -248 103 -68 36 -125 96 -133 138 -15 78 39 174 119 213 42 20 57 21 485 21 l442 0 0 100 0 100 -667 -1 c-526 0 -677 -3 -710 -14z">
-    </path>
-    
-    <!-- SAT: A -->
-    <path fill="#0095DA" d="M20739 3276 c-69 -28 -101 -50 -160 -113 -60 -62 -85 -106 -104 -178 -13 -50 -15 -156 -15 -707 l0 -648 315 0 315 0 0 365 0 365 320 0 320 0 0 -365 0 -365 310 0 310 0 0 835 0 835 -777 0 -778 0 -56 -24z m991 -441 l0 -265 -320 0 -320 0 0 185 c0 204 6 229 67 287 56 53 78 57 336 58 l237 0 0 -265z">
-    </path>
-    
-    <!-- SAT: T -->
-    <path fill="#0095DA" d="M22650 3200 l0 -100 315 0 315 0 0 -735 0 -735 310 0 310 0 0 735 0 735 320 0 320 0 0 100 0 100 -945 0 -945 0 0 -100z">
-    </path>
+      .pipe-inner {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 3.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
 
-</g>
+      /* Füst szálak stílusa */
+      .smoke-trail {
+        fill: none;
+        stroke: url(#smokeStrokeGrad);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 60;
+      }
+
+      /* Gomolygó felhőtest stílusa */
+      .smoke-cloud-body {
+        fill: url(#smokePuffGrad);
+      }
+
+      /* Egyedi animációk a kazán szájából indulva */
+      /* Minden animáció Y skálázása erősebb, hogy ne emelkedjenek túl magasra */
+      .smoke-line-1 {
+        stroke-width: 4.2;
+        animation: smokeDriftA 3.8s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+        transform-origin: 28px 57px;
+      }
+
+      .smoke-line-2 {
+        stroke-width: 4.6;
+        animation: smokeDriftB 4.6s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+        animation-delay: -1.5s;
+        transform-origin: 28px 57px;
+      }
+
+      .smoke-line-3 {
+        stroke-width: 3.8;
+        animation: smokeDriftC 4s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+        animation-delay: -2.5s;
+        transform-origin: 28px 57px;
+      }
+
+      .smoke-line-4 {
+        stroke-width: 3.2;
+        animation: smokeDriftD 5s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+        animation-delay: -0.7s;
+        transform-origin: 28px 57px;
+      }
+
+      .smoke-line-5 {
+        stroke-width: 3.4;
+        animation: smokeDriftA 4.1s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+        animation-delay: -3s;
+        transform-origin: 28px 57px;
+      }
+
+      .smoke-cloud-1 {
+        animation: smokePuffA 4s ease-in-out infinite;
+        transform-origin: 28px 57px;
+      }
+
+      .smoke-cloud-2 {
+        animation: smokePuffB 4.8s ease-in-out infinite;
+        animation-delay: -2s;
+        transform-origin: 28px 57px;
+      }
+
+      @keyframes smokeDriftA {
+        0% {
+          stroke-dashoffset: 60;
+          transform: translate(0, 0) scaleY(0.65) skewX(0deg);
+          opacity: 0;
+        }
+        20% {
+          opacity: 1;
+        }
+        50% {
+          transform: translate(4px, -18px) scaleY(1.05) skewX(8deg);
+          opacity: 0.6;
+        }
+        80% {
+          transform: translate(-3px, -36px) scaleY(1.3) skewX(-7deg);
+          opacity: 0.25;
+        }
+        100% {
+          stroke-dashoffset: -55;
+          transform: translate(5px, -45px) scaleY(1.45) skewX(10deg);
+          opacity: 0; /* Teljesen eltűnik */
+        }
+      }
+
+      @keyframes smokeDriftB {
+        0% {
+          stroke-dashoffset: 60;
+          transform: translate(0, 0) scaleY(0.6) skewX(0deg);
+          opacity: 0;
+        }
+        25% {
+          opacity: 1;
+        }
+        55% {
+          transform: translate(-5px, -20px) scaleY(1.1) skewX(-10deg);
+          opacity: 0.65;
+        }
+        85% {
+          transform: translate(4px, -38px) scaleY(1.35) skewX(7deg);
+          opacity: 0.2;
+        }
+        100% {
+          stroke-dashoffset: -55;
+          transform: translate(-6px, -48px) scaleY(1.5) skewX(-12deg);
+          opacity: 0; /* Teljesen eltűnik */
+        }
+      }
+
+      @keyframes smokeDriftC {
+        0% {
+          stroke-dashoffset: 60;
+          transform: translate(0, 0) scaleY(0.7);
+          opacity: 0;
+        }
+        30% {
+          opacity: 0.9;
+        }
+        60% {
+          transform: translate(3px, -21px) scaleY(1.15) skewX(6deg);
+          opacity: 0.5;
+        }
+        100% {
+          stroke-dashoffset: -50;
+          transform: translate(-4px, -40px) scaleY(1.4) skewX(-6deg);
+          opacity: 0; /* Teljesen eltűnik */
+        }
+      }
+
+      @keyframes smokeDriftD {
+        0% {
+          stroke-dashoffset: 60;
+          transform: translate(0, 0) scaleY(0.55);
+          opacity: 0;
+        }
+        25% {
+          opacity: 0.85;
+        }
+        58% {
+          transform: translate(-4px, -22px) scaleY(1.05) skewX(-7deg);
+          opacity: 0.55;
+        }
+        100% {
+          stroke-dashoffset: -50;
+          transform: translate(4px, -42px) scaleY(1.5) skewX(10deg);
+          opacity: 0; /* Teljesen eltűnik */
+        }
+      }
+
+      @keyframes smokePuffA {
+        0% {
+          transform: translate(0, 0) scale(0.6);
+          opacity: 0;
+        }
+        20% {
+          opacity: 0.75;
+        }
+        55% {
+          transform: translate(3px, -22px) scale(1.1) skewX(6deg);
+          opacity: 0.35;
+        }
+        100% {
+          transform: translate(-5px, -40px) scale(1.5) skewX(-9deg);
+          opacity: 0; /* Teljesen eltűnik */
+        }
+      }
+
+      @keyframes smokePuffB {
+        0% {
+          transform: translate(0, 0) scale(0.5);
+          opacity: 0;
+        }
+        25% {
+          opacity: 0.7;
+        }
+        60% {
+          transform: translate(-4px, -24px) scale(1.15) skewX(-8deg);
+          opacity: 0.3;
+        }
+        100% {
+          transform: translate(5px, -42px) scale(1.6) skewX(11deg);
+          opacity: 0; /* Teljesen eltűnik */
+        }
+      }
+    </style>
+  </defs>
+
+  <g id="pipe-logo">
+    <!-- ANIMÁLT SŰRŰ FÜST (Maszkolva: mind alul a kazán pereménél, mind felül az elhalványulásnál) -->
+    <!-- A mask attribútum itt a FADING maszkot hívja, ami elrejti a füst tetejét. -->
+    <g id="smoke-group" mask="url(#smokeFadingMaskTop)">
+      <!-- Gomolygó áttetsző felhő háttér -->
+      <path class="smoke-cloud-body smoke-cloud-1"
+            d="M 22 56 C 14 42 32 30 22 16 C 14 4 36 0 28 -6 C 37 0 47 12 39 24 C 48 36 31 45 34 56 Z" />
+      <path class="smoke-cloud-body smoke-cloud-2"
+            d="M 26 56 C 36 43 19 32 30 16 C 38 4 17 0 28 -6 C 19 2 11 14 18 26 C 10 38 24 45 24 56 Z" />
+
+      <!-- Sűrű hullámzó füstszálak -->
+      <path class="smoke-trail smoke-line-4" 
+            d="M 20 56 C 11 44 26 32 17 17 C 9 5 23 -3 15 -7" />
+
+      <path class="smoke-trail smoke-line-1" 
+            d="M 24 56 C 15 42 34 30 22 15 C 13 3 29 -4 20 -8" />
+
+      <path class="smoke-trail smoke-line-2" 
+            d="M 28 56 C 41 44 21 31 33 14 C 42 3 27 -4 35 -8" />
+
+      <path class="smoke-trail smoke-line-3" 
+            d="M 32 56 C 40 45 28 34 39 19 C 47 8 37 -1 43 -6" />
+
+      <path class="smoke-trail smoke-line-5" 
+            d="M 36 56 C 45 45 37 36 47 22 C 52 11 44 1 49 -4" />
+    </g>
+
+    <!-- VONALAS PIPA IKON -->
+    <g id="pipe-icon-body">
+      <!-- Kazán felső karimája / nyílása (pontosan a füst indulási vonala) -->
+      <ellipse cx="28" cy="58" rx="18" ry="4.8" class="pipe-stroke" />
+
+      <!-- Kazán külső íve + szár + szopóka -->
+      <path class="pipe-stroke" 
+            d="M 10 58 
+               C 9 79 18 95 33 95 
+               C 45 95 53 88 64 78 
+               C 74 69 84 64 95 64 
+               C 97.5 64 98 62.5 98 60 
+               C 98 57.5 97.5 56 95 56 
+               C 81 56 70 63 59 73 
+               C 51 79 46 78 44 72 
+               L 46 58" />
+
+      <!-- Kazán belső stílusos íve -->
+      <path class="pipe-inner" 
+            d="M 15 65 C 16 82 23 88 31 88" />
+
+      <!-- Szár gyűrű osztása -->
+      <path class="pipe-inner" 
+            d="M 66 71 L 70 78" />
+    </g>
+  </g>
 </svg>

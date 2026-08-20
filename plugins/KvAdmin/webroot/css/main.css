@@ -2,7 +2,132 @@
    1. ÁLTALÁNOS & OLDAL ELRENDEZÉS
    ========================================================================== */
 .page-body { margin-top: 0; }
-.logo { height: 20px; }
+/* Logo a top-bar teljes magasságát kitölti (avatar-sor + navbar padding) */
+.navbar-brand:has(.logo) {
+    padding-top: 0;
+    padding-bottom: 0;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    --logo-size: calc(2rem + 2 * var(--tblr-navbar-padding-y, 0.25rem));
+    height: var(--logo-size);
+    width: var(--logo-size);
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-block: calc(-1 * var(--tblr-navbar-padding-y, 0.25rem));
+    font-size: inherit;
+}
+
+.logo svg {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+.navbar-brand-role .logo,
+.navbar-brand .logo {
+    color: #7B4A2A;
+}
+
+.auth-card-title-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--tblr-primary, #066fd1);
+}
+
+.auth-card-title-icon svg {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+}
+
+/* Pipás logo.svg az auth képernyőkön – barna, cím előtt */
+.auth-card-title .auth-card-title-logo.icon {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    min-width: 2.5rem !important;
+    min-height: 2.5rem !important;
+    color: #7B4A2A;
+    flex-shrink: 0;
+}
+
+.auth-card-title .auth-card-title-logo svg {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+}
+
+.auth-card-title-stacked .auth-card-title-text,
+.auth-card-title-stacked .h2,
+.auth-card-title-stacked .card-title {
+    text-align: center;
+}
+
+.auth-card-title-with-logo:not(.auth-card-title-stacked) .auth-card-title-text,
+.auth-card-title-with-logo:not(.auth-card-title-stacked) .h2,
+.auth-card-title-with-logo:not(.auth-card-title-stacked) .card-title {
+    text-align: left;
+}
+
+.auth-card-title .h2,
+.auth-card-title .card-title {
+    line-height: 1.2;
+    text-align: left;
+}
+
+.navbar-brand-role {
+    gap: 0.75rem;
+}
+
+.navbar-role-label {
+    margin-left: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--tblr-body-color, #1f2937);
+}
+
+.topheader-user-meta {
+    max-width: 15rem;
+    min-width: 0;
+}
+
+.topheader-user-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    color: var(--tblr-body-color, #1f2937);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topheader-user-role {
+    margin-top: 0.125rem;
+    font-size: 0.8125rem;
+    line-height: 1.2;
+    color: var(--tblr-secondary, #6b7280);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topheader-user-toggle:hover .topheader-user-name,
+.topheader-user-toggle:focus-visible .topheader-user-name {
+    color: var(--tblr-primary, #066fd1);
+}
 
 .icon-link-subtle {
     display: inline-flex;

@@ -64,7 +64,6 @@
         }
 
         $redirectParams = (array)$session->read('Paging.{{ currentModelName }}.params');
-
         return $this->redirect([
             'action' => 'index',
             '?' => $redirectParams,

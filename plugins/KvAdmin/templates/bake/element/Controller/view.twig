@@ -27,6 +27,8 @@
     public function view($id = null)
     {
         ${{ singularName }} = $this->{{ currentModelName }}->get($id, contain: {{ Bake.exportArray(allAssociations)|raw }});
+		$this->session->write('LastViewed.' . $this->prefix . '{{ singularName }}_id', (int)$id);
+		$this->session->write('ScrollTo.' . $this->prefix . '{{ singularName }}_id', (int)$id);
 {% if Bake.hasPlugin('Authorization') %}
         $this->Authorization->authorize(${{ singularName }});
 {% endif %}
