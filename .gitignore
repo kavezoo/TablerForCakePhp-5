@@ -52,5 +52,5 @@ yarn-debug.log
 yarn-error.log
 
 # Fejlesztés alatt ideiglenesen kihagyva (később visszaállítandó)
-/src/*
-/templates/*
+/src/
+/templates/
