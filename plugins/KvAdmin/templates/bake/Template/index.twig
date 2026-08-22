@@ -66,13 +66,13 @@ $highlight = function (?string $text) use ($search): string {
                 <?= __('{0} rekordhoz tartozó {1}', h($parentContext['label']), __('{{ pluralHumanName }}')) ?>
             </span>
             <?= $this->Html->link(
-                __('Vissza a teljes listához'),
-                ['action' => 'index', '?' => ['clear' => 'filter']],
+                __('Szülő megtekintése'),
+                ['controller' => $parentContext['controller'], 'action' => 'view', $parentContext['foreignKeyValue']],
                 ['class' => 'ms-auto btn btn-sm btn-outline-secondary']
             ) ?>
             <?= $this->Html->link(
-                __('Szülő megtekintése'),
-                ['controller' => $parentContext['controller'], 'action' => 'view', $parentContext['foreignKeyValue']],
+                __('Teljes lista'),
+                ['action' => 'index', '?' => ['clear' => 'filter']],
                 ['class' => 'btn btn-sm btn-outline-secondary']
             ) ?>
         </div>
@@ -368,9 +368,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 JS, ['block' => 'script']);
 
-<?php if (!empty($scrollToId)): ?>
-// --- 3. Automatikus görgetés az utolsó megtekintett rekordhoz ---
-$this->Html->scriptBlock(<<<JS
+if (!empty($scrollToId)) {
+    // --- 3. Automatikus görgetés az utolsó megtekintett rekordhoz ---
+    $this->Html->scriptBlock(<<<JS
 document.addEventListener('DOMContentLoaded', function () {
     let targetRow = document.getElementById('row-{$scrollToId}');
     if (!targetRow) {
@@ -389,9 +389,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 JS, ['block' => 'script']);
-<?php else: ?>
-/*
-// --- 3. Automatikus görgetés – scrollToId használatához vedd ki a kommentet ---
+}
+?>
+
+<?php /*
+// --- 3. Automatikus görgetés – mindig aktív változat: vedd ki a kommentet ---
 $this->Html->scriptBlock(<<<'JS'
 document.addEventListener('DOMContentLoaded', function () {
     let targetRow = document.querySelector('.table tr.last-viewed') || document.querySelector('.table tbody tr');
@@ -402,6 +404,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 JS, ['block' => 'script']);
-*/
-<?php endif; ?>
-?>
+*/ ?>
