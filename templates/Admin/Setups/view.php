@@ -45,8 +45,8 @@
                     <td><?= h($setup->type) ?></td>
                 </tr>
                 <tr>
-                    <th class="w-1 text-nowrap"><?= __('Edit By') ?></th>
-                    <td><?= h($setup->edit_by) ?></td>
+                    <th class="w-1 text-nowrap"><?= __('Role') ?></th>
+                    <td><?= h($setup->role) ?></td>
                 </tr>
                 <tr>
                     <th class="w-1 text-nowrap"><?= __('Id') ?></th>

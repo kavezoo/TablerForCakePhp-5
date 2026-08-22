@@ -10,7 +10,7 @@ use Cake\I18n\I18n;
 
 $showId            = false;
 $showCounterFields = false;
-$showVisible       = false;
+$showVisible       = true;
 $showCreated       = false;
 $showModified      = false;
 $showPos           = false;
@@ -69,7 +69,7 @@ $highlight = function (?string $text) use ($search): string {
 					<th class="string name"><?= $this->Paginator->sort('name') ?></th>					
 					<th class="string slug"><?= $this->Paginator->sort('slug') ?></th>					
 					<th class="string type"><?= $this->Paginator->sort('type') ?></th>					
-					<th class="string edit_by"><?= $this->Paginator->sort('edit_by') ?></th>					
+					<th class="string role"><?= $this->Paginator->sort('role') ?></th>					
 <?php if (isset($showVisible) && $showVisible): ?>
                     <th class="boolean visible"><?= $this->Paginator->sort('visible', __('Visible')) ?></th>
 <?php endif; ?>
@@ -107,7 +107,7 @@ $highlight = function (?string $text) use ($search): string {
                     <td class="string name"><?= $highlight($setup->name) ?></td>
                     <td class="string slug"><?= $highlight($setup->slug) ?></td>
                     <td class="string type"><?= $highlight($setup->type) ?></td>
-                    <td class="string edit_by"><?= $highlight($setup->edit_by) ?></td>
+                    <td class="string role"><?= $highlight($setup->role) ?></td>
 <?php if (isset($showVisible) && $showVisible): ?>
                     <td class="boolean visible"><?= $setup->visible ? '<span class="badge bg-green-lt">' . __('Igen') . '</span>' : '<span class="badge bg-secondary-lt">' . __('Nem') . '</span>' ?></td>
 <?php endif; ?>

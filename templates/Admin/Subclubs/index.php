@@ -10,7 +10,7 @@ use Cake\I18n\I18n;
 
 $showId            = false;
 $showCounterFields = false;
-$showVisible       = false;
+$showVisible       = true;
 $showCreated       = false;
 $showModified      = false;
 $showPos           = false;
