@@ -553,5 +553,198 @@ class KvFormHelper extends Helper
 
         return $html;
     }
+
+    /**
+     * Bezárás / vissza a listához (X ikon gomb)
+     */
+    public function linkCloseIndex(array|string $url = ['action' => 'index'], array $options = []): string
+    {
+        return $this->Html->link(
+            $this->Icon->outline('x'),
+            $url,
+            array_merge([
+                'escape' => false,
+                'class' => 'btn btn-icon btn-action-default btn-smooth-rotate',
+                'data-bs-toggle' => 'tooltip',
+                'title' => __('Vissza a listához'),
+            ], $options)
+        );
+    }
+
+    /**
+     * Űrlap tab fül link
+     */
+    public function linkTab(string $label, string $target, bool $active = false, array $options = []): string
+    {
+        $defaults = [
+            'class' => 'nav-link' . ($active ? ' active' : ''),
+            'data-bs-toggle' => 'tab',
+            'aria-selected' => $active ? 'true' : 'false',
+            'role' => 'tab',
+        ];
+        if (!$active) {
+            $defaults['tabindex'] = '-1';
+        }
+
+        return $this->Html->link($label, $target, array_merge($defaults, $options));
+    }
+
+    /**
+     * Beállítások tab fül (fogaskerék ikon)
+     */
+    public function linkTabSettings(bool $active = false, array $options = []): string
+    {
+        $defaults = [
+            'escape' => false,
+            'class' => 'nav-link' . ($active ? ' active' : ''),
+            'data-bs-toggle' => 'tab',
+            'title' => __('Settings'),
+            'aria-selected' => $active ? 'true' : 'false',
+            'role' => 'tab',
+        ];
+        if (!$active) {
+            $defaults['tabindex'] = '-1';
+        }
+
+        return $this->Html->link(
+            $this->Icon->render('settings', ['class' => 'stroke-thin']),
+            '#tabs-settings',
+            array_merge($defaults, $options)
+        );
+    }
+
+    /**
+     * Új rekord gomb (index fejléc)
+     */
+    public function linkAddNew(array|string $url, string $entityLabel, array $options = []): string
+    {
+        $content = $this->Icon->outline('plus')
+            . '<span class="d-none d-sm-inline ms-1">'
+            . __('Add new') . ' ' . h($entityLabel)
+            . '</span>';
+
+        return $this->Html->link(
+            $content,
+            $url,
+            array_merge([
+                'escape' => false,
+                'class' => 'btn btn-outline-secondary btn-header-new',
+            ], $options)
+        );
+    }
+
+    /**
+     * Szülő rekord megtekintése (szűrt gyereklista sáv)
+     */
+    public function linkParentView(array $parentContext, array $options = []): string
+    {
+        return $this->Html->link(
+            __('Szülő megtekintése'),
+            [
+                'controller' => $parentContext['controller'],
+                'action' => 'view',
+                $parentContext['foreignKeyValue'],
+            ],
+            array_merge(['class' => 'ms-auto btn btn-sm btn-outline-secondary'], $options)
+        );
+    }
+
+    /**
+     * Teljes lista (szűrés törlése)
+     */
+    public function linkFullList(array $options = []): string
+    {
+        return $this->Html->link(
+            __('Teljes lista'),
+            ['action' => 'index', '?' => ['clear' => 'filter']],
+            array_merge(['class' => 'btn btn-sm btn-outline-secondary'], $options)
+        );
+    }
+
+    /**
+     * BelongsTo kapcsolat link az index táblázatban (tooltip + link ikon)
+     */
+    public function linkBelongsToCell(
+        object $owner,
+        string $associationProperty,
+        string $displayField,
+        string $controller,
+        string $primaryKey = 'id'
+    ): string {
+        if (!$owner->hasValue($associationProperty)) {
+            return '';
+        }
+
+        $related = $owner->{$associationProperty};
+        $label = h((string)($related->{$displayField} ?? ''));
+        $content = $label . '<span class="icon-link-subtle ms-1">' . $this->Icon->outline('link') . '</span>';
+
+        return $this->Html->link(
+            $content,
+            ['controller' => $controller, 'action' => 'view', $related->{$primaryKey}],
+            [
+                'class' => 'text-reset text-decoration-none fw-bold',
+                'escape' => false,
+                'data-bs-toggle' => 'tooltip',
+                'data-bs-html' => 'true',
+                'data-bs-placement' => 'top',
+                'title' => '<b>' . $label . '</b><br>' . __('adatlap megtekintése'),
+            ]
+        );
+    }
+
+    /**
+     * Kapcsolt rekord link a view táblázatban
+     */
+    public function linkRelatedRecord(
+        object $owner,
+        string $associationProperty,
+        string $displayField,
+        string $controller,
+        string $primaryKey = 'id'
+    ): string {
+        if (!$owner->hasValue($associationProperty)) {
+            return '';
+        }
+
+        $related = $owner->{$associationProperty};
+
+        return $this->Html->link(
+            h((string)($related->{$displayField} ?? '')),
+            ['controller' => $controller, 'action' => 'view', $related->{$primaryKey}],
+            ['class' => 'text-reset text-decoration-none fw-bold']
+        );
+    }
+
+    /**
+     * Gyerek lista gomb (HasMany – index Related oszlop)
+     */
+    public function linkChildList(
+        string $controller,
+        string $foreignKey,
+        int|string $foreignKeyValue,
+        string $parentFilter,
+        string $title,
+        array $options = []
+    ): string {
+        return $this->Html->link(
+            $this->Icon->outline('list'),
+            [
+                'controller' => $controller,
+                'action' => 'index',
+                '?' => [
+                    $foreignKey => $foreignKeyValue,
+                    'parent_filter' => $parentFilter,
+                ],
+            ],
+            array_merge([
+                'escape' => false,
+                'class' => 'btn btn-icon btn-action-default',
+                'data-bs-toggle' => 'tooltip',
+                'data-bs-placement' => 'top',
+                'title' => $title,
+            ], $options)
+        );
+    }
 	
 }

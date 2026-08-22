@@ -30,7 +30,7 @@
             <h2 class="page-title"><?= __('{0} megtekintése', __('{{ singularHumanName }}')) ?></h2>
         </div>
         <div class="col-auto ms-auto">
-            <?= $this->Html->link($this->Icon->outline('x'), ['action' => 'index'], ['escape' => false, 'class' => 'btn btn-icon btn-action-default btn-smooth-rotate', 'data-bs-toggle' => 'tooltip', 'title' => __('Vissza a listához')]) ?>
+            <?= $this->KvForm->linkCloseIndex() ?>
         </div>
     </div>
 </div>
@@ -58,7 +58,7 @@
             {%~ set details = associationFields[field] %}
                 <tr>
                     <th class="w-1 text-nowrap"><?= {% if useDomain %}__d('{{ plugin }}', {% else %}__({% endif %}'{{ details.property|humanize }}') ?></th>
-                    <td><?= ${{ singularVar }}->hasValue('{{ details.property }}') ? $this->Html->link(h(${{ singularVar }}->{{ details.property }}->{{ details.displayField }}), ['controller' => '{{ details.controller }}', 'action' => 'view', ${{ singularVar }}->{{ details.property }}->{{ details.primaryKey[0] }}], ['class' => 'text-reset text-decoration-none fw-bold']) : '' ?></td>
+                    <td><?= $this->KvForm->linkRelatedRecord(${{ singularVar }}, '{{ details.property }}', '{{ details.displayField }}', '{{ details.controller }}', '{{ details.primaryKey[0] }}') ?></td>
                 </tr>
         {%~ else %}
                 <tr>
@@ -72,7 +72,7 @@
     {%~ for alias, details in associations.HasOne %}
                 <tr>
                     <th class="w-1 text-nowrap"><?= {% if useDomain %}__d('{{ plugin }}', {% else %}__({% endif %}'{{ alias|underscore|singularize|humanize }}') ?></th>
-                    <td><?= ${{ singularVar }}->hasValue('{{ details.property }}') ? $this->Html->link(h(${{ singularVar }}->{{ details.property }}->{{ details.displayField }}), ['controller' => '{{ details.controller }}', 'action' => 'view', ${{ singularVar }}->{{ details.property }}->{{ details.primaryKey[0] }}], ['class' => 'text-reset text-decoration-none fw-bold']) : '' ?></td>
+                    <td><?= $this->KvForm->linkRelatedRecord(${{ singularVar }}, '{{ details.property }}', '{{ details.displayField }}', '{{ details.controller }}', '{{ details.primaryKey[0] }}') ?></td>
                 </tr>
     {%~ endfor %}
 {% endif %}

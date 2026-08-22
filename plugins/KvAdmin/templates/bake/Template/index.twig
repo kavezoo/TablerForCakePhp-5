@@ -65,16 +65,8 @@ $highlight = function (?string $text) use ($search): string {
             <span class="text-secondary">
                 <?= __('{0} rekordhoz tartozó {1}', h($parentContext['label']), __('{{ pluralHumanName }}')) ?>
             </span>
-            <?= $this->Html->link(
-                __('Szülő megtekintése'),
-                ['controller' => $parentContext['controller'], 'action' => 'view', $parentContext['foreignKeyValue']],
-                ['class' => 'ms-auto btn btn-sm btn-outline-secondary']
-            ) ?>
-            <?= $this->Html->link(
-                __('Teljes lista'),
-                ['action' => 'index', '?' => ['clear' => 'filter']],
-                ['class' => 'btn btn-sm btn-outline-secondary']
-            ) ?>
+            <?= $this->KvForm->linkParentView($parentContext) ?>
+            <?= $this->KvForm->linkFullList() ?>
         </div>
     </div>
     <?php endif; ?>
@@ -83,7 +75,7 @@ $highlight = function (?string $text) use ($search): string {
 
             <!-- Új {{ singularVar }} gomb -->
             <div class="col-auto">
-                <?= $this->Html->link($this->Icon->outline('plus') . '<span class="d-none d-sm-inline ms-1">' . __('Add new') . ' ' . __('{{ singularVar }}') . '</span>', ['controller' => '{{ pluralVar|capitalize }}', 'action' => 'add'], ['escape' => false, 'class' => 'btn btn-outline-secondary btn-header-new']) ?>
+                <?= $this->KvForm->linkAddNew(['controller' => '{{ pluralVar|capitalize }}', 'action' => 'add'], __('{{ singularVar }}')) ?>
             </div>
 
             <!-- Cím és infó blokk -->
@@ -220,18 +212,7 @@ $highlight = function (?string $text) use ($search): string {
             {%~ if field == details.foreignKey %}
                 {%~ set isKey = true %}
                     <td class="string {{ field }}">
-                        <?= ${{ singularVar }}->hasValue('{{ details.property }}') ? $this->Html->link(
-                            h(${{ singularVar }}->{{ details.property }}->{{ details.displayField }}) . '<span class="icon-link-subtle ms-1">' . $this->Icon->outline('link') . '</span>',
-                            ['controller' => '{{ details.controller }}', 'action' => 'view', ${{ singularVar }}->{{ details.property }}->{{ details.primaryKey[0] }}],
-                            [
-                                'class' => 'text-reset text-decoration-none fw-bold',
-                                'escape' => false,
-                                'data-bs-toggle' => 'tooltip',
-                                'data-bs-html' => 'true',
-                                'data-bs-placement' => 'top',
-                                'title' => '<b>' . h(${{ singularVar }}->{{ details.property }}->{{ details.displayField }}) . '</b><br>' . __('adatlap megtekintése'),
-                            ]
-                        ) : '' ?>
+                        <?= $this->KvForm->linkBelongsToCell(${{ singularVar }}, '{{ details.property }}', '{{ details.displayField }}', '{{ details.controller }}', '{{ details.primaryKey[0] }}') ?>
                     </td>
             {%~ endif %}
         {%~ endfor %}
@@ -258,24 +239,7 @@ $highlight = function (?string $text) use ($search): string {
                     <td class="child-actions">
                         <div class="btn-list flex-nowrap align-items-center">
 {% for alias, details in childAssociations %}
-                            <?= $this->Html->link(
-                                $this->Icon->outline('list'),
-                                [
-                                    'controller' => '{{ details.controller }}',
-                                    'action' => 'index',
-                                    '?' => [
-                                        '{{ details.foreignKey }}' => {{ pk|raw }},
-                                        'parent_filter' => '{{ modelClass }}',
-                                    ],
-                                ],
-                                [
-                                    'escape' => false,
-                                    'class' => 'btn btn-icon btn-action-default',
-                                    'data-bs-toggle' => 'tooltip',
-                                    'data-bs-placement' => 'top',
-                                    'title' => __('{{ alias|humanize }}'),
-                                ]
-                            ) ?>
+                            <?= $this->KvForm->linkChildList('{{ details.controller }}', '{{ details.foreignKey }}', {{ pk|raw }}, '{{ modelClass }}', __('{{ alias|humanize }}')) ?>
 {% endfor %}
                         </div>
                     </td>
