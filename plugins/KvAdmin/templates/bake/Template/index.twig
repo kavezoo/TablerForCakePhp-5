@@ -67,7 +67,7 @@ $highlight = function (?string $text) use ($search): string {
             </span>
             <?= $this->Html->link(
                 __('Vissza a teljes listához'),
-                ['action' => 'index'],
+                ['action' => 'index', '?' => ['clear' => 'filter']],
                 ['class' => 'ms-auto btn btn-sm btn-outline-secondary']
             ) ?>
             <?= $this->Html->link(

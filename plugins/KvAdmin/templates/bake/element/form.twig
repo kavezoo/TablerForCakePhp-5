@@ -133,6 +133,33 @@
                     {%~ set maxValue = isUnsigned ? 4294967295 : 2147483647 %}
                 {%~ endif %}
                     <div class="col-md-6">
+                        <?= $this->Form->control('{{ field }}', [
+                            'type' => 'number',
+                            'label' => ['text' => __('{{ field|humanize }}'), 'class' => 'form-label'],
+                            'class' => 'form-control',
+{% if minValue is not null %}
+                            'min' => {{ minValue }},
+{% endif %}
+{% if maxValue is not null %}
+                            'max' => {{ maxValue }},
+{% endif %}
+{% if precision > 0 %}
+                            'step' => '{{ (1 / (10 ** precision))|number_format(precision, '.', '') }}',
+{% else %}
+                            'step' => '1',
+{% endif %}
+{% if action == 'add' and fieldData.default is not null %}
+                            'value' => '{{ fieldData.default }}',
+{% endif %}
+{% if isRequired %}
+                            'required' => true,
+{% endif %}
+                        ]) ?>
+                        <?php
+                        /*
+                         * Spinner változat – ha numberSpinner kell, kommentezd ki a fenti Form->control blokkot
+                         * és vedd ki a kommentet az alábbi sorok körül:
+                         *
                         <?= $this->KvForm->numberSpinner('{{ field }}', [
                             'label' => ['text' => __('{{ field|humanize }}')],
 {% if minValue is not null %}
@@ -142,13 +169,19 @@
                             'max' => {{ maxValue }},
 {% endif %}
 {% if precision > 0 %}
-                            'precision' => {{ precision }},
                             'step' => '{{ (1 / (10 ** precision))|number_format(precision, '.', '') }}',
 {% else %}
                             'step' => '1',
 {% endif %}
-                            'value' => '{{ fieldData.default }}'{{ isRequired ? ", 'required' => true" : "" }}
+{% if action == 'add' and fieldData.default is not null %}
+                            'value' => '{{ fieldData.default }}',
+{% endif %}
+{% if isRequired %}
+                            'required' => true,
+{% endif %}
                         ]) ?>
+                         */
+                        ?>
                     </div>
             {%~ endif %}
         {%~ endif %}
@@ -218,14 +251,32 @@
                     </div>
 {%~ endif %}
 {%~ if hasPos == true %}
-                    <!-- Pozíció Spinner -->
+                    <!-- Pozíció -->
                     <div class="col-12">
                         <div class="col-sm-6 col-md-4">
+                            <?= $this->Form->control('pos', [
+                                'type' => 'number',
+                                'label' => ['text' => __('Position'), 'class' => 'form-label'],
+                                'class' => 'form-control',
+                                'min' => -10000,
+                                'max' => 10000,
+                                'step' => '1',
+{%~ if action == 'add' %}
+                                'value' => '1000',
+{%~ endif %}
+                            ]) ?>
+                            <?php
+                            /*
+                             * Spinner változat – ha numberSpinner kell, kommentezd ki a fenti Form->control blokkot
+                             * és vedd ki a kommentet az alábbi sorok körül:
+                             *
 {%~ if action == 'add' %}
                             <?= $this->KvForm->numberSpinner('pos', ['label' => ['text' => __('Position')], 'min' => -10000, 'max' => 10000, 'step' => '1', 'value' => '1000']) ?>
 {%~ else %}
                             <?= $this->KvForm->numberSpinner('pos', ['label' => ['text' => __('Position')], 'min' => -10000, 'max' => 10000, 'step' => '1']) ?>
 {%~ endif %}
+                             */
+                            ?>
                         </div>
                     </div>
 {%~ endif %}
@@ -469,7 +520,8 @@ $this->Html->scriptBlock(
             });
         }
 
-        // 6. Number Spinner gombok
+        /*
+        // 6. Number Spinner gombok – spinner használathoz vedd ki a kommentet
         document.body.addEventListener('click', function (e) {
             const button = e.target.closest('.input-group [data-action]');
             if (!button) return;
@@ -496,6 +548,7 @@ $this->Html->scriptBlock(
             input.dispatchEvent(new Event('change', { bubbles: true }));
             input.dispatchEvent(new Event('input', { bubbles: true }));
         });
+        */
 
     });
     ",

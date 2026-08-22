@@ -91,6 +91,7 @@ sort($numbersToShow);
         <p class="m-0 text-secondary">
             <?= $this->Paginator->counter(__('Megjelenítve: {{start}} - {{end}} / {{count}} találat')) ?>
         </p>
+        <?php if ($pageCount > 1): ?>
         <ul class="pagination m-0 ms-auto">
             <?php if ($currentPage > 1): ?>
                 <li class="page-item"><a class="page-link" href="<?= h($buildPageUrl(1)) ?>"><?= $this->SystemIcon->sysIcon('first') ?></a></li>
@@ -122,5 +123,6 @@ sort($numbersToShow);
                 <?= $renderDisabledIcon($this->SystemIcon->sysIcon('last')) ?>
             <?php endif; ?>
         </ul>
+        <?php endif; ?>
     </div>
 </div>
