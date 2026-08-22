@@ -27,7 +27,13 @@
         if (isset($queryParams['clear']) && $queryParams['clear'] === 'search') {
             $this->session->delete('Paging.{{ currentModelName }}.params');
 
-            return $this->redirect(['action' => 'index']);
+            $redirectParams = $queryParams;
+            unset($redirectParams['clear'], $redirectParams['search'], $redirectParams['page']);
+
+            return $this->redirect([
+                'action' => 'index',
+                '?' => $redirectParams ?: null,
+            ]);
         }
 
         // =========================================================================
@@ -72,6 +78,43 @@
 {% endif %}
 
         // =========================================================================
+        // 🔗 SZÜLŐ REKORD SZERINTI SZŰRÉS (gyerek lista a szülő index gombjából)
+        // =========================================================================
+        $parentContext = null;
+        $table = $this->fetchTable('{{ currentModelName }}');
+        foreach ($table->associations()->getByType('BelongsTo') as $association) {
+            $foreignKey = $association->getForeignKey();
+            if (!is_string($foreignKey)) {
+                continue;
+            }
+
+            $filterValue = $queryParams[$foreignKey] ?? null;
+            if ($filterValue === null || $filterValue === '') {
+                continue;
+            }
+
+            $query->where(['{{ currentModelName }}.' . $foreignKey => $filterValue]);
+
+            $parentTable = $association->getTarget();
+            try {
+                $parentEntity = $this->fetchTable($parentTable->getAlias())->get($filterValue);
+            } catch (\Cake\Datasource\Exception\RecordNotFoundException $e) {
+                throw new \Cake\Http\Exception\NotFoundException(__('Parent record not found.'));
+            }
+
+            $displayField = $parentTable->getDisplayField();
+            $parentContext = [
+                'association' => $association->getName(),
+                'foreignKey' => $foreignKey,
+                'foreignKeyValue' => $filterValue,
+                'controller' => $association->getName(),
+                'displayField' => $displayField,
+                'label' => (string)($parentEntity->{$displayField} ?? $filterValue),
+            ];
+            break;
+        }
+
+        // =========================================================================
         // 🔍 KERESÉS VÉGREHAJTÁSA A KONFIGURÁLT MEZŐK ALAPJÁN
         // =========================================================================
         $search = trim((string)($queryParams['search'] ?? ''));
@@ -113,5 +156,5 @@
         $lastViewedId = $this->session->read('LastViewed.{{ singularVar }}_id');
         $scrollToId = $this->session->read('ScrollTo.{{ singularVar }}_id') ?? $lastViewedId;
 
-        $this->set(compact('{{ pluralName }}', 'lastViewedId', 'scrollToId', 'search'));
+        $this->set(compact('{{ pluralName }}', 'lastViewedId', 'scrollToId', 'search', 'parentContext'));
     }

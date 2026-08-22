@@ -20,6 +20,7 @@
  * @var int|null $lastViewedId
  * @var int|null $scrollToId
  * @var string|null $search
+ * @var array<string, mixed>|null $parentContext
  */
 use Cake\I18n\I18n;
 
@@ -52,8 +53,31 @@ $highlight = function (?string $text) use ($search): string {
 ?>
 {% set fields = Bake.filterFields(fields, schema, modelObject, indexColumns, ['binary', 'text']) %}
 {% set pk = '$' ~ singularVar ~ '->' ~ primaryKey[0] %}
+{% set associations = {'BelongsTo': [], 'HasOne': [], 'HasMany': [], 'BelongsToMany': []}|merge(associations|default({})) %}
+{% set childAssociations = associations.HasMany|default({}) %}
 
 <div class="card">
+    <?php if (!empty($parentContext)): ?>
+    <div class="card-status-top bg-azure"></div>
+    <div class="card-header border-bottom-0 pb-0">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <span class="badge bg-azure-lt"><?= __('Szűrt lista') ?></span>
+            <span class="text-secondary">
+                <?= __('{0} rekordhoz tartozó {1}', h($parentContext['label']), __('{{ pluralHumanName }}')) ?>
+            </span>
+            <?= $this->Html->link(
+                __('Vissza a teljes listához'),
+                ['action' => 'index'],
+                ['class' => 'ms-auto btn btn-sm btn-outline-secondary']
+            ) ?>
+            <?= $this->Html->link(
+                __('Szülő megtekintése'),
+                ['controller' => $parentContext['controller'], 'action' => 'view', $parentContext['foreignKeyValue']],
+                ['class' => 'btn btn-sm btn-outline-secondary']
+            ) ?>
+        </div>
+    </div>
+    <?php endif; ?>
     <div class="card-header pe-3">
         <div class="row w-full align-items-center gy-2 gy-md-0">
 
@@ -70,7 +94,17 @@ $highlight = function (?string $text) use ($search): string {
 
             <!-- Kereső űrlap -->
             <div class="col-12 col-md-auto ms-md-auto">
-                <?= $this->KvForm->search('search', ['controller' => '{{ pluralVar|capitalize }}', 'action' => 'index', '?' => ['clear' => 'search']]) ?>
+                <?php
+                $searchClearUrl = [
+                    'controller' => '{{ pluralVar|capitalize }}',
+                    'action' => 'index',
+                    '?' => ['clear' => 'search'],
+                ];
+                if (!empty($parentContext)) {
+                    $searchClearUrl['?'][$parentContext['foreignKey']] = $parentContext['foreignKeyValue'];
+                }
+                ?>
+                <?= $this->KvForm->search('search', $searchClearUrl) ?>
             </div>
 
         </div>
@@ -130,6 +164,9 @@ $highlight = function (?string $text) use ($search): string {
 					<th class="{{ colType }} {{ field }}"><?= $this->Paginator->sort('{{ field }}') ?></th>					
 {% endif %}
 {% endfor %}
+{% if childAssociations is not empty %}
+                    <th class="child-actions w-1"><?= __('Related') ?></th>
+{% endif %}
                     <th class="actions w-1"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -217,6 +254,29 @@ $highlight = function (?string $text) use ($search): string {
     {%~ endif %}
 {% endif %}
 {% endfor %}
+{% if childAssociations is not empty %}
+                    <td class="child-actions">
+                        <div class="btn-list flex-nowrap align-items-center">
+{% for alias, details in childAssociations %}
+                            <?= $this->Html->link(
+                                $this->Icon->outline('list'),
+                                [
+                                    'controller' => '{{ details.controller }}',
+                                    'action' => 'index',
+                                    '?' => ['{{ details.foreignKey }}' => {{ pk|raw }}],
+                                ],
+                                [
+                                    'escape' => false,
+                                    'class' => 'btn btn-icon btn-action-default',
+                                    'data-bs-toggle' => 'tooltip',
+                                    'data-bs-placement' => 'top',
+                                    'title' => __('{{ alias|humanize }}'),
+                                ]
+                            ) ?>
+{% endfor %}
+                        </div>
+                    </td>
+{% endif %}
                     <td class="actions">
                         <div class="btn-list flex-nowrap align-items-center">
                             <?= $this->KvForm->actionView(['action' => 'view', {{ pk|raw }}]) ?>
@@ -295,7 +355,7 @@ $this->Html->scriptBlock(
         document.querySelectorAll('.table tbody tr[data-edit-url]').forEach(function (row) {
             row.addEventListener('dblclick', function (e) {
                 // Interaktív elemekre dupla kattintva ne navigáljon el.
-                if (e.target.closest('a, button, input, select, textarea, label, .actions')) {
+                if (e.target.closest('a, button, input, select, textarea, label, .actions, .child-actions')) {
                     return;
                 }
 

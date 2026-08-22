@@ -388,6 +388,17 @@ class KvFormHelper extends Helper
             $out .= $this->Form->hidden('direction', ['value' => $direction]);
         }
 
+        // Szülő szerinti szűrő paraméterek megtartása (pl. city_id, club_id)
+        foreach ($request->getQueryParams() as $paramKey => $paramValue) {
+            if (in_array($paramKey, ['search', 'clear', 'page', 'sort', 'direction'], true)) {
+                continue;
+            }
+            if ($paramValue === null || $paramValue === '') {
+                continue;
+            }
+            $out .= $this->Form->hidden($paramKey, ['value' => $paramValue]);
+        }
+
         // Input group konténer felépítése
         $out .= '<div class="input-group input-group-flat search-input-group w-100 position-relative">';
         
