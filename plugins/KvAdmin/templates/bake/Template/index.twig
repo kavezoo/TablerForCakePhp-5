@@ -102,6 +102,7 @@ $highlight = function (?string $text) use ($search): string {
                 ];
                 if (!empty($parentContext)) {
                     $searchClearUrl['?'][$parentContext['foreignKey']] = $parentContext['foreignKeyValue'];
+                    $searchClearUrl['?']['parent_filter'] = $parentContext['parentFilter'];
                 }
                 ?>
                 <?= $this->KvForm->search('search', $searchClearUrl) ?>
@@ -263,7 +264,10 @@ $highlight = function (?string $text) use ($search): string {
                                 [
                                     'controller' => '{{ details.controller }}',
                                     'action' => 'index',
-                                    '?' => ['{{ details.foreignKey }}' => {{ pk|raw }}],
+                                    '?' => [
+                                        '{{ details.foreignKey }}' => {{ pk|raw }},
+                                        'parent_filter' => '{{ modelClass }}',
+                                    ],
                                 ],
                                 [
                                     'escape' => false,

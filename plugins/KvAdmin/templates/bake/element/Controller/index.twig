@@ -79,10 +79,16 @@
 
         // =========================================================================
         // 🔗 SZÜLŐ REKORD SZERINTI SZŰRÉS (gyerek lista a szülő index gombjából)
+        // Csak ?parent_filter=... + a hozzá tartozó FK paraméter együtt esetén aktív.
         // =========================================================================
         $parentContext = null;
+        $parentFilter = isset($queryParams['parent_filter']) ? (string)$queryParams['parent_filter'] : null;
         $table = $this->fetchTable('{{ currentModelName }}');
         foreach ($table->associations()->getByType('BelongsTo') as $association) {
+            if ($parentFilter === null || $parentFilter !== $association->getName()) {
+                continue;
+            }
+
             $foreignKey = $association->getForeignKey();
             if (!is_string($foreignKey)) {
                 continue;
@@ -107,6 +113,7 @@
                 'association' => $association->getName(),
                 'foreignKey' => $foreignKey,
                 'foreignKeyValue' => $filterValue,
+                'parentFilter' => $parentFilter,
                 'controller' => $association->getName(),
                 'displayField' => $displayField,
                 'label' => (string)($parentEntity->{$displayField} ?? $filterValue),
